@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Cobranzas Moviles</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="app_Empresa">Gestion Renovadora</string>
+    <string name="BotonLogin">Ingresar</string>
+    <string name="obligatorio">Este campo es obligatorio</string>
+    <string name="formatoMail">Usuario no es un email valido</string>
+    <string name="text"></string>
+    <string name="title_activity_login">LoginActivity</string>
+</resources>

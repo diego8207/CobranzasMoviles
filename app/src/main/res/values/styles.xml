@@ -1,0 +1,44 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.Design.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/teal</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/teal</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <!--Campo de texto-->
+    <style name="EditText" parent="AppTheme">
+        <!-- cursor y línea normal-->
+        <item name="colorControlNormal">@color/indigo</item>
+        <!-- cursor y línea con foco-->
+        <item name="colorControlActivated">@color/teal</item>
+    </style>
+
+
+
+    <style name="MiRaisedButton" parent="Theme.AppCompat.Light">
+        <item name="colorButtonNormal">@color/teal</item>
+        <item name="colorControlHighlight">@color/blanco</item>
+        <item name="android:textColor">@color/blanco</item>
+    </style>
+
+
+    <style name="AppTheme.EditTextError" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">@dimen/error</item>
+    </style>
+
+
+</resources>
