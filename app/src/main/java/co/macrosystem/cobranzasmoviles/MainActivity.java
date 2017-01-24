@@ -2,7 +2,6 @@ package co.macrosystem.cobranzasmoviles;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,9 +26,9 @@ import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextInputEditText txtMail;
+    private TextInputEditText txtUser;
     private TextInputEditText txtPassw;
-    private TextInputLayout txtInputMail;
+    private TextInputLayout txtInputUser;
     private TextInputLayout txtInputPassw;
 
     AlertDialog alert = null;
@@ -47,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("Version 1.0");
         setSupportActionBar(toolbar);
 
-        txtMail = (TextInputEditText) findViewById(R.id.editTextEmail);
+        txtUser = (TextInputEditText) findViewById(R.id.editTextUser);
         txtPassw = (TextInputEditText) findViewById(R.id.editTextPassword);
-        txtInputMail = (TextInputLayout) findViewById(R.id.text_input_layout_email);
+        txtInputUser = (TextInputLayout) findViewById(R.id.text_input_layout_user);
         txtInputPassw = (TextInputLayout) findViewById(R.id.text_input_layout_pass);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -123,25 +122,21 @@ public class MainActivity extends AppCompatActivity {
         /**
          * Valido si los campos estan sin digitar y en caso de que no mostrar mensaje de error obligatorio
          */
-        String mailError = null;
-        boolean esMail;
-        esMail = isEmailValid(txtMail.getText().toString());
+        String userError = null;
 
         /**
          * Si el campo mail esta vacio se muestra el error obligatorio de lo
          * contrario se hace la validacion del formato del email
          * si no corresponde muestra el error formato formatoMail
          */
-        if (TextUtils.isEmpty(txtMail.getText())) {
-            mailError = getString(R.string.obligatorio);
-        } else if (esMail == false) {
-            mailError = getString(R.string.formatoMail);
+        if (TextUtils.isEmpty(txtUser.getText())) {
+            userError = getString(R.string.obligatorio);
         }
 
         /**
          * se ejecuta la muestra del error
          */
-        toggleTextInputLayoutError(txtInputMail, mailError);
+        toggleTextInputLayoutError(txtInputUser, userError);
 
         String passError = null;
         if (TextUtils.isEmpty(txtPassw.getText())) {

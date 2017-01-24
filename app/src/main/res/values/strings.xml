@@ -2,6 +2,7 @@
     <string name="app_name">Cobranzas Moviles</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="email">Email</string>
+    <string name="usuario">Usuario</string>
     <string name="password">Contraseña</string>
     <string name="app_Empresa">Gestion Renovadora</string>
     <string name="BotonLogin">Ingresar</string>
