@@ -33,9 +33,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/teal"
-            android:textSize="40dp"
             android:id="@+id/tvTitulo"
-            android:textStyle="normal|bold" />
+            android:textStyle="normal|bold"
+            android:textSize="33sp" />
 
         <ImageView android:src="@drawable/logo"
             android:layout_width="wrap_content"
@@ -84,9 +84,14 @@
             android:text="@string/BotonLogin"
             android:layout_marginTop="50dp"
             android:onClick="validar"
-            android:theme="@style/MiRaisedButton"/>
+            android:theme="@style/MiRaisedButton"
+            android:textSize="20sp"
+            tools:textStyle="bold" />
+
 
     </LinearLayout>
+
+
 
 
 </LinearLayout>
