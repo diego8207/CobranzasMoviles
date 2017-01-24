@@ -1,95 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
     <LinearLayout
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:descendantFocusability="beforeDescendants"
-        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
-
-        <TextView
-            android:text="@string/app_name"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/teal"
-            android:id="@+id/tvTitulo"
-            android:textStyle="normal|bold"
-            android:textSize="33sp" />
+            android:background="?colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <ImageView android:src="@drawable/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:layout_gravity="center_horizontal" />
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/text_input_layout_user"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/form_margin_top"
-            android:hint="@string/usuario"
-            app:errorTextAppearance="@style/AppTheme.EditTextError">
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/editTextUser"
+
+            <TextView
+                android:text="@string/app_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"/>
+                android:gravity="center"
+                android:textColor="@color/teal"
+                android:id="@+id/tvTitulo"
+                android:textStyle="normal|bold"
+                android:textSize="33sp" />
 
-        </android.support.design.widget.TextInputLayout>
+            <ImageView android:src="@drawable/logo"
+                android:layout_width="wrap_content"
+                android:layout_height="72dp"
+                android:layout_gravity="center_horizontal" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/text_input_layout_pass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/password"
-            android:layout_marginTop="@dimen/form_margin_top"
-            app:passwordToggleEnabled="true"
-            app:errorTextAppearance="@style/AppTheme.EditTextError">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/editTextPassword"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"/>
+                android:layout_marginTop="@dimen/form_margin_top"
+                android:hint="@string/usuario"
+                app:errorTextAppearance="@style/AppTheme.EditTextError">
 
-        </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editTextUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:layout_marginTop="@dimen/form_margin_top"
+                app:passwordToggleEnabled="true"
+                app:errorTextAppearance="@style/AppTheme.EditTextError">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editTextPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"/>
+
+            </android.support.design.widget.TextInputLayout>
 
 
 
-        <Button
-            android:id="@+id/btnEntrar"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:text="@string/BotonLogin"
-            android:layout_marginTop="50dp"
-            android:onClick="validar"
-            android:theme="@style/MiRaisedButton"
-            android:textSize="20sp"
-            tools:textStyle="bold" />
+            <Button
+                android:id="@+id/btnEntrar"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:text="@string/BotonLogin"
+                android:layout_marginTop="50dp"
+                android:onClick="validar"
+                android:theme="@style/MiRaisedButton"
+                android:textSize="20sp"
+                tools:textStyle="bold" />
+
+
+        </LinearLayout>
 
 
     </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
 
-
-</LinearLayout>

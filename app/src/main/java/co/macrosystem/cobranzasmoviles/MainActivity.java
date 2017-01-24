@@ -12,11 +12,13 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -123,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
          * Valido si los campos estan sin digitar y en caso de que no mostrar mensaje de error obligatorio
          */
         String userError = null;
-
+        String passError = null;
         /**
          * Si el campo mail esta vacio se muestra el error obligatorio de lo
          * contrario se hace la validacion del formato del email
@@ -132,19 +134,38 @@ public class MainActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(txtUser.getText())) {
             userError = getString(R.string.obligatorio);
         }
-
-        /**
-         * se ejecuta la muestra del error
-         */
-        toggleTextInputLayoutError(txtInputUser, userError);
-
-        String passError = null;
         if (TextUtils.isEmpty(txtPassw.getText())) {
             passError = getString(R.string.obligatorio);
         }
 
+        /**
+         * si ambos capos se encuentran con datos se debe ejecutar el siguiente codigo.
+         * el cual debe validar en base de datos local o remota las credenciales y
+         * posteriormente visualizar la actividad segun su rol.
+         */
+        if (!TextUtils.isEmpty(txtUser.getText()) && !TextUtils.isEmpty(txtPassw.getText())){
+            /**
+             * Ejemplo del Snackbar
+             */
+            Snackbar.make(view, getResources().getString(R.string.mensaje), Snackbar.LENGTH_LONG).
+            setAction(getResources().getString(R.string.email), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i("SNACKBAR", "Se clickeo el snackbar");
+                }
+            }).show();
+        }
+
+        /**
+         * envio informacion a la uncion toogleTextInputLayoutError para
+         * que se valide si se muestra el error en casi de haberlo.
+         */
+        toggleTextInputLayoutError(txtInputUser, userError);
         toggleTextInputLayoutError(txtInputPassw, passError);
 
+        /*
+        eliminacion del foco actual
+         */
         clearFocus();
     }
 

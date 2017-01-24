@@ -10,4 +10,5 @@
     <string name="formatoMail">Usuario no es un email valido</string>
     <string name="text"></string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="mensaje">Datos completos</string>
 </resources>
