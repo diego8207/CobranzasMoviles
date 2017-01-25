@@ -7,4 +7,5 @@
     <dimen name="elevation_toolbar">30dp</dimen>
     <dimen name="floating_label">20sp</dimen>
     <dimen name="error">15sp</dimen>
+    <dimen name="card_heigh">100dp</dimen>
 </resources>

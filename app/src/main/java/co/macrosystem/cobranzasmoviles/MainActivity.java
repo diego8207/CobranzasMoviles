@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText txtPassw;
     private TextInputLayout txtInputUser;
     private TextInputLayout txtInputPassw;
+    private Toolbar toolbar;
 
     AlertDialog alert = null;
     Location location;
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Version 1.0");
         setSupportActionBar(toolbar);
@@ -59,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
+
 
     private void AlertNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -144,16 +147,11 @@ public class MainActivity extends AppCompatActivity {
          * posteriormente visualizar la actividad segun su rol.
          */
         if (!TextUtils.isEmpty(txtUser.getText()) && !TextUtils.isEmpty(txtPassw.getText())){
-            /**
-             * Ejemplo del Snackbar
-             */
-            Snackbar.make(view, getResources().getString(R.string.mensaje), Snackbar.LENGTH_LONG).
-            setAction(getResources().getString(R.string.email), new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.i("SNACKBAR", "Se clickeo el snackbar");
-                }
-            }).show();
+            Intent intent = new Intent(this, MenuPrincipal.class);
+            startActivity(intent);
+
+
+
         }
 
         /**
