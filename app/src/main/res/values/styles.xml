@@ -43,7 +43,7 @@
 
     <style name="ToolbarCard" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="colorPrimary">@android:color/black</item>
-        <item name="android:textColorPrimary">@android:color/black</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
     <style name="Card.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">

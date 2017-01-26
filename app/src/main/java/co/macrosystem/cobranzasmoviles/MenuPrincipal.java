@@ -16,7 +16,14 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class MenuPrincipal extends AppCompatActivity {
 
@@ -37,8 +44,9 @@ public class MenuPrincipal extends AppCompatActivity {
         imageViewExpand = (ImageView) findViewById(R.id.imageViewExpand);
 
         Toolbar toolbarCard = (Toolbar) findViewById(R.id.toolbarCard);
-        toolbarCard.setTitle(R.string.olinguito);
-        toolbarCard.setSubtitle(R.string.subtitle);
+        toolbarCard.setTitle(R.string.title_card_suspensiones);
+        //subtitulo de la barra de la tarjeta
+        toolbarCard.setSubtitle("Fecha: "+ fechaDeHoy());
         toolbarCard.inflateMenu(R.menu.menu_card);
         toolbarCard.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -61,6 +69,13 @@ public class MenuPrincipal extends AppCompatActivity {
 
 
     }
+
+    public String fechaDeHoy(){
+        Date fechaActual = new Date();
+        DateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        return formatoFecha.format(fechaActual);
+    }
+
 
 
     public void toggleDetails(View view) {

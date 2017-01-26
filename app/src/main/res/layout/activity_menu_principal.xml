@@ -46,7 +46,7 @@
                 android:id="@+id/toolbarCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
+                android:background="@color/teal"
                 app:popupTheme="@style/Theme.AppCompat.Light"
                 app:subtitleTextAppearance="@style/Card.Subtitle"
                 app:theme="@style/ToolbarCard"
