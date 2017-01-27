@@ -29,23 +29,14 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:descendantFocusability="beforeDescendants"
             android:focusableInTouchMode="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="1">
 
-
-            <TextView
-                android:text="@string/app_name"
+            <ImageView android:src="@drawable/login_icono"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/primaryText"
-                android:id="@+id/tvTitulo"
-                android:textStyle="normal|bold"
-                android:textSize="33sp" />
-
-            <ImageView android:src="@drawable/logo"
-                android:layout_width="wrap_content"
-                android:layout_height="72dp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.54" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/text_input_layout_user"
