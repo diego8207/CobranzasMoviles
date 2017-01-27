@@ -30,6 +30,9 @@ public class MenuPrincipal extends AppCompatActivity {
     private ViewGroup linearLayoutDetails;
     private ImageView imageViewExpand;
 
+    private ViewGroup linearLayoutDetailsObserv_trabajo;
+    private ImageView imageViewExpandObserv_trabajo;
+
     private static final int DURATION = 250;
 
     @Override
@@ -40,13 +43,24 @@ public class MenuPrincipal extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        linearLayoutDetails = (ViewGroup) findViewById(R.id.linearLayoutDetails);
+        linearLayoutDetailsObserv_trabajo = (ViewGroup) findViewById(R.id.linearLayoutDetailsObserv_trabajo);
         imageViewExpand = (ImageView) findViewById(R.id.imageViewExpand);
 
-        Toolbar toolbarCard = (Toolbar) findViewById(R.id.toolbarCard);
+        linearLayoutDetails = (ViewGroup) findViewById(R.id.linearLayoutDetails);
+        imageViewExpandObserv_trabajo = (ImageView) findViewById(R.id.imageViewExpandObserv_trabajo);
+
+
+
+        Toolbar toolbarCard = (Toolbar) findViewById(R.id.toolbarCardSuspensiones);
         toolbarCard.setTitle(R.string.title_card_suspensiones);
+
+        Toolbar toolbarCard2 = (Toolbar) findViewById(R.id.toolbarCardObserv_trabajo);
+        toolbarCard2.setTitle(R.string.title_card_Observ_trabajo);
+
         //subtitulo de la barra de la tarjeta
         toolbarCard.setSubtitle("Fecha: "+ fechaDeHoy());
+        toolbarCard2.setSubtitle("Fecha: "+ fechaDeHoy());
+
         toolbarCard.inflateMenu(R.menu.menu_card);
         toolbarCard.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -78,23 +92,47 @@ public class MenuPrincipal extends AppCompatActivity {
 
 
 
-    public void toggleDetails(View view) {
+    public void toggleDetailsSuspensiones(View view) {
         if (linearLayoutDetails.getVisibility() == View.GONE) {
             ExpandAndCollapseViewUtil.expand(linearLayoutDetails, DURATION);
             imageViewExpand.setImageResource(R.mipmap.more);
-            rotate(-180.0f);
+            rotateSuspensiones(-180.0f);
         } else {
             ExpandAndCollapseViewUtil.collapse(linearLayoutDetails, DURATION);
             imageViewExpand.setImageResource(R.mipmap.less);
-            rotate(180.0f);
+            rotateSuspensiones(180.0f);
+        }
+
+
+
+    }
+
+
+    public  void toogleDetailsObserv_trabajo(View view){
+        if (linearLayoutDetailsObserv_trabajo.getVisibility() == View.GONE) {
+            ExpandAndCollapseViewUtil.expand(linearLayoutDetailsObserv_trabajo, DURATION);
+            imageViewExpandObserv_trabajo.setImageResource(R.mipmap.more);
+            rotateObserv_trabajo(-180.0f);
+        } else {
+            ExpandAndCollapseViewUtil.collapse(linearLayoutDetailsObserv_trabajo, DURATION);
+            imageViewExpandObserv_trabajo.setImageResource(R.mipmap.less);
+            rotateObserv_trabajo(180.0f);
         }
     }
 
-    private void rotate(float angle) {
+    private void rotateSuspensiones(float angle) {
         Animation animation = new RotateAnimation(0.0f, angle, Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setFillAfter(true);
         animation.setDuration(DURATION);
         imageViewExpand.startAnimation(animation);
+    }
+
+    private void rotateObserv_trabajo(float angle) {
+        Animation animation = new RotateAnimation(0.0f, angle, Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setFillAfter(true);
+        animation.setDuration(DURATION);
+        imageViewExpandObserv_trabajo.startAnimation(animation);
     }
 }
