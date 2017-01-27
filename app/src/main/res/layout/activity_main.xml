@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/teal"
+                android:textColor="@color/primaryText"
                 android:id="@+id/tvTitulo"
                 android:textStyle="normal|bold"
                 android:textSize="33sp" />

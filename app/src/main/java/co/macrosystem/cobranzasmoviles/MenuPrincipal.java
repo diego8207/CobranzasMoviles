@@ -43,6 +43,7 @@ public class MenuPrincipal extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         linearLayoutDetailsObserv_trabajo = (ViewGroup) findViewById(R.id.linearLayoutDetailsObserv_trabajo);
         imageViewExpand = (ImageView) findViewById(R.id.imageViewExpand);
 

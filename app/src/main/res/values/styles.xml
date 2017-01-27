@@ -3,9 +3,10 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/teal</item>
+        <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
-        <item name="colorAccent">@color/teal</item>
+        <item name="colorAccent">@color/AzulTitulos</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -29,7 +30,7 @@
 
 
     <style name="MiRaisedButton" parent="Theme.AppCompat.Light">
-        <item name="colorButtonNormal">@color/teal</item>
+        <item name="colorButtonNormal">@color/primary</item>
         <item name="colorControlHighlight">@color/blanco</item>
         <item name="android:textColor">@color/blanco</item>
     </style>
@@ -41,8 +42,7 @@
     </style>
 
 
-    <style name="ToolbarCard" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="colorPrimary">@android:color/black</item>
+    <style name="Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 

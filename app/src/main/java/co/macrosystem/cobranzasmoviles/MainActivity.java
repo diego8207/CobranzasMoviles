@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Version 1.0");
+        toolbar.setTitle("Cobranzas Moviles versión 1.0");
         setSupportActionBar(toolbar);
 
         txtUser = (TextInputEditText) findViewById(R.id.editTextUser);
