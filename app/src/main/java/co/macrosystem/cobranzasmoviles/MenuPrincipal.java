@@ -1,5 +1,6 @@
 package co.macrosystem.cobranzasmoviles;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -21,9 +22,7 @@ import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class MenuPrincipal extends AppCompatActivity {
 
@@ -32,7 +31,8 @@ public class MenuPrincipal extends AppCompatActivity {
 
     private ViewGroup linearLayoutDetailsObserv_trabajo;
     private ImageView imageViewExpandObserv_trabajo;
-
+    private ImageButton imgBtnSuspensionesRestantes;
+    private Intent intent;
     private static final int DURATION = 250;
 
     @Override
@@ -42,13 +42,22 @@ public class MenuPrincipal extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        intent = new Intent(this, SuspensionesRestantesActivity.class);
 
         linearLayoutDetailsObserv_trabajo = (ViewGroup) findViewById(R.id.linearLayoutDetailsObserv_trabajo);
         imageViewExpand = (ImageView) findViewById(R.id.imageViewExpand);
 
         linearLayoutDetails = (ViewGroup) findViewById(R.id.linearLayoutDetails);
         imageViewExpandObserv_trabajo = (ImageView) findViewById(R.id.imageViewExpandObserv_trabajo);
+
+        imgBtnSuspensionesRestantes = (ImageButton) findViewById(R.id.imgBtnSuspensionesRestantes);
+
+        imgBtnSuspensionesRestantes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intent);
+            }
+        });
 
 
 
