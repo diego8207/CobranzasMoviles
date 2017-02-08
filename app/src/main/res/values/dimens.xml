@@ -8,4 +8,5 @@
     <dimen name="floating_label">20sp</dimen>
     <dimen name="error">15sp</dimen>
     <dimen name="card_heigh">100dp</dimen>
+    <dimen name="corner_radius_cardview">4dp</dimen>
 </resources>
