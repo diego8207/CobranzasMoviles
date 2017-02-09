@@ -1,27 +1,13 @@
 package co.macrosystem.cobranzasmoviles;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Diego Velez on 08/02/2017.
  */
-
-public class Suspension {
-
-    public Suspension() {
-    }
-
-    public Suspension(String matricula, String proceso, String medidor, String suscriptor, String ciclo, String municipio, String direccion, String fecha_actividad, String tipo_actividad, String desc_accion, String glosa) {
-        this.matricula = matricula;
-        this.proceso = proceso;
-        this.medidor = medidor;
-        this.suscriptor = suscriptor;
-        this.ciclo = ciclo;
-        this.municipio = municipio;
-        this.direccion = direccion;
-        this.fecha_actividad = fecha_actividad;
-        this.tipo_actividad = tipo_actividad;
-        this.desc_accion = desc_accion;
-        this.glosa = glosa;
-    }
+//se implementa Parceable para poder pasar este objeto como parametro entre una activity a otra
+public class Suspension implements Parcelable {
 
     private String matricula;
     private String proceso;
@@ -48,6 +34,42 @@ public class Suspension {
     private String observacion;
     private String rechazo;
     private String proveedor;
+    private String latitud;
+    private String longitud;
+
+    public Suspension() {
+    }
+
+    public Suspension(String matricula, String proceso, String medidor, String suscriptor, String ciclo, String municipio, String direccion, String fecha_actividad, String tipo_actividad, String desc_accion, String glosa) {
+        this.matricula = matricula;
+        this.proceso = proceso;
+        this.medidor = medidor;
+        this.suscriptor = suscriptor;
+        this.ciclo = ciclo;
+        this.municipio = municipio;
+        this.direccion = direccion;
+        this.fecha_actividad = fecha_actividad;
+        this.tipo_actividad = tipo_actividad;
+        this.desc_accion = desc_accion;
+        this.glosa = glosa;
+    }
+
+
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(String latitud) {
+        this.latitud = latitud;
+    }
+
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
+    }
 
     public String getMatricula() {
         return matricula;
@@ -253,4 +275,56 @@ public class Suspension {
     public String toString() {
         return matricula + '/' + direccion;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int i) {
+        dest.writeString(matricula);
+        dest.writeString(proceso);
+        dest.writeString(medidor);
+        dest.writeString(suscriptor);
+        dest.writeString(ciclo);
+        dest.writeString(municipio);
+        dest.writeString(direccion);
+        dest.writeString(fecha_actividad);
+        dest.writeString(tipo_actividad);
+        dest.writeString(desc_accion);
+        dest.writeString(glosa);
+    }
+
+    private void readFromParcel(Parcel in) {
+        matricula = in.readString();
+        proceso = in.readString();
+        medidor = in.readString();
+        suscriptor = in.readString();
+        ciclo = in.readString();
+        municipio = in.readString();
+        direccion = in.readString();
+        fecha_actividad = in.readString();
+        tipo_actividad = in.readString();
+        desc_accion = in.readString();
+        glosa = in.readString();
+    }
+
+    public Suspension(Parcel in) {
+        readFromParcel(in);
+    }
+
+    public static final Parcelable.Creator<Suspension> CREATOR
+            = new Parcelable.Creator<Suspension>() {
+        public Suspension createFromParcel(Parcel in) {
+            return new Suspension(in);
+        }
+
+        @Override
+        public Suspension[] newArray(int size) {
+            return new Suspension[size];
+        }
+
+
+    };
 }

@@ -20,11 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MenuPrincipal"></activity>
+        <activity android:name=".MenuPrincipal" />
         <activity
             android:name=".SuspensionesRestantesActivity"
             android:label="@string/title_activity_suspensiones"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".form_suspensiones_Activity"></activity>
     </application>
 
 </manifest>
