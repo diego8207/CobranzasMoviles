@@ -29,6 +29,8 @@
     <string name="title_card_form_suspensiones">Matricula: </string>
     <string name="title_card_Observ_trabajo">Observaciones de trabajo</string>
     <string name="title_activity_suspensiones">SuspensionesActivity</string>
+    <string name="lbl_sticker">No. Sticker</string>
+    <string name="lbl_sello_serial">Sello y serial</string>
 
 
     <string-array name="DireccionesEjemplo">

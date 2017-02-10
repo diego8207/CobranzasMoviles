@@ -40,7 +40,7 @@ public class Suspension implements Parcelable {
     public Suspension() {
     }
 
-    public Suspension(String matricula, String proceso, String medidor, String suscriptor, String ciclo, String municipio, String direccion, String fecha_actividad, String tipo_actividad, String desc_accion, String glosa) {
+    public Suspension(String matricula, String proceso, String medidor, String suscriptor, String ciclo, String municipio, String direccion, String fecha_actividad, String tipo_actividad, String desc_accion, String glosa, String proveedor) {
         this.matricula = matricula;
         this.proceso = proceso;
         this.medidor = medidor;
@@ -52,6 +52,7 @@ public class Suspension implements Parcelable {
         this.tipo_actividad = tipo_actividad;
         this.desc_accion = desc_accion;
         this.glosa = glosa;
+        this.proveedor = proveedor;
     }
 
 
@@ -294,6 +295,7 @@ public class Suspension implements Parcelable {
         dest.writeString(tipo_actividad);
         dest.writeString(desc_accion);
         dest.writeString(glosa);
+        dest.writeString(proveedor);
     }
 
     private void readFromParcel(Parcel in) {
@@ -308,6 +310,7 @@ public class Suspension implements Parcelable {
         tipo_actividad = in.readString();
         desc_accion = in.readString();
         glosa = in.readString();
+        proveedor = in.readString();
     }
 
     public Suspension(Parcel in) {
