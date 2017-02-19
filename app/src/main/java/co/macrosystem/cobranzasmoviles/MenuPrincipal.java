@@ -138,4 +138,6 @@ public class MenuPrincipal extends AppCompatActivity {
         animation.setDuration(DURATION);
         imageViewExpandObserv_trabajo.startAnimation(animation);
     }
+
+
 }

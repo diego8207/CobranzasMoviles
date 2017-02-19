@@ -16,16 +16,31 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".MenuPrincipal" />
+
         <activity
             android:name=".SuspensionesRestantesActivity"
             android:label="@string/title_activity_suspensiones"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".form_suspensiones_Activity"></activity>
+            android:parentActivityName=".MenuPrincipal"
+            android:theme="@style/AppTheme" >
+            <!--Soporte para versiones 4.0 o menores -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MenuPrincipal">
+            </meta-data>
+        </activity>
+
+        <activity android:name=".form_suspensiones_Activity"
+            android:parentActivityName=".SuspensionesRestantesActivity">
+            <!--Soporte para versiones 4.0 o menores -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SuspensionesRestantesActivity">
+            </meta-data>
+        </activity>
     </application>
 
 </manifest>

@@ -54,6 +54,7 @@ public class form_suspensiones_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_suspensiones);
+
         suspension = getIntent().getParcelableExtra("objSuspension");
         Toolbar toolbarCard = (Toolbar) findViewById(R.id.toolbarCardFormSuspensiones);
         toolbarCard.setTitle("Matricula: " + suspension.getMatricula());
@@ -102,6 +103,8 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapterSello = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, SPNR_ESTADO_SELLO);
         MaterialBetterSpinner materialDesignSpinnerSello = (MaterialBetterSpinner) findViewById(R.id.spnr_estado_sello);
         materialDesignSpinnerSello.setAdapter(arrayAdapterSello);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
