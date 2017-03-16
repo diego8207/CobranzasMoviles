@@ -110,6 +110,23 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="Dirección: "
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:paddingLeft="10dp"/>
+
+                    <TextView
+                        android:id="@+id/txtDireccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="italic"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="Ciclo: "
                         android:textStyle="bold"
                         android:textSize="20sp"
@@ -141,22 +158,9 @@
                         android:layout_marginBottom="5dp"
                         android:paddingLeft="10dp"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Dirección: "
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:paddingLeft="10dp"/>
+                    ------
 
-                    <TextView
-                        android:id="@+id/txtDireccion"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textStyle="italic"
-                        android:textSize="15sp"
-                        android:layout_marginBottom="5dp"
-                        android:paddingLeft="10dp"/>
+
 
                     <TextView
                         android:layout_width="match_parent"
@@ -193,15 +197,50 @@
                         android:paddingLeft="10dp"/>
 
                     <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Código acción: "
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:paddingLeft="10dp"/>
+
+                    <TextView
+                        android:id="@+id/txtCodAccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="italic"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="10dp"/>
+
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Descripción acción: "
                         android:textStyle="bold"
                         android:textSize="20sp"
-                        android:paddingLeft="10dp"/>
+                        android:paddingLeft="10dp"
+                        android:id="@+id/textView" />
 
                     <TextView
                         android:id="@+id/txtDescAccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="italic"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Código Técnico: "
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:paddingLeft="10dp"/>
+
+                    <TextView
+                        android:id="@+id/txtCodTecnico"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textStyle="italic"

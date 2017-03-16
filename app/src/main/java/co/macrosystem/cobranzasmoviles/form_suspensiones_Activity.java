@@ -7,14 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
-import org.w3c.dom.Text;
+import co.macrosystem.cobranzasmoviles.pojo.Suspension;
 
 public class form_suspensiones_Activity extends AppCompatActivity {
 
@@ -28,7 +28,9 @@ public class form_suspensiones_Activity extends AppCompatActivity {
     private TextView txtDireccion;
     private TextView txtfecha_actividad;
     private TextView txtTipoActividad;
+    private TextView txtCodcAccion;
     private TextView txtDescAccion;
+    private TextView txtCodTecnico;
     private TextView txtGlosa;
     private TextView txtProveedor;
 
@@ -57,7 +59,7 @@ public class form_suspensiones_Activity extends AppCompatActivity {
 
         suspension = getIntent().getParcelableExtra("objSuspension");
         Toolbar toolbarCard = (Toolbar) findViewById(R.id.toolbarCardFormSuspensiones);
-        toolbarCard.setTitle("Matricula: " + suspension.getMatricula());
+        toolbarCard.setTitle("Matricula: " + suspension.getSUSP_MATRICULA());
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
@@ -69,9 +71,12 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         txtDireccion = (TextView) findViewById(R.id.txtDireccion);
         txtfecha_actividad = (TextView) findViewById(R.id.txtfecha_actividad);
         txtTipoActividad = (TextView) findViewById(R.id.txtTipoActividad);
+        txtCodcAccion = (TextView) findViewById(R.id.txtCodAccion);
         txtDescAccion = (TextView) findViewById(R.id.txtDescAccion);
+        txtCodTecnico = (TextView) findViewById(R.id.txtCodTecnico);
         txtGlosa = (TextView) findViewById(R.id.txtGlosa);
         txtProveedor = (TextView) findViewById(R.id.txtProveedor);
+
         txtSticker = (TextInputEditText) findViewById(R.id.txtSticker);
         til_sticker = (TextInputLayout) findViewById(R.id.til_sticker);
         txtSelloSerial = (TextInputEditText) findViewById(R.id.txtSelloSerial);
@@ -88,17 +93,22 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         txtObservaciones = (TextInputEditText) findViewById(R.id.txtObservaciones);
 
 
-        txtProceso.setText(suspension.getProceso());
-        txtMedidor.setText(suspension.getMedidor());
-        txtSuscriptor.setText(suspension.getSuscriptor());
-        txtCiclo.setText(suspension.getCiclo());
-        txtMunicipio.setText(suspension.getMunicipio());
-        txtDireccion.setText(suspension.getDireccion());
-        txtfecha_actividad.setText(suspension.getFecha_actividad());
-        txtTipoActividad.setText(suspension.getTipo_actividad());
-        txtDescAccion.setText(suspension.getDesc_accion());
-        txtGlosa.setText(suspension.getGlosa());
-        txtProveedor.setText(suspension.getProveedor());
+        txtProceso.setText(suspension.getSUSP_NUM_PROCESO());
+        txtMedidor.setText(suspension.getSUSP_NUM_MEDIDOR());
+        txtSuscriptor.setText(suspension.getSUSP_SUSCRIPTOR());
+        txtCiclo.setText(suspension.getSUSP_CICLO());
+        txtMunicipio.setText(suspension.getSUSP_MUNICIPIO());
+        txtDireccion.setText(suspension.getSUSP_DIRECCION());
+        txtfecha_actividad.setText(suspension.getSUSP_FECHA_ACTI());
+        txtTipoActividad.setText(suspension.getSUSP_TIPO_ACTI());
+        txtCodcAccion.setText(suspension.getSUSP_COD_ACCION());
+        txtDescAccion.setText(suspension.getSUSP_DESCR_ACCION());
+        txtCodTecnico.setText(suspension.getSUSP_COD_TECNICO());
+        txtGlosa.setText(suspension.getSUSP_GLOSA());
+        txtProveedor.setText(suspension.getSUSP_PROVEEDOR());
+
+        Log.e(null, "MATRICULA: " + suspension.getSUSP_MATRICULA());
+        Log.e(null, "Datos almacenados en esta suspension: ");
 
         ArrayAdapter<String> arrayAdapterSello = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, SPNR_ESTADO_SELLO);
         MaterialBetterSpinner materialDesignSpinnerSello = (MaterialBetterSpinner) findViewById(R.id.spnr_estado_sello);

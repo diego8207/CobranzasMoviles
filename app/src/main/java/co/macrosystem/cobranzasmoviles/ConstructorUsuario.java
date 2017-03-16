@@ -3,6 +3,7 @@ package co.macrosystem.cobranzasmoviles;
 import android.content.Context;
 
 import co.macrosystem.cobranzasmoviles.db.BaseDatos;
+import co.macrosystem.cobranzasmoviles.pojo.Usuario;
 
 /**
  * Created by Diego Velez on 26/02/2017.

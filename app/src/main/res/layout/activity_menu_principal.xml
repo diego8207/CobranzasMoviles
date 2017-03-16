@@ -9,7 +9,6 @@
     android:orientation="vertical"
     tools:context="co.macrosystem.cobranzasmoviles.MenuPrincipal">
 
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -161,7 +160,8 @@
                             android:layout_column="2"
                             android:layout_row="0"
                             card_view:srcCompat="@drawable/rotate"
-                            android:id="@+id/imageButton1" />
+                            android:id="@+id/imageButton1"
+                            android:elevation="4dp" />
 
                         <ImageButton
                             android:layout_width="wrap_content"
@@ -169,7 +169,8 @@
                             android:layout_column="2"
                             android:layout_row="1"
                             card_view:srcCompat="@drawable/servidor_web"
-                            android:id="@+id/imageButton2" />
+                            android:id="@+id/imageButton2"
+                            android:elevation="4dp" />
 
                         <ImageButton
                             android:layout_width="wrap_content"
@@ -177,151 +178,15 @@
                             android:layout_column="2"
                             android:layout_row="2"
                             card_view:srcCompat="@android:drawable/btn_star_big_on"
-                            android:id="@+id/imgBtnSuspensionesRestantes" />
+                            android:id="@+id/imgBtnSuspensionesRestantes"
+                            android:elevation="4dp" />
 
 
                     </GridLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/cardObserv_trabajo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardBackgroundColor="@android:color/white"
-                card_view:cardCornerRadius="4dp"
-                card_view:cardElevation="4dp"
-                card_view:cardUseCompatPadding="true">
 
-                <LinearLayout
-                    android:id="@+id/linearLayoutCardContentObserv_trabajo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <android.support.v7.widget.Toolbar
-                        android:id="@+id/toolbarCardObserv_trabajo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/primary"
-                        app:popupTheme="@style/Theme.AppCompat.Light"
-                        app:subtitleTextAppearance="@style/Card.Subtitle"
-                        app:theme="@style/Toolbar"
-                        android:paddingBottom="2dp"
-                        app:titleTextAppearance="@style/Card.Title" />
-
-                    <ImageView
-                        android:id="@+id/imageViewObserv_trabajo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="0dp"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/olinguito"/>
-
-                    <ImageView
-                        android:id="@+id/imageView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="0dp"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/olinguito"
-                        android:src="@drawable/supervision" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:onClick="toogleDetailsObserv_trabajo"
-                        android:orientation="horizontal"
-                        android:padding="8dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:text="@string/details2"
-                            android:textColor="@android:color/black"
-                            android:textSize="20sp" />
-
-                        <ImageView
-                            android:id="@+id/imageViewExpandObserv_trabajo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@android:color/transparent"
-                            android:contentDescription="@string/details"
-                            android:src="@mipmap/more" />
-
-                    </LinearLayout>
-
-                    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:id="@+id/linearLayoutDetailsObserv_trabajo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:columnCount="3"
-                        android:rowCount="2"
-                        android:alignmentMode="alignBounds"
-                        android:layout_margin="10dp"
-                        android:visibility="gone">
-
-                        <!--      android:visibility="gone"   -->
-
-
-                        <TextView
-                            android:id="@+id/procesadas2"
-                            android:layout_column="0"
-                            android:layout_row="0"
-                            android:layout_gravity="center_vertical"
-                            android:textSize="18sp"
-                            android:text="PROCESADAS: " />
-                        <TextView
-                            android:id="@+id/subidas2"
-                            android:layout_column="0"
-                            android:layout_row="1"
-                            android:layout_gravity="center_vertical"
-                            android:textSize="18sp"
-                            android:text="SUBIDAS: " />
-
-
-                        <TextView
-                            android:id="@+id/num_procesadas2"
-                            android:layout_column="1"
-                            android:layout_row="0"
-                            android:textSize="35sp"
-                            android:text="1"
-                            android:layout_gravity="center"/>
-
-                        <TextView
-                            android:id="@+id/num_subidas2"
-                            android:layout_column="1"
-                            android:layout_row="1"
-                            android:textSize="35sp"
-                            android:text="1"
-                            android:layout_gravity="center"/>
-
-
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="2"
-                            android:layout_row="0"
-                            card_view:srcCompat="@drawable/rotate"
-                            android:id="@+id/imageButton12" />
-
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="2"
-                            android:layout_row="1"
-                            card_view:srcCompat="@drawable/servidor_web"
-                            android:id="@+id/imageButton22" />
-
-                    </GridLayout>
-
-
-                </LinearLayout>
-
-                </android.support.v7.widget.CardView>
         </LinearLayout> //Fin Layout orincipal
     </ScrollView>
 </LinearLayout>

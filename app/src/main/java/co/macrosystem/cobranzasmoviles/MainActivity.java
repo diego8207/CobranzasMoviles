@@ -25,7 +25,6 @@ import android.widget.EditText;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class MainActivity extends AppCompatActivity {
 
     private TextInputEditText txtUser;
@@ -44,24 +43,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Asignamos la barra superior
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Cobranzas Moviles versión 1.0");
         setSupportActionBar(toolbar);
 
+        //Asignamos los objetos a las variables locales
         txtUser = (TextInputEditText) findViewById(R.id.editTextUser);
         txtPassw = (TextInputEditText) findViewById(R.id.editTextPassword);
         txtInputUser = (TextInputLayout) findViewById(R.id.text_input_layout_user);
         txtInputPassw = (TextInputLayout) findViewById(R.id.text_input_layout_pass);
 
+        //Validamos si hay GPS activo
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+         if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
             AlertNoGps();
         }
-
     }
-
-
-
 
     private void AlertNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -104,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //Validamos si hay GPS activo
+        if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            AlertNoGps();
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

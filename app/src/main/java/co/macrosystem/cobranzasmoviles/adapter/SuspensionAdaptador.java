@@ -1,16 +1,18 @@
-package co.macrosystem.cobranzasmoviles;
+package co.macrosystem.cobranzasmoviles.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import co.macrosystem.cobranzasmoviles.R;
+import co.macrosystem.cobranzasmoviles.form_suspensiones_Activity;
+import co.macrosystem.cobranzasmoviles.pojo.Suspension;
 
 /**
  * Created by Diego Velez on 08/02/2017.
@@ -38,8 +40,8 @@ public class SuspensionAdaptador extends RecyclerView.Adapter<SuspensionAdaptado
     @Override
     public void onBindViewHolder(SuspensionViewHolder suspensionViewHolder, int position) { // se asigna los valores a los objetos que estaran en la cardview
         final Suspension suspension = suspensiones.get(position); //recuperamos de la lista el objeto uno a uno
-        suspensionViewHolder.tvMatricula.setText(suspension.getMatricula());
-        suspensionViewHolder.tvDireccion.setText(suspension.getDireccion());
+        suspensionViewHolder.tvMatricula.setText(suspension.getSUSP_MATRICULA());
+        suspensionViewHolder.tvDireccion.setText(suspension.getSUSP_DIRECCION());
 
         suspensionViewHolder.tvMatricula.setOnClickListener(new View.OnClickListener() {
             @Override

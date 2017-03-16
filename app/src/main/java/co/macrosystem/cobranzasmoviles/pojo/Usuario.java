@@ -1,4 +1,4 @@
-package co.macrosystem.cobranzasmoviles;
+package co.macrosystem.cobranzasmoviles.pojo;
 
 public class Usuario {
 
