@@ -56,26 +56,32 @@ public class BaseDatos extends SQLiteOpenHelper{
                 ConstantesBaseDatos.TABLE_SUSPENSIONES_CICLO            + " TEXT, " +
                 ConstantesBaseDatos.TABLE_SUSPENSIONES_MUNICIPIO        + " TEXT, " +
                 ConstantesBaseDatos.TABLE_SUSPENSIONES_DIRECCION        + " TEXT, " +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_ACTIVIDAD  + " TEXT, " +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_TIPO_ACTIVIDAD   + " TEXT, " +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_COD_ACCION       + " TEXT, " +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_DESCR_ACCION     + " TEXT, " +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_COD_TECNICO      + " TEXT, " +
                 ConstantesBaseDatos.TABLE_SUSPENSIONES_GLOSA            + " TEXT, " +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_PROVEEDOR        + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_USUARIO          + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_ESTADO           + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_NUM_STICKER      + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_ESTADO_STICKER   + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_SELLOSERIAL      + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_SELLOSERIAL_ESTA + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_COINC_MAT_MEDI   + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_CON_PAGO         + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_TIENE_ENERGIA    + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_LECTURA          + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_NOM_CONTACTO     + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_NUM_CONTACTO     + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_RECHAZADO        + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_FOTO             + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_LATITUD          + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_LONGITUD         + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_EJECU      + " TEXT "  +
-                ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_CARGA      + " TEXT "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_PROVEEDOR        + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_USUARIO          + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_ESTADO           + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_NUM_STICKER      + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_ESTADO_STICKER   + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_SELLOSERIAL      + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_SELLOSERIAL_ESTA + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_COINC_MAT_MEDI   + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_CON_PAGO         + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_TIENE_ENERGIA    + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_LECTURA          + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_NOM_CONTACTO     + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_NUM_CONTACTO     + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_OBSERVACIONES    + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_RECHAZADO        + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_FOTO             + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_LATITUD          + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_LONGITUD         + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_EJECU      + " TEXT, "  +
+                ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_CARGA      + " TEXT, "  +
                 "FOREIGN KEY ("+ ConstantesBaseDatos.TABLE_SUSPENSIONES_USUARIO + ") REFERENCES " +
                 ConstantesBaseDatos.TABLE_USUARIO + "("+ConstantesBaseDatos.TABLE_USUARIO_USUARIO + "))";
 
@@ -92,28 +98,23 @@ public class BaseDatos extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-    public void InsertarPersona(ContentValues contentValues){
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(ConstantesBaseDatos.TABLE_PERSONA, null, contentValues);
-        db.close();
-    }
-    public void InsertarUsuario(ContentValues contentValues){
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(ConstantesBaseDatos.TABLE_USUARIO, null, contentValues);
-        db.close();
-    }
-    public void InsertarSuspension(ContentValues contentValues){
+
+
+    //un ejemplo con ContentValues
+    public void InsertarSuspensionSQLite(ContentValues contentValues){
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(ConstantesBaseDatos.TABLE_SUSPENSIONES, null, contentValues);
         db.close();
     }
 
+
     //Agregar la gestion del Web Service para obtener el usuario desde la database remota de Gestion Renovadora
+    //ESTA SIN TERMINAR
     public void ConsultarSuspensionesPorUser(BaseDatos db){
         Suspension suspension = new Suspension();
         ArrayList<Suspension> suspensions = new ArrayList<>();
 
-        //consultar mediante web service y llenar un objeto Suspension
+        //consultar medntValueiante web service y llenar un objeto Suspension
 
         //insertar en sqlite
         ContentValues contentValues = new ContentValues();
@@ -150,7 +151,7 @@ public class BaseDatos extends SQLiteOpenHelper{
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_LONGITUD, /*a continuacion el valor obtenido del WS */ "");
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_EJECU, /*a continuacion el valor obtenido del WS */ "");
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_CARGA, /*a continuacion el valor obtenido del WS */ "");
-        InsertarUsuario(contentValues);
+        InsertarSuspensionSQLite(contentValues);
     }
 
 
@@ -173,6 +174,7 @@ public class BaseDatos extends SQLiteOpenHelper{
         return u;
     }
 
+    //Metodo full, se obtienen todas las ordenes de suspension que se encuentra en SQLite
     public ArrayList<Suspension> obtenerSuspensionesSQLite(){
         ArrayList<Suspension> supensiones = new ArrayList<>();
         String query = "SELECT * FROM " + ConstantesBaseDatos.TABLE_SUSPENSIONES;
@@ -195,7 +197,6 @@ public class BaseDatos extends SQLiteOpenHelper{
             suspensionActual.setSUSP_COD_TECNICO(registros.getString(11));
             suspensionActual.setSUSP_GLOSA(registros.getString(12));
             suspensionActual.setSUSP_PROVEEDOR(registros.getString(13));
-
             supensiones.add(suspensionActual);
         }
 
@@ -203,6 +204,14 @@ public class BaseDatos extends SQLiteOpenHelper{
 
         return supensiones;
     }
+
+    public void RegistrarSuspensionProcesada(ContentValues contentValues){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(ConstantesBaseDatos.TABLE_SUSPENSIONES, null, contentValues);
+        db.close();
+
+    }
+
 
 
 }

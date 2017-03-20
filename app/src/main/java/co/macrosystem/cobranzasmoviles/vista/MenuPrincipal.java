@@ -1,4 +1,4 @@
-package co.macrosystem.cobranzasmoviles;
+package co.macrosystem.cobranzasmoviles.vista;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
@@ -18,14 +18,15 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import co.macrosystem.cobranzasmoviles.DialogoConfirmacion;
+import co.macrosystem.cobranzasmoviles.ExpandAndCollapseViewUtil;
+import co.macrosystem.cobranzasmoviles.R;
 import co.macrosystem.cobranzasmoviles.db.BaseDatos;
 
 public class MenuPrincipal extends AppCompatActivity {
 
     private ViewGroup linearLayoutDetails;
     private ImageView imageViewExpand;
-    private ViewGroup linearLayoutDetailsObserv_trabajo;
-    private ImageView imageViewExpandObserv_trabajo;
     private ImageButton imgBtnSuspensionesRestantes;
     private Intent intent;
     private static final int DURATION = 250;
@@ -38,7 +39,7 @@ public class MenuPrincipal extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        intent = new Intent(this, SuspensionesRestantesActivity.class);
+        intent = new Intent(this, SuspensionesActivity.class);
 
         //Validamos si hay conexion a internet
         internet = ValidarConexionInternet();
@@ -49,8 +50,8 @@ public class MenuPrincipal extends AppCompatActivity {
             DialogoConfirmacion confirmacion = new DialogoConfirmacion();
             confirmacion.show(fragmentManager, "confirmando");
         }else{
-            Toast toast1 = Toast.makeText(getApplicationContext(), "No Hay conexion a Internet", Toast.LENGTH_SHORT);
-            toast1.show();
+            //Toast toast1 = Toast.makeText(getApplicationContext(), "No Hay conexion a Internet", Toast.LENGTH_SHORT);
+            //toast1.show();
         }
 
 

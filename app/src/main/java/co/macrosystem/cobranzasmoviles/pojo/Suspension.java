@@ -34,6 +34,7 @@ public class Suspension implements Parcelable {
     private String SUSP_LECTURA;
     private String SUSP_NOM_CONTACTO;
     private String SUSP_NUM_CONTACTO;
+    private String SUSP_OBSERVACIONES;
     private String SUSP_RECHAZADO;
     private String SUSP_FOTO;
     private String SUSP_LATITUD;
@@ -88,6 +89,14 @@ public class Suspension implements Parcelable {
 
     public void setSUSP_NUM_MEDIDOR(String SUSP_NUM_MEDIDOR) {
         this.SUSP_NUM_MEDIDOR = SUSP_NUM_MEDIDOR;
+    }
+
+    public String getSUSP_OBSERVACIONES() {
+        return SUSP_OBSERVACIONES;
+    }
+
+    public void setSUSP_OBSERVACIONES(String SUSP_OBSERVACIONES) {
+        this.SUSP_OBSERVACIONES = SUSP_OBSERVACIONES;
     }
 
     public String getSUSP_SUSCRIPTOR() {
@@ -322,6 +331,14 @@ public class Suspension implements Parcelable {
         this.SUSP_FECHA_CARGA = SUSP_FECHA_CARGA;
     }
 
+    public String getSUSP_FECHA_EJECUCION() {
+        return SUSP_FECHA_EJECUCION;
+    }
+
+    public void setSUSP_FECHA_EJECUCION(String SUSP_FECHA_EJECUCION) {
+        this.SUSP_FECHA_EJECUCION = SUSP_FECHA_EJECUCION;
+    }
+
     public static Creator<Suspension> getCREATOR() {
         return CREATOR;
     }
@@ -388,11 +405,5 @@ public class Suspension implements Parcelable {
 
     };
 
-    public String getSUSP_FECHA_EJECUCION() {
-        return SUSP_FECHA_EJECUCION;
-    }
 
-    public void setSUSP_FECHA_EJECUCION(String SUSP_FECHA_EJECUCION) {
-        this.SUSP_FECHA_EJECUCION = SUSP_FECHA_EJECUCION;
-    }
 }

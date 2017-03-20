@@ -1,4 +1,4 @@
-package co.macrosystem.cobranzasmoviles;
+package co.macrosystem.cobranzasmoviles.vista;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -12,18 +12,18 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import co.macrosystem.cobranzasmoviles.R;
 
 public class MainActivity extends AppCompatActivity {
 

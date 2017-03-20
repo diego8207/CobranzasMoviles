@@ -13,32 +13,32 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".vista.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MenuPrincipal" />
+        <activity android:name=".vista.MenuPrincipal" />
 
         <activity
-            android:name=".SuspensionesRestantesActivity"
+            android:name=".vista.SuspensionesActivity"
             android:label="@string/title_activity_suspensiones"
-            android:parentActivityName=".MenuPrincipal"
+            android:parentActivityName=".vista.MenuPrincipal"
             android:theme="@style/AppTheme" >
             <!--Soporte para versiones 4.0 o menores -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MenuPrincipal">
+                android:value=".vista.MenuPrincipal">
             </meta-data>
         </activity>
 
-        <activity android:name=".form_suspensiones_Activity"
-            android:parentActivityName=".SuspensionesRestantesActivity">
+        <activity android:name=".vista.form_suspensiones_Activity"
+            android:parentActivityName=".vista.SuspensionesActivity">
             <!--Soporte para versiones 4.0 o menores -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".SuspensionesRestantesActivity">
+                android:value=".vista.SuspensionesActivity">
             </meta-data>
         </activity>
     </application>

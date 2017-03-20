@@ -1,4 +1,4 @@
-package co.macrosystem.cobranzasmoviles;
+package co.macrosystem.cobranzasmoviles.vista;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
@@ -10,10 +10,13 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import co.macrosystem.cobranzasmoviles.R;
 import co.macrosystem.cobranzasmoviles.pojo.Suspension;
 
 public class form_suspensiones_Activity extends AppCompatActivity {
@@ -42,12 +45,24 @@ public class form_suspensiones_Activity extends AppCompatActivity {
     private TextInputEditText txtLectura;
     private TextInputLayout til_nom_contacto;
     private TextInputEditText txtNom_contacto;
-    private TextInputLayout til_tel_fijo;
-    private TextInputEditText txtTel_fijo;
     private TextInputLayout til_tel_celular;
     private TextInputEditText txtTel_celular;
     private TextInputLayout til_Observacion;
     private TextInputEditText txtObservaciones;
+
+    private RadioGroup rdgEstado_Sticker;
+    private RadioGroup rdgOpciones_matricula_medidor;
+    private RadioGroup rgbOpciones_matricula_pago;
+    private RadioGroup rdgOpciones_tiene_luz;
+    private RadioGroup rdgOpciones_rechazo;
+
+    private String estadoSticker;
+    private String opcionesMatriculaMedidor;
+    private String opcionesMatriculaPago;
+    private String opcionesTieneLuz;
+    private String Opciones_rechazo;
+
+    private Button btnRegistrar;
 
     String[] SPNR_ESTADO_SELLO = {"Roto", "No instalado", "Sin diligenciar", "No reportado", "Conforme"};
 
@@ -77,6 +92,11 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         txtGlosa = (TextView) findViewById(R.id.txtGlosa);
         txtProveedor = (TextView) findViewById(R.id.txtProveedor);
 
+        //capturamos los elementos del formulario que van a estar disponibles para ingresar informacion
+
+        rdgEstado_Sticker = (RadioGroup) findViewById(R.id.opciones_estado_sticker);
+        btnRegistrar = (Button) findViewById(R.id.btnRegistrar);
+
         txtSticker = (TextInputEditText) findViewById(R.id.txtSticker);
         til_sticker = (TextInputLayout) findViewById(R.id.til_sticker);
         txtSelloSerial = (TextInputEditText) findViewById(R.id.txtSelloSerial);
@@ -85,8 +105,6 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         txtLectura = (TextInputEditText) findViewById(R.id.txtLectura);
         til_nom_contacto = (TextInputLayout) findViewById(R.id.til_nom_contacto);
         txtNom_contacto = (TextInputEditText) findViewById(R.id.txtNom_contacto);
-        til_tel_fijo = (TextInputLayout) findViewById(R.id.til_tel_fijo);
-        txtTel_fijo = (TextInputEditText) findViewById(R.id.txtTel_fijo);
         til_tel_celular = (TextInputLayout) findViewById(R.id.til_tel_celular);
         txtTel_celular = (TextInputEditText) findViewById(R.id.txtTel_celular);
         til_Observacion = (TextInputLayout) findViewById(R.id.til_Observacion);
@@ -147,9 +165,7 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         if (TextUtils.isEmpty(txtNom_contacto.getText())) {
             contactoError = getString(R.string.obligatorio);
         }
-        if (TextUtils.isEmpty(txtTel_fijo.getText())) {
-            telFijoError = getString(R.string.obligatorio);
-        }
+
         if (TextUtils.isEmpty(txtTel_celular.getText())) {
             TelCelularError = getString(R.string.obligatorio);
         }
@@ -161,7 +177,6 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         toggleTextInputLayoutError(til_sello_serial, selloSerialError);
         toggleTextInputLayoutError(til_lectura, lecturaError);
         toggleTextInputLayoutError(til_nom_contacto, contactoError);
-        toggleTextInputLayoutError(til_tel_fijo, telFijoError);
         toggleTextInputLayoutError(til_tel_celular, TelCelularError);
         toggleTextInputLayoutError(til_Observacion, observacionesError);
 
@@ -182,4 +197,30 @@ public class form_suspensiones_Activity extends AppCompatActivity {
             textInputLayout.setErrorEnabled(true);
         }
     }
+
+    public void ProcesarSuspension(){
+
+        final Suspension suspProce = new Suspension();
+
+        rdgEstado_Sticker.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                if (checkedId == R.id.rbtn_estado_roto){
+                    estadoSticker = "Roto";
+                }else if (checkedId == R.id.rbtn_estado_No_instal){
+                    estadoSticker = "No Instalado";
+                }else if (checkedId == R.id.rbtn_estado_sin_diligen){
+                    estadoSticker = "Sin Diligenciar";
+                }
+            }
+        });
+
+        suspProce.setSUSP_MATRICULA(suspension.getSUSP_MATRICULA());
+        suspProce.setSUSP_NUM_STICKER(txtSticker.getText().toString());
+        suspProce.setSUSP_ESTADO_STICKER(estadoSticker);
+
+    }
+
+
+
 }

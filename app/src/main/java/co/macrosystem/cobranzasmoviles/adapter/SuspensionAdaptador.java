@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import co.macrosystem.cobranzasmoviles.R;
-import co.macrosystem.cobranzasmoviles.form_suspensiones_Activity;
+import co.macrosystem.cobranzasmoviles.vista.form_suspensiones_Activity;
 import co.macrosystem.cobranzasmoviles.pojo.Suspension;
 
 /**
@@ -50,12 +50,6 @@ public class SuspensionAdaptador extends RecyclerView.Adapter<SuspensionAdaptado
                 Intent intent = new Intent(activity, form_suspensiones_Activity.class);
                 intent.putExtra("objSuspension",suspension);
                 activity.startActivity(intent);
-             /*   intent.putExtra("matricula",suspension.getMatricula());
-                intent.putExtra("proceso",suspension.getProceso());
-                intent.putExtra("medidor",suspension.getMedidor());
-                intent.putExtra("suscriptor",suspension.getSuscriptor());
-                intent.putExtra("matricula",suspension.getMatricula()); */
-
             }
         });
     }

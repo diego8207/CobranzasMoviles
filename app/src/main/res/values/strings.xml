@@ -38,6 +38,9 @@
         <item>123123| Transversa 34 # 6 - 23</item>
         <item>123123| Calle 33 # 2 - 78 Caracoli</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
 
 

@@ -57,6 +57,7 @@ public class ConstantesBaseDatos {
     public static final String TABLE_SUSPENSIONES_LECTURA           = "SUSP_LECTURA";
     public static final String TABLE_SUSPENSIONES_NOM_CONTACTO      = "SUSP_NOM_CONTACTO";
     public static final String TABLE_SUSPENSIONES_NUM_CONTACTO      = "SUSP_NUM_CONTACTO";
+    public static final String TABLE_SUSPENSIONES_OBSERVACIONES      = "SUSP_OBSERVACIONES";
     public static final String TABLE_SUSPENSIONES_RECHAZADO         = "SUSP_RECHAZADO";
     public static final String TABLE_SUSPENSIONES_FOTO              = "SUSP_FOTO";
     public static final String TABLE_SUSPENSIONES_LATITUD           = "SUSP_LATITUD";
