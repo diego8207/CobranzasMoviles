@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Asignamos la barra superior
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Cobranzas Moviles versión 1.0");
+        toolbar.setTitle(R.string.app_name);
+        toolbar.setLogo(R.drawable.logo_cobranzas_title);
         setSupportActionBar(toolbar);
 
         //Asignamos los objetos a las variables locales

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cobranzas Moviles versión 1.0</string>
+    <string name="app_name">Cobranzas Moviles v1.0</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="email">Email</string>
     <string name="usuario">Usuario</string>

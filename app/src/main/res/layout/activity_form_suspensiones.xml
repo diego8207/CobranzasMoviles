@@ -292,7 +292,7 @@
 
                     <RadioGroup
                         xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:id="@+id/opciones_estado_sticker"
+                        android:id="@+id/rgbOpciones_estado_sticker"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="left"
@@ -410,7 +410,7 @@
                         android:orientation="horizontal">
 
                         <RadioButton
-                            android:id="@+id/rbtn_si"
+                            android:id="@+id/rbtn_mcp_si"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="false"
@@ -418,7 +418,7 @@
                             android:text="Si"/>
 
                         <RadioButton
-                            android:id="@+id/rbtn_no"
+                            android:id="@+id/rbtn_mcp_no"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="false"
@@ -426,7 +426,7 @@
                             android:text="No"/>
 
                         <RadioButton
-                            android:id="@+id/rbtn_no_aplica"
+                            android:id="@+id/rbtn_mcp_no_aplica"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="false"
@@ -585,15 +585,32 @@
                     </RadioGroup>
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/etiqueta_proveedor"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="10dp"
                         android:text="Proveedor: "
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:paddingLeft="10dp"/>
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <TextView
                         android:id="@+id/txtProveedor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="italic"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="10dp"/>
+
+                    <TextView
+                        android:id="@+id/etiqueta_fecha_carga"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="Fecha de Carga: "
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/txtfechaCarga"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textStyle="italic"

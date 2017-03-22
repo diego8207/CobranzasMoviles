@@ -26,7 +26,8 @@ public class SuspensionesActivity extends AppCompatActivity implements iSuspensi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suspensiones_restantes);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Suspensiones Restantes # 11");
+        toolbar.setTitle(R.string.app_name);
+        toolbar.setLogo(R.drawable.logo_cobranzas_title);
         setSupportActionBar(toolbar);
 
         rvListaSuspensiones = (RecyclerView) findViewById(R.id.rvSuspensiones);

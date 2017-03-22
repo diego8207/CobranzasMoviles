@@ -9,7 +9,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/icono_cobranzas"
+        android:icon="@drawable/logo_cobranzas"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">

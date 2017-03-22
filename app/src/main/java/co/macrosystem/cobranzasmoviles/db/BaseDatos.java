@@ -177,7 +177,9 @@ public class BaseDatos extends SQLiteOpenHelper{
     //Metodo full, se obtienen todas las ordenes de suspension que se encuentra en SQLite
     public ArrayList<Suspension> obtenerSuspensionesSQLite(){
         ArrayList<Suspension> supensiones = new ArrayList<>();
-        String query = "SELECT * FROM " + ConstantesBaseDatos.TABLE_SUSPENSIONES;
+        String query = "SELECT SUSP_MATRICULA,  SUSP_NUM_PROCESO, SUSP_NUM_MEDIDOR, SUSP_SUSCRIPTOR, SUSP_CICLO, SUSP_MUNICIPIO, SUSP_DIRECCION, " +
+                        "SUSP_FECHA_ACTI, SUSP_TIPO_ACTI, SUSP_COD_ACCION, SUSP_DESCR_ACCION, SUSP_COD_TECNICO, SUSP_GLOSA, SUSP_PROVEEDOR, SUSP_FECHA_CARGA " +
+                "FROM " + ConstantesBaseDatos.TABLE_SUSPENSIONES;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor registros = db.rawQuery(query, null);
 
@@ -197,6 +199,7 @@ public class BaseDatos extends SQLiteOpenHelper{
             suspensionActual.setSUSP_COD_TECNICO(registros.getString(11));
             suspensionActual.setSUSP_GLOSA(registros.getString(12));
             suspensionActual.setSUSP_PROVEEDOR(registros.getString(13));
+            suspensionActual.setSUSP_FECHA_CARGA(registros.getString(14));
             supensiones.add(suspensionActual);
         }
 

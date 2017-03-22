@@ -39,7 +39,6 @@ public class Suspension implements Parcelable {
     private String SUSP_FOTO;
     private String SUSP_LATITUD;
     private String SUSP_LONGITUD;
-    private String SUSP_FECHA_EJECU;
     private String SUSP_PROVEEDOR;
     private String SUSP_FECHA_CARGA;
     private String SUSP_FECHA_EJECUCION;
@@ -307,14 +306,6 @@ public class Suspension implements Parcelable {
         this.SUSP_LONGITUD = SUSP_LONGITUD;
     }
 
-    public String getSUSP_FECHA_EJECU() {
-        return SUSP_FECHA_EJECU;
-    }
-
-    public void setSUSP_FECHA_EJECU(String SUSP_FECHA_EJECU) {
-        this.SUSP_FECHA_EJECU = SUSP_FECHA_EJECU;
-    }
-
     public String getSUSP_PROVEEDOR() {
         return SUSP_PROVEEDOR;
     }
@@ -366,6 +357,7 @@ public class Suspension implements Parcelable {
         dest.writeString(SUSP_USUARIO);
         dest.writeString(SUSP_ESTADO);
         dest.writeString(SUSP_PROVEEDOR);
+        dest.writeString(SUSP_FECHA_CARGA);
     }
 
     private void readFromParcel(Parcel in) {
@@ -385,6 +377,7 @@ public class Suspension implements Parcelable {
         SUSP_USUARIO = in.readString();
         SUSP_ESTADO = in.readString();
         SUSP_PROVEEDOR = in.readString();
+        SUSP_FECHA_CARGA = in.readString();
     }
 
     public Suspension(Parcel in) {

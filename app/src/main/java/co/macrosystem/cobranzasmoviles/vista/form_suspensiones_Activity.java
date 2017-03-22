@@ -36,6 +36,7 @@ public class form_suspensiones_Activity extends AppCompatActivity {
     private TextView txtCodTecnico;
     private TextView txtGlosa;
     private TextView txtProveedor;
+    private TextView txtFechaCarga;
 
     private TextInputLayout til_sticker;
     private TextInputEditText txtSticker;
@@ -52,15 +53,15 @@ public class form_suspensiones_Activity extends AppCompatActivity {
 
     private RadioGroup rdgEstado_Sticker;
     private RadioGroup rdgOpciones_matricula_medidor;
-    private RadioGroup rgbOpciones_matricula_pago;
+    private RadioGroup rdgOpciones_matricula_pago;
     private RadioGroup rdgOpciones_tiene_luz;
     private RadioGroup rdgOpciones_rechazo;
 
-    private String estadoSticker;
-    private String opcionesMatriculaMedidor;
-    private String opcionesMatriculaPago;
-    private String opcionesTieneLuz;
-    private String Opciones_rechazo;
+    private String opcionEstadoSticker;
+    private String opcionMatriculaMedidor;
+    private String opcionMatriculaPago;
+    private String opcionTieneLuz;
+    private String Opcion_rechazo;
 
     private Button btnRegistrar;
 
@@ -77,6 +78,7 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         toolbarCard.setTitle("Matricula: " + suspension.getSUSP_MATRICULA());
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
+        toolbar.setLogo(R.drawable.logo_cobranzas_title);
         setSupportActionBar(toolbar);
         txtProceso = (TextView) findViewById(R.id.txtProceso);
         txtMedidor = (TextView) findViewById(R.id.txtMedidor);
@@ -91,10 +93,16 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         txtCodTecnico = (TextView) findViewById(R.id.txtCodTecnico);
         txtGlosa = (TextView) findViewById(R.id.txtGlosa);
         txtProveedor = (TextView) findViewById(R.id.txtProveedor);
+        txtFechaCarga = (TextView) findViewById(R.id.txtfechaCarga);
 
         //capturamos los elementos del formulario que van a estar disponibles para ingresar informacion
 
-        rdgEstado_Sticker = (RadioGroup) findViewById(R.id.opciones_estado_sticker);
+        rdgEstado_Sticker = (RadioGroup) findViewById(R.id.rgbOpciones_estado_sticker);
+        rdgOpciones_matricula_medidor = (RadioGroup) findViewById(R.id.rdgOpciones_matricula_medidor);
+        rdgOpciones_matricula_pago = (RadioGroup) findViewById(R.id.rgbOpciones_matricula_pago);
+        rdgOpciones_tiene_luz = (RadioGroup) findViewById(R.id.rdgOpciones_tiene_luz);
+        rdgOpciones_rechazo = (RadioGroup) findViewById(R.id.rdgOpciones_rechazo);
+
         btnRegistrar = (Button) findViewById(R.id.btnRegistrar);
 
         txtSticker = (TextInputEditText) findViewById(R.id.txtSticker);
@@ -124,8 +132,10 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         txtCodTecnico.setText(suspension.getSUSP_COD_TECNICO());
         txtGlosa.setText(suspension.getSUSP_GLOSA());
         txtProveedor.setText(suspension.getSUSP_PROVEEDOR());
+        txtFechaCarga.setText(suspension.getSUSP_FECHA_CARGA());
 
         Log.e(null, "MATRICULA: " + suspension.getSUSP_MATRICULA());
+        Log.e(null, "FECHA DE CARGA: " + suspension.getSUSP_FECHA_CARGA());
         Log.e(null, "Datos almacenados en esta suspension: ");
 
         ArrayAdapter<String> arrayAdapterSello = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, SPNR_ESTADO_SELLO);
@@ -200,27 +210,86 @@ public class form_suspensiones_Activity extends AppCompatActivity {
 
     public void ProcesarSuspension(){
 
-        final Suspension suspProce = new Suspension();
-
+        //capturamos la opcion elegida en los cuatro RadioGroup implementados en el formulario
         rdgEstado_Sticker.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 if (checkedId == R.id.rbtn_estado_roto){
-                    estadoSticker = "Roto";
+                    opcionEstadoSticker = "Roto";
                 }else if (checkedId == R.id.rbtn_estado_No_instal){
-                    estadoSticker = "No Instalado";
+                    opcionEstadoSticker = "No Instalado";
                 }else if (checkedId == R.id.rbtn_estado_sin_diligen){
-                    estadoSticker = "Sin Diligenciar";
+                    opcionEstadoSticker = "Sin Diligenciar";
                 }
             }
         });
 
+        rdgOpciones_matricula_medidor.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                if (checkedId == R.id.rbtn_si_matr_med){
+                    opcionMatriculaMedidor = "Si";
+                }else if (checkedId == R.id.rbtn_no_matr_med){
+                    opcionMatriculaMedidor = "No";
+                }else if (checkedId == R.id.rbtn_no_aplica_matr_med){
+                    opcionMatriculaMedidor = "No aplica";
+                }
+            }
+        });
+
+        rdgOpciones_matricula_pago.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                if (checkedId == R.id.rbtn_mcp_si){
+                    opcionMatriculaPago = "Si";
+                }else if (checkedId == R.id.rbtn_mcp_no){
+                    opcionMatriculaPago = "No";
+                }else if (checkedId == R.id.rbtn_mcp_no_aplica){
+                    opcionMatriculaPago = "No aplica";
+                }
+            }
+        });
+
+        rdgOpciones_tiene_luz.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                if (checkedId == R.id.rbtn_luz_si){
+                    opcionTieneLuz = "Si";
+                }else if (checkedId == R.id.rbtn_luz_no){
+                    opcionTieneLuz = "No";
+                }else if (checkedId == R.id.rbtn_luz_no_aplica){
+                    opcionTieneLuz = "No aplica";
+                }
+            }
+        });
+
+        rdgOpciones_rechazo.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                if (checkedId == R.id.rbtn_rechazo_si){
+                    Opcion_rechazo = "Si";
+                }else if (checkedId == R.id.rbtn_rechazo_no){
+                    Opcion_rechazo = "No";
+                }
+            }
+        });
+
+        //creamos el objeto suspension el cual almacenara los campos diligenciados del formulario
+        Suspension suspProce = new Suspension();
         suspProce.setSUSP_MATRICULA(suspension.getSUSP_MATRICULA());
         suspProce.setSUSP_NUM_STICKER(txtSticker.getText().toString());
-        suspProce.setSUSP_ESTADO_STICKER(estadoSticker);
+        suspProce.setSUSP_ESTADO_STICKER(opcionEstadoSticker);
+        suspProce.setSUSP_SELLOSERIAL("--");// ----------------> FALTA
+        suspProce.setSUSP_SELLOSERIAL_ESTADO("--");// ----------------> FALTA
+        suspProce.setSUSP_COINC_MAT_MEDI(opcionMatriculaMedidor);
+        suspProce.setSUSP_CON_PAGO(opcionMatriculaPago);
+        suspProce.setSUSP_TIENE_ENERGIA(opcionTieneLuz);
+        suspProce.setSUSP_LECTURA("--");// ----------------> FALTA
+        suspProce.setSUSP_NOM_CONTACTO("--");// ----------------> FALTA
+        suspProce.setSUSP_NUM_CONTACTO("--");// ----------------> FALTA
+        suspProce.setSUSP_OBSERVACIONES("--");// ----------------> FALTA
+        suspProce.setSUSP_RECHAZADO(Opcion_rechazo);
 
     }
-
-
 
 }

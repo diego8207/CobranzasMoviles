@@ -38,6 +38,8 @@ public class MenuPrincipal extends AppCompatActivity {
         setContentView(R.layout.activity_menu_principal);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
+        toolbar.setLogo(R.drawable.logo_cobranzas_title);
         setSupportActionBar(toolbar);
         intent = new Intent(this, SuspensionesActivity.class);
 

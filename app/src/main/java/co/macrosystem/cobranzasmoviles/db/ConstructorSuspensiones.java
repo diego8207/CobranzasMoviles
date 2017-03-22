@@ -22,9 +22,10 @@ public class ConstructorSuspensiones {
     public ArrayList<Suspension> obtenerDatos(){
         ArrayList<Suspension> suspensiones = new ArrayList<Suspension>();
         //Consultamos en SQLite
-        BaseDatos datos = new BaseDatos(context);
-        insertarSuspensiones(datos);
-        suspensiones = datos.obtenerSuspensionesSQLite();
+        BaseDatos db = new BaseDatos(context);
+        //insertarSuspensiones(db); //SOLO SE DEBE EJECUTAR POR AHORA MIENTRAS SE LLENA INICIALMENTE LA BASE DE DATOS
+        // LUEGO PODREMOS AUTOMATIZAR CON LOS WEB SERVICES
+        suspensiones = db.obtenerSuspensionesSQLite();
 
 
         /*
@@ -55,6 +56,7 @@ public class ConstructorSuspensiones {
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_COD_TECNICO, "875");
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_GLOSA, "se realiza suspension");
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_PROVEEDOR, "80");
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_CARGA, "21/03/2017");
 
         db.InsertarSuspensionSQLite(contentValues);
 
@@ -63,18 +65,24 @@ public class ConstructorSuspensiones {
     public void procesarSuspension(Suspension suspension){
         BaseDatos db = new BaseDatos(context);
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_NUM_STICKER, "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_ESTADO_STICKER, "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_SELLOSERIAL, "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_SELLOSERIAL_ESTA, "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_COINC_MAT_MEDI, "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_CON_PAGO, "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_TIENE_ENERGIA, "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_LECTURA, "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_NOM_CONTACTO, "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_NUM_CONTACTO, "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_OBSERVACIONES, "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_RECHAZADO, "");
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_MATRICULA, suspension.getSUSP_MATRICULA());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_NUM_STICKER, suspension.getSUSP_NUM_STICKER());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_ESTADO_STICKER, suspension.getSUSP_ESTADO_STICKER());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_SELLOSERIAL, suspension.getSUSP_SELLOSERIAL());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_SELLOSERIAL_ESTA, suspension.getSUSP_SELLOSERIAL_ESTADO());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_COINC_MAT_MEDI, suspension.getSUSP_COINC_MAT_MEDI());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_CON_PAGO, suspension.getSUSP_CON_PAGO());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_TIENE_ENERGIA, suspension.getSUSP_TIENE_ENERGIA());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_LECTURA, suspension.getSUSP_LECTURA());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_NOM_CONTACTO, suspension.getSUSP_NOM_CONTACTO());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_NUM_CONTACTO, suspension.getSUSP_NUM_CONTACTO());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_OBSERVACIONES, suspension.getSUSP_OBSERVACIONES());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_RECHAZADO, suspension.getSUSP_RECHAZADO());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_FOTO, "Pendiente por procesar");
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_LATITUD, suspension.getSUSP_LATITUD());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_LONGITUD, suspension.getSUSP_LONGITUD());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_EJECU, suspension.getSUSP_FECHA_EJECUCION());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_CARGA, suspension.getSUSP_FECHA_CARGA());
 
         db.RegistrarSuspensionProcesada(contentValues);
 
