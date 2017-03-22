@@ -41,6 +41,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rgbopcionesError">Debe seleccionar una opcion, dato obligatorio</string>
 </resources>
 
 
