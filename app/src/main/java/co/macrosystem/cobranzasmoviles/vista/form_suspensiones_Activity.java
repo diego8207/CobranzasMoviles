@@ -1,16 +1,20 @@
 package co.macrosystem.cobranzasmoviles.vista;
 
+import android.Manifest;
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.widget.Toast;
+import android.widget.TextView;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,25 +23,23 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
+import org.w3c.dom.Text;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import co.macrosystem.cobranzasmoviles.R;
 import co.macrosystem.cobranzasmoviles.pojo.Suspension;
 
-public class form_suspensiones_Activity extends AppCompatActivity {
+public class form_suspensiones_Activity extends AppCompatActivity implements LocationListener {
 
+    private static final int MI_PERMISO_ACCESS_COARSE_LOCATION = 1;
     private Toolbar toolbar;
     private Suspension suspension;
 
     private MaterialBetterSpinner spnrEstadoSello;
-
 
     private TextView txtProceso;
     private TextView txtMedidor;
@@ -100,13 +102,17 @@ public class form_suspensiones_Activity extends AppCompatActivity {
     private RadioButton rbtn_rechazo_si;
     private RadioButton rbtn_rechazo_no;
 
-    private String latitudGPS;
-    private String longitudGPS;
+    //Variables para Localización
+    private TextView txtLatitudGPS;
+    private TextView txtLongitudGPS;
+    private TextView txtProveedorGPS;
+    private String provider;
+    public LocationManager handle;
+
 
     private Button btnRegistrar;
 
     String[] SPNR_ESTADO_SELLO = {"Roto", "No instalado", "Sin diligenciar", "No reportado", "Conforme"};
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +169,9 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         rbtn_rechazo_si = (RadioButton) findViewById(R.id.rbtn_rechazo_si);
         rbtn_rechazo_no = (RadioButton) findViewById(R.id.rbtn_rechazo_no);
 
+
+
+
         btnRegistrar = (Button) findViewById(R.id.btnRegistrar);
 
         txtSticker = (TextInputEditText) findViewById(R.id.txtSticker);
@@ -185,6 +194,11 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         error_Opciones_tiene_luz = (TextView) findViewById(R.id.error_Opciones_tiene_luz);
         error_Opciones_rechazo = (TextView) findViewById(R.id.error_Opciones_rechazo);
         error_Opciones_estado_sello = (TextView) findViewById(R.id.error_Opciones_estado_sello);
+
+        //Capturamos los TextView donde se visualizaran los datos de localizacion
+        txtProveedorGPS = (TextView) findViewById(R.id.etiqueta_txtProveedorGPS);
+        txtLatitudGPS = (TextView) findViewById(R.id.etiqueta_txtLatitudGPS);
+        txtLongitudGPS = (TextView) findViewById(R.id.etiqueta_txtLongitudGPS);
 
         //Ocultamos TextView que visualizan mensajes de error para los RadioGroup
         error_estado_sticker.setVisibility(View.GONE);
@@ -214,16 +228,17 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         Log.e(null, "Datos almacenados en esta suspension: ");
 
         //Creamos un ArrayAdapter para el Spinner de estado del sello
-        ArrayAdapter<String> arrayAdapterSello = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, SPNR_ESTADO_SELLO);
+        ArrayAdapter<String> arrayAdapterSello = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, SPNR_ESTADO_SELLO);
         spnrEstadoSello.setAdapter(arrayAdapterSello);
 
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        IniciarServicio();
 
     }
 
     //Metodo que valida todos los campos obligatorios del formulario de suspension.
     public void validar(View view) {
+        IniciarServicio();
 
         int estadoEstickerSelected = rdgEstado_Sticker.getCheckedRadioButtonId();
         int matriculaMedidorSelected = rdgOpciones_matricula_medidor.getCheckedRadioButtonId();
@@ -248,11 +263,11 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         String itemSeleccionadoEstadoSello = spnrEstadoSello.getText().toString();
 
         //validamos si se ha elegido una aopcion del spinner estado del sello
-        if (itemSeleccionadoEstadoSello.equals("")){
+        if (itemSeleccionadoEstadoSello.equals("")) {
             estadoSelloSpnrError = getString(R.string.rgbopcionesError);
             error_Opciones_estado_sello.setText(estadoSelloSpnrError);
             error_Opciones_estado_sello.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             error_Opciones_estado_sello.setVisibility(View.GONE);
             suspension.setSUSP_SELLOSERIAL_ESTADO(itemSeleccionadoEstadoSello);
         }
@@ -263,88 +278,88 @@ public class form_suspensiones_Activity extends AppCompatActivity {
          * que muestre el un textview con el mensaje de error en caso contrario
          * que almacene el valor selecionado en el objeto suspension
          */
-        if (estadoEstickerSelected == -1){
+        if (estadoEstickerSelected == -1) {
             stickerRbgError = getString(R.string.rgbopcionesError);
             error_estado_sticker.setText(stickerRbgError);
             error_estado_sticker.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             error_estado_sticker.setVisibility(View.GONE);
 
             if (rbtn_estado_roto.isChecked())
                 suspension.setSUSP_ESTADO_STICKER("Roto");
-            if (rbtn_estado_No_instal.isChecked()){
+            if (rbtn_estado_No_instal.isChecked()) {
                 suspension.setSUSP_ESTADO_STICKER("No instalado");
             }
-            if (rbtn_estado_sin_diligen.isChecked()){
+            if (rbtn_estado_sin_diligen.isChecked()) {
                 suspension.setSUSP_ESTADO_STICKER("Sin diligenciar");
             }
         }
 
-        if (matriculaMedidorSelected == -1){
+        if (matriculaMedidorSelected == -1) {
             matriculaMedidorRbgError = getString(R.string.rgbopcionesError);
             error_Opciones_matricula_medidor.setText(matriculaMedidorRbgError);
             error_Opciones_matricula_medidor.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             error_Opciones_matricula_medidor.setVisibility(View.GONE);
 
-            if (rbtn_si_matr_med.isChecked()){
+            if (rbtn_si_matr_med.isChecked()) {
                 suspension.setSUSP_COINC_MAT_MEDI("Si");
             }
-            if (rbtn_no_matr_med.isChecked()){
+            if (rbtn_no_matr_med.isChecked()) {
                 suspension.setSUSP_COINC_MAT_MEDI("No");
             }
-            if (rbtn_no_aplica_matr_med.isChecked()){
+            if (rbtn_no_aplica_matr_med.isChecked()) {
                 suspension.setSUSP_COINC_MAT_MEDI("No aplica");
             }
         }
 
-        if (matriculaPagoSelected == -1){
+        if (matriculaPagoSelected == -1) {
             matriculaPagoRbgError = getString(R.string.rgbopcionesError);
             error_Opciones_matricula_pago.setText(matriculaPagoRbgError);
             error_Opciones_matricula_pago.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             error_Opciones_matricula_pago.setVisibility(View.GONE);
 
-            if (rbtn_mcp_si.isChecked()){
+            if (rbtn_mcp_si.isChecked()) {
                 suspension.setSUSP_CON_PAGO("Si");
             }
-            if (rbtn_mcp_no.isChecked()){
+            if (rbtn_mcp_no.isChecked()) {
                 suspension.setSUSP_CON_PAGO("No");
             }
-            if (rbtn_mcp_no_aplica.isChecked()){
+            if (rbtn_mcp_no_aplica.isChecked()) {
                 suspension.setSUSP_CON_PAGO("No aplica");
             }
         }
 
-        if (energiaSelected == -1){
+        if (energiaSelected == -1) {
             energiaRbgError = getString(R.string.rgbopcionesError);
             error_Opciones_tiene_luz.setText(energiaRbgError);
             error_Opciones_tiene_luz.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             error_Opciones_tiene_luz.setVisibility(View.GONE);
 
-            if (rbtn_luz_si.isChecked()){
+            if (rbtn_luz_si.isChecked()) {
                 suspension.setSUSP_TIENE_ENERGIA("Si");
             }
-            if (rbtn_luz_no.isChecked()){
+            if (rbtn_luz_no.isChecked()) {
                 suspension.setSUSP_TIENE_ENERGIA("No");
             }
-            if (rbtn_luz_no_aplica.isChecked()){
+            if (rbtn_luz_no_aplica.isChecked()) {
                 suspension.setSUSP_TIENE_ENERGIA("No aplica");
             }
         }
 
-        if (rechazoSelected == -1){
+        if (rechazoSelected == -1) {
             rechazoRbgError = getString(R.string.rgbopcionesError);
             error_Opciones_rechazo.setText(rechazoRbgError);
             error_Opciones_rechazo.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             error_Opciones_rechazo.setVisibility(View.GONE);
 
-            if (rbtn_rechazo_si.isChecked()){
+            if (rbtn_rechazo_si.isChecked()) {
                 suspension.setSUSP_RECHAZADO("Si");
             }
-            if (rbtn_rechazo_no.isChecked()){
+            if (rbtn_rechazo_no.isChecked()) {
                 suspension.setSUSP_RECHAZADO("No");
             }
         }
@@ -356,37 +371,37 @@ public class form_suspensiones_Activity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(txtSticker.getText())) {
             stickerError = getString(R.string.obligatorio);
-        }else{
+        } else {
             suspension.setSUSP_NUM_STICKER(txtSticker.getText().toString());
         }
 
         if (TextUtils.isEmpty(txtSelloSerial.getText())) {
             selloSerialError = getString(R.string.obligatorio);
-        }else{
+        } else {
             suspension.setSUSP_SELLOSERIAL(txtSelloSerial.getText().toString());
         }
 
         if (TextUtils.isEmpty(txtLectura.getText())) {
             lecturaError = getString(R.string.obligatorio);
-        }else{
+        } else {
             suspension.setSUSP_LECTURA(txtLectura.getText().toString());
         }
 
         if (TextUtils.isEmpty(txtNom_contacto.getText())) {
             contactoError = getString(R.string.obligatorio);
-        }else{
+        } else {
             suspension.setSUSP_NOM_CONTACTO(txtNom_contacto.getText().toString());
         }
 
         if (TextUtils.isEmpty(txtTel_celular.getText())) {
             TelCelularError = getString(R.string.obligatorio);
-        }else{
+        } else {
             suspension.setSUSP_NUM_CONTACTO(txtTel_celular.getText().toString());
         }
 
         if (TextUtils.isEmpty(txtObservaciones.getText())) {
             observacionesError = getString(R.string.obligatorio);
-        }else{
+        } else {
             suspension.setSUSP_OBSERVACIONES(txtObservaciones.getText().toString());
         }
 
@@ -398,7 +413,10 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         toggleTextInputLayoutError(til_tel_celular, TelCelularError);
         toggleTextInputLayoutError(til_Observacion, observacionesError);
 
-        visualizarInformacion();
+        IniciarServicio();
+        muestraUbicacionActual();
+        //visualizarInformacion(); //muestra en un Toast todos los datos capturados en el formulario
+
 
     }
 
@@ -418,33 +436,163 @@ public class form_suspensiones_Activity extends AppCompatActivity {
         }
     }
 
-    public void visualizarInformacion(){
-
-        //FALTA LA CAPTURA DE LOS RADIO BUTTONS ...
-
+    public void visualizarInformacion() {
         Toast toast = Toast.makeText(getBaseContext(),
                 "MATRICULA: " + suspension.getSUSP_MATRICULA() + "\n" +
-                        "STICKER: " + suspension.getSUSP_NUM_STICKER()+ "\n" +
-                        "ESTADO DEL STICKER: " + suspension.getSUSP_ESTADO_STICKER()+ "\n" +
-                        "SELLO SERIAL: " + suspension.getSUSP_SELLOSERIAL()+ "\n" +
-                        "ESTADO DEL SELLO: " + suspension.getSUSP_SELLOSERIAL_ESTADO()+ "\n" +
-                        "COINC MATRICULA Y MEDIDOR: " + suspension.getSUSP_COINC_MAT_MEDI()+ "\n" +
-                        "MATRICULA CON PAGO: " + suspension.getSUSP_CON_PAGO()+ "\n" +
-                        "TIENE ENERGIA: " + suspension.getSUSP_TIENE_ENERGIA()+ "\n" +
-                        "LECTURA: " + suspension.getSUSP_LECTURA()+ "\n" +
-                        "NOMBRE DE CONTACTO: " + suspension.getSUSP_NOM_CONTACTO()+ "\n" +
-                        "CELULAR: " + suspension.getSUSP_NUM_CONTACTO()+ "\n" +
-                        "OBSERVACIONES: " + suspension.getSUSP_OBSERVACIONES()+ "\n" +
-                        "RECHAZADO: " + suspension.getSUSP_RECHAZADO()+ "\n"
+                        "STICKER: " + suspension.getSUSP_NUM_STICKER() + "\n" +
+                        "ESTADO DEL STICKER: " + suspension.getSUSP_ESTADO_STICKER() + "\n" +
+                        "SELLO SERIAL: " + suspension.getSUSP_SELLOSERIAL() + "\n" +
+                        "ESTADO DEL SELLO: " + suspension.getSUSP_SELLOSERIAL_ESTADO() + "\n" +
+                        "COINC MATRICULA Y MEDIDOR: " + suspension.getSUSP_COINC_MAT_MEDI() + "\n" +
+                        "MATRICULA CON PAGO: " + suspension.getSUSP_CON_PAGO() + "\n" +
+                        "TIENE ENERGIA: " + suspension.getSUSP_TIENE_ENERGIA() + "\n" +
+                        "LECTURA: " + suspension.getSUSP_LECTURA() + "\n" +
+                        "NOMBRE DE CONTACTO: " + suspension.getSUSP_NOM_CONTACTO() + "\n" +
+                        "CELULAR: " + suspension.getSUSP_NUM_CONTACTO() + "\n" +
+                        "OBSERVACIONES: " + suspension.getSUSP_OBSERVACIONES() + "\n" +
+                        "RECHAZADO: " + suspension.getSUSP_RECHAZADO() + "\n" +
+                        "LATITUD: " + suspension.getSUSP_LATITUD() + "\n" +
+                        "LONGITUD: " + suspension.getSUSP_LONGITUD() + "\n"
 
-                ,Toast.LENGTH_LONG);
+                , Toast.LENGTH_SHORT);
         toast.show();
     }
 
-    public void obtenerCoordenadasGPS(){
-        
+
+    public void IniciarServicio() {
+
+        handle = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria c = new Criteria();
+        c.setAccuracy(Criteria.ACCURACY_FINE);
+        provider = handle.getBestProvider(c, true);
+        txtProveedorGPS.setText("Localización: "+provider);
+        //aqui hay que solicitar al usuario el servicio
+        if (ActivityCompat.checkSelfPermission(form_suspensiones_Activity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(form_suspensiones_Activity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(form_suspensiones_Activity.this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                new SweetAlertDialog(form_suspensiones_Activity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Atencion!")
+                        .setContentText("Debes otorgar permisos para ubicarte por GPS")
+                        .setConfirmText("Solicitar Permiso")
+                        .setCancelText("Cancelar")
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.cancel();
+                            }
+                        })
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.cancel();
+                                ActivityCompat.requestPermissions(form_suspensiones_Activity.this,
+                                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                                        MI_PERMISO_ACCESS_COARSE_LOCATION);
+                            }
+                        })
+                        .show();
+            } else {
+                ActivityCompat.requestPermissions(form_suspensiones_Activity.this,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        MI_PERMISO_ACCESS_COARSE_LOCATION);
+            }
+        } else {
+            handle.requestLocationUpdates(provider, 10000, 1, this);
+        }
+
     }
 
 
+    public void muestraUbicacionActual() {
+        //aqui hay que solicitar al usuario el servicio
+        if (ActivityCompat.checkSelfPermission(form_suspensiones_Activity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(form_suspensiones_Activity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(form_suspensiones_Activity.this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                new SweetAlertDialog(form_suspensiones_Activity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Atencion!")
+                        .setContentText("Debes otorgar permisos para ubicarte por GPS")
+                        .setConfirmText("Solicitar Permiso")
+                        .setCancelText("Cancelar")
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.cancel();
+                            }
+                        })
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.cancel();
+                                ActivityCompat.requestPermissions(form_suspensiones_Activity.this,
+                                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                                        MI_PERMISO_ACCESS_COARSE_LOCATION);
+                            }
+                        })
+                        .show();
+            } else {
+                ActivityCompat.requestPermissions(form_suspensiones_Activity.this,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        MI_PERMISO_ACCESS_COARSE_LOCATION);
+            }
+        } else {
+            Location location = handle.getLastKnownLocation(provider);
+            if (location == null){
+                txtLatitudGPS.setText("Desconocido");
+                txtLongitudGPS.setText("Desconocido");
+            }else{
+                txtLatitudGPS.setText   ("Latitud: "+String.valueOf(location.getLatitude()));
+                txtLongitudGPS.setText  ("Latitud: "+String.valueOf(location.getLongitude()));
+                suspension.setSUSP_LATITUD(txtLatitudGPS.getText().toString());
+                suspension.setSUSP_LONGITUD(txtLongitudGPS.getText().toString());
+            }
+        }
+    }
+
+    public void ParaServicio() {
+        //aqui hay que solicitar al usuario el servicio
+        if (ActivityCompat.checkSelfPermission(form_suspensiones_Activity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(form_suspensiones_Activity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(form_suspensiones_Activity.this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+
+            } else {
+                ActivityCompat.requestPermissions(form_suspensiones_Activity.this,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        MI_PERMISO_ACCESS_COARSE_LOCATION);
+            }
+        } else {
+            handle.removeUpdates(this);
+        }
+
+        txtLatitudGPS.setText(null);
+        txtLongitudGPS.setText(null);
+    }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
 }
+
+

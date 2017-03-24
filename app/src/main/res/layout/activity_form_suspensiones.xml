@@ -364,7 +364,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
-                        android:text="sdfsdfsdfsd"
                         android:textColor="@color/red"/>
 
                     <TextView
@@ -661,6 +660,38 @@
                         android:textSize="15sp"
                         android:layout_marginBottom="5dp"
                         android:paddingLeft="10dp"/>
+
+                    <TextView
+                        android:id="@+id/etiqueta_txtProveedorGPS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Proveedor Localización: "
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:padding="10dp"/>
+
+
+                    <TextView
+                        android:id="@+id/etiqueta_txtLatitudGPS"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:text="Latitud: "
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+
+
+                    <TextView
+                        android:id="@+id/etiqueta_txtLongitudGPS"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="Longitud: "
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+
 
                     <Button
                         android:id="@+id/btnRegistrar"

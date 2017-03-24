@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -26,6 +28,7 @@ import java.util.regex.Pattern;
 import co.macrosystem.cobranzasmoviles.R;
 
 public class MainActivity extends AppCompatActivity {
+
 
     private TextInputEditText txtUser;
     private TextInputEditText txtPassw;
@@ -57,9 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
         //Validamos si hay GPS activo
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-         if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+        if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
             AlertNoGps();
         }
+
     }
 
     private void AlertNoGps() {
@@ -93,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             } else {
-                locationManager.removeUpdates(locationListener);
+
             }
         } else {
             locationManager.removeUpdates(locationListener);
@@ -113,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
                 return;
             } else {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
 
             }
         } else {
@@ -194,27 +198,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             textInputLayout.setErrorEnabled(true);
         }
-    }
-
-    /**
-     * funcion que valida el formato del email
-     * retorna false si el formato no es correcto
-     *
-     * @param email
-     * @return
-     */
-    public static boolean isEmailValid(String email) {
-        boolean isValid = false;
-
-        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-        CharSequence inputStr = email;
-
-        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(inputStr);
-        if (matcher.matches()) {
-            isValid = true;
-        }
-        return isValid;
     }
 
 
