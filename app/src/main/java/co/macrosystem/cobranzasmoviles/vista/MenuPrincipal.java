@@ -1,5 +1,6 @@
 package co.macrosystem.cobranzasmoviles.vista;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,21 +13,33 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import co.macrosystem.cobranzasmoviles.DialogoConfirmacion;
 import co.macrosystem.cobranzasmoviles.ExpandAndCollapseViewUtil;
 import co.macrosystem.cobranzasmoviles.R;
 import co.macrosystem.cobranzasmoviles.db.BaseDatos;
+import co.macrosystem.cobranzasmoviles.db.ConstructorSuspensiones;
+import co.macrosystem.cobranzasmoviles.pojo.Suspension;
+import co.macrosystem.cobranzasmoviles.presentador.RvSuspensionesPresentador;
+import co.macrosystem.cobranzasmoviles.presentador.iRvSuspensionesPresentador;
 
-public class MenuPrincipal extends AppCompatActivity {
+public class MenuPrincipal extends AppCompatActivity  implements iRvSuspensionesPresentador {
+
+    private Context context;
+    private ArrayList<Suspension> suspensiones = null;
+    private ConstructorSuspensiones constructorSuspensiones;
+    int numSuspensiones=0;
 
     private ViewGroup linearLayoutDetails;
     private ImageView imageViewExpand;
+    private TextView numSuspensionesCargadas;
     private ImageButton imgBtnSuspensionesRestantes;
     private Intent intent;
     private static final int DURATION = 250;
@@ -41,6 +54,8 @@ public class MenuPrincipal extends AppCompatActivity {
         toolbar.setTitle(R.string.app_name);
         toolbar.setLogo(R.drawable.logo_cobranzas_title);
         setSupportActionBar(toolbar);
+        numSuspensionesCargadas = (TextView) findViewById(R.id.txtSuspCargadas);
+
         intent = new Intent(this, SuspensionesActivity.class);
 
         //Validamos si hay conexion a internet
@@ -52,8 +67,7 @@ public class MenuPrincipal extends AppCompatActivity {
             DialogoConfirmacion confirmacion = new DialogoConfirmacion();
             confirmacion.show(fragmentManager, "confirmando");
         }else{
-            //Toast toast1 = Toast.makeText(getApplicationContext(), "No Hay conexion a Internet", Toast.LENGTH_SHORT);
-            //toast1.show();
+
         }
 
 
@@ -77,8 +91,6 @@ public class MenuPrincipal extends AppCompatActivity {
 
         //subtitulo de la barra de la tarjeta
         toolbarCard.setSubtitle("Fecha: "+ fechaDeHoy());
-
-
         toolbarCard.inflateMenu(R.menu.menu_card);
 
         toolbarCard.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -93,7 +105,10 @@ public class MenuPrincipal extends AppCompatActivity {
             }
         });
 
+
+
         BaseDatos db = new BaseDatos(this);
+        numSuspensionesCargadas.setText("Cargadas por analista: " + String.valueOf(obternetSuspensionesCargadas(getBaseContext())));
     }
 
     public String fechaDeHoy(){
@@ -141,4 +156,30 @@ public class MenuPrincipal extends AppCompatActivity {
     }
 
 
+
+    public int obternetSuspensionesCargadas(Context context) {
+        int numSuspensiones = 0;
+        constructorSuspensiones = new ConstructorSuspensiones(context);
+        suspensiones = constructorSuspensiones.obtenerDatos();
+        numSuspensiones = suspensiones.size();
+        if (numSuspensiones != 0){
+            numSuspensionesCargadas.setText("Cargadas: " + numSuspensiones);
+            Toast toast1 = Toast.makeText(getApplicationContext(), "Cargadas:" + numSuspensiones, Toast.LENGTH_SHORT);
+            toast1.show();
+        }else{
+
+        }
+    return numSuspensiones;
+
+    }
+
+    @Override
+    public void obternetSuspensiones() {
+
+    }
+
+    @Override
+    public void mostrarSuspensionesRV() {
+
+    }
 }

@@ -465,32 +465,12 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
         Criteria c = new Criteria();
         c.setAccuracy(Criteria.ACCURACY_FINE);
         provider = handle.getBestProvider(c, true);
-        txtProveedorGPS.setText("Localización: "+provider);
+        txtProveedorGPS.setText("Localización: " + provider);
         //aqui hay que solicitar al usuario el servicio
         if (ActivityCompat.checkSelfPermission(form_suspensiones_Activity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(form_suspensiones_Activity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(form_suspensiones_Activity.this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                new SweetAlertDialog(form_suspensiones_Activity.this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("Atencion!")
-                        .setContentText("Debes otorgar permisos para ubicarte por GPS")
-                        .setConfirmText("Solicitar Permiso")
-                        .setCancelText("Cancelar")
-                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.cancel();
-                            }
-                        })
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.cancel();
-                                ActivityCompat.requestPermissions(form_suspensiones_Activity.this,
-                                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                                        MI_PERMISO_ACCESS_COARSE_LOCATION);
-                            }
-                        })
-                        .show();
+
             } else {
                 ActivityCompat.requestPermissions(form_suspensiones_Activity.this,
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
@@ -508,27 +488,7 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
         if (ActivityCompat.checkSelfPermission(form_suspensiones_Activity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(form_suspensiones_Activity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(form_suspensiones_Activity.this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                new SweetAlertDialog(form_suspensiones_Activity.this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("Atencion!")
-                        .setContentText("Debes otorgar permisos para ubicarte por GPS")
-                        .setConfirmText("Solicitar Permiso")
-                        .setCancelText("Cancelar")
-                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.cancel();
-                            }
-                        })
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.cancel();
-                                ActivityCompat.requestPermissions(form_suspensiones_Activity.this,
-                                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                                        MI_PERMISO_ACCESS_COARSE_LOCATION);
-                            }
-                        })
-                        .show();
+
             } else {
                 ActivityCompat.requestPermissions(form_suspensiones_Activity.this,
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},

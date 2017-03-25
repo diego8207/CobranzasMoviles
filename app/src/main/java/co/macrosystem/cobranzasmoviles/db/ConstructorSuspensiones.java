@@ -23,7 +23,7 @@ public class ConstructorSuspensiones {
         ArrayList<Suspension> suspensiones = new ArrayList<Suspension>();
         //Consultamos en SQLite
         BaseDatos db = new BaseDatos(context);
-        //insertarSuspensiones(db); //SOLO SE DEBE EJECUTAR POR AHORA MIENTRAS SE LLENA INICIALMENTE LA BASE DE DATOS
+        insertarSuspensiones(db); //SOLO SE DEBE EJECUTAR POR AHORA MIENTRAS SE LLENA INICIALMENTE LA BASE DE DATOS
         // LUEGO PODREMOS AUTOMATIZAR CON LOS WEB SERVICES
         suspensiones = db.obtenerSuspensionesSQLite();
 
