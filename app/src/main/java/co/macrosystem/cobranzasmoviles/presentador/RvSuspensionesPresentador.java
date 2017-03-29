@@ -4,10 +4,9 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
-import co.macrosystem.cobranzasmoviles.adapter.SuspensionAdaptador;
 import co.macrosystem.cobranzasmoviles.db.ConstructorSuspensiones;
 import co.macrosystem.cobranzasmoviles.pojo.Suspension;
-import co.macrosystem.cobranzasmoviles.vista.iSuspensionesActivityView;
+import co.macrosystem.cobranzasmoviles.vista.iSuspensionesActivityRestantesView;
 
 /**
  * Created by Diego Velez on 16/03/2017.
@@ -15,19 +14,19 @@ import co.macrosystem.cobranzasmoviles.vista.iSuspensionesActivityView;
 
 public class RvSuspensionesPresentador implements iRvSuspensionesPresentador {
 
-    private iSuspensionesActivityView iSuspensionesActivityView;
+    private iSuspensionesActivityRestantesView iSuspensionesActivityRestantesView;
     private Context context;
     private ArrayList<Suspension> suspensiones;
     private ConstructorSuspensiones constructorSuspensiones;
 
-    public RvSuspensionesPresentador(iSuspensionesActivityView iSuspensionesActivityView, Context context) {
-        this.iSuspensionesActivityView = iSuspensionesActivityView;
+    public RvSuspensionesPresentador(iSuspensionesActivityRestantesView iSuspensionesActivityRestantesView, Context context) {
+        this.iSuspensionesActivityRestantesView = iSuspensionesActivityRestantesView;
         this.context = context;
-        obternetSuspensiones();
+        obternerSuspensiones();
     }
 
     @Override
-    public void obternetSuspensiones() {
+    public void obternerSuspensiones() {
         constructorSuspensiones = new ConstructorSuspensiones(context);
         suspensiones = constructorSuspensiones.obtenerDatos();
         mostrarSuspensionesRV();
@@ -35,6 +34,13 @@ public class RvSuspensionesPresentador implements iRvSuspensionesPresentador {
 
     @Override
     public void mostrarSuspensionesRV() {
-        iSuspensionesActivityView.inicializarAdaptadorRV(iSuspensionesActivityView.crearAdaptador(suspensiones));
+        iSuspensionesActivityRestantesView.inicializarAdaptadorRV(iSuspensionesActivityRestantesView.crearAdaptador(suspensiones));
+        iSuspensionesActivityRestantesView.generarLinearLayoutVertical();
     }
+
+    @Override
+    public void procesarSuspension(Suspension suspension) {
+        //terminar de implementar el modelo vista presentador
+    }
+
 }

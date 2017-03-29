@@ -30,7 +30,7 @@ import co.macrosystem.cobranzasmoviles.pojo.Suspension;
 import co.macrosystem.cobranzasmoviles.presentador.RvSuspensionesPresentador;
 import co.macrosystem.cobranzasmoviles.presentador.iRvSuspensionesPresentador;
 
-public class MenuPrincipal extends AppCompatActivity  implements iRvSuspensionesPresentador {
+public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalView {
 
     private Context context;
     private ArrayList<Suspension> suspensiones = null;
@@ -41,6 +41,8 @@ public class MenuPrincipal extends AppCompatActivity  implements iRvSuspensiones
     private ImageView imageViewExpand;
     private TextView numSuspensionesCargadas;
     private ImageButton imgBtnSuspensionesRestantes;
+    private Toolbar toolbarCard;
+    Toolbar toolbar;
     private Intent intent;
     private static final int DURATION = 250;
     private boolean internet = false;
@@ -49,66 +51,23 @@ public class MenuPrincipal extends AppCompatActivity  implements iRvSuspensiones
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_principal);
+        context = this.getBaseContext();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.app_name);
-        toolbar.setLogo(R.drawable.logo_cobranzas_title);
-        setSupportActionBar(toolbar);
         numSuspensionesCargadas = (TextView) findViewById(R.id.txtSuspCargadas);
-
-        intent = new Intent(this, SuspensionesActivity.class);
-
-        //Validamos si hay conexion a internet
-        internet = ValidarConexionInternet();
-        if (internet){
-            //Toast toast1 = Toast.makeText(getApplicationContext(), "Hay conexion", Toast.LENGTH_SHORT);
-           // toast1.show();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            DialogoConfirmacion confirmacion = new DialogoConfirmacion();
-            confirmacion.show(fragmentManager, "confirmando");
-        }else{
-
-        }
-
-
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         imageViewExpand = (ImageView) findViewById(R.id.imageViewExpand);
         linearLayoutDetails = (ViewGroup) findViewById(R.id.linearLayoutDetails);
-
-
         imgBtnSuspensionesRestantes = (ImageButton) findViewById(R.id.imgBtnSuspensionesRestantes);
+        toolbarCard = (Toolbar) findViewById(R.id.toolbarCardSuspensiones);
 
-        imgBtnSuspensionesRestantes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(intent);
-            }
-        });
+        inicializarToolBarPrincipal();
+        inializararToolBarCV(context);
+        validarInternet(context);
 
 
-
-        Toolbar toolbarCard = (Toolbar) findViewById(R.id.toolbarCardSuspensiones);
-        toolbarCard.setTitle(R.string.title_card_suspensiones);
-
-        //subtitulo de la barra de la tarjeta
-        toolbarCard.setSubtitle("Fecha: "+ fechaDeHoy());
-        toolbarCard.inflateMenu(R.menu.menu_card);
-
-        toolbarCard.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.mSincronizar:
-                        Toast.makeText(MenuPrincipal.this, "Sincronizando Suspensiones", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                return true;
-            }
-        });
+        obternetSuspensionesCargadas();
 
 
-
-        BaseDatos db = new BaseDatos(this);
-        numSuspensionesCargadas.setText("Cargadas por analista: " + String.valueOf(obternetSuspensionesCargadas(getBaseContext())));
     }
 
     public String fechaDeHoy(){
@@ -118,7 +77,9 @@ public class MenuPrincipal extends AppCompatActivity  implements iRvSuspensiones
     }
 
 
-
+    //si hace parte de la interfaz iMenuPrincipalView porque hay una interaccion directa con
+    //el TextView numSuspensionesCargadas
+    @Override
     public void toggleDetailsSuspensiones(View view) {
         if (linearLayoutDetails.getVisibility() == View.GONE) {
             ExpandAndCollapseViewUtil.expand(linearLayoutDetails, DURATION);
@@ -129,17 +90,92 @@ public class MenuPrincipal extends AppCompatActivity  implements iRvSuspensiones
             imageViewExpand.setImageResource(R.mipmap.less);
             rotateSuspensiones(180.0f);
         }
-
-
-
     }
 
-    private void rotateSuspensiones(float angle) {
+    //si hace parte de la interfaz iMenuPrincipalView porque hay una interaccion directa con
+    //el TextView numSuspensionesCargadas
+    @Override
+    public void rotateSuspensiones(float angle) {
         Animation animation = new RotateAnimation(0.0f, angle, Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setFillAfter(true);
         animation.setDuration(DURATION);
         imageViewExpand.startAnimation(animation);
+    }
+
+    public void obternetSuspensionesCargadas() {
+        int numSuspensiones = 0;
+        constructorSuspensiones = new ConstructorSuspensiones(context);
+        //suspensiones = constructorSuspensiones.obtenerDatos();
+        numSuspensiones = constructorSuspensiones.ObtenerTotalSuspensionesCargadas();
+        //numSuspensiones = suspensiones.size();
+        if (numSuspensiones != 0){
+            numSuspensionesCargadas.setText("Cargadas por analista: " + numSuspensiones);
+            Toast toast1 = Toast.makeText(getApplicationContext(), "Cargadas:" + numSuspensiones, Toast.LENGTH_SHORT);
+            toast1.show();
+        }else{
+            numSuspensionesCargadas.setText("No hay Suspensiones Cargadas: " + numSuspensiones);
+        }
+    }
+
+    //si hace parte de la interfaz iMenuPrincipalView porque hay una interaccion directa con
+    //el TextView numSuspensionesCargadas
+
+    @Override
+    public void inializararToolBarCV(final Context context){
+        toolbarCard.setTitle(R.string.title_card_suspensiones);
+        //subtitulo de la barra de la tarjeta
+        toolbarCard.setSubtitle("Fecha: "+ fechaDeHoy());
+        toolbarCard.inflateMenu(R.menu.menu_card);
+
+        toolbarCard.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.mSincronizar:
+                        BaseDatos db = new BaseDatos(context);
+                        constructorSuspensiones.registrarSuspensionesSQLite(db);
+                        obternetSuspensionesCargadas();
+                        Toast.makeText(MenuPrincipal.this, "Sincronizando Suspensiones", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    //si hace parte de la interfaz iMenuPrincipalView porque hay una interaccion directa con
+    //el TextView numSuspensionesCargadas
+    @Override
+    public void inicializarToolBarPrincipal(){
+        Context context = this.getBaseContext();
+        toolbar.setTitle(R.string.app_name);
+        toolbar.setLogo(R.drawable.logo_cobranzas_title);
+        setSupportActionBar(toolbar);
+    }
+
+    //si hace parte de la interfaz iMenuPrincipalView porque hay una interaccion directa con
+    //el TextView numSuspensionesCargadas
+
+    public void validarInternet(Context context){
+        //Validamos si hay conexion a internet
+        internet = ValidarConexionInternet();
+        if (internet){
+            //Toast toast1 = Toast.makeText(getApplicationContext(), "Hay conexion", Toast.LENGTH_SHORT);
+            // toast1.show();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            DialogoConfirmacion confirmacion = new DialogoConfirmacion();
+            confirmacion.show(fragmentManager, "confirmando");
+        }else{
+
+        }
+    }
+
+    //si hace parte de la interfaz iMenuPrincipalView porque hay una interaccion directa con
+    //el TextView numSuspensionesCargadas
+    public void visualizarSuspensionesRestantes(View view){
+        intent = new Intent(context, SuspensionesActivityRestantes.class);
+        startActivity(intent);
     }
 
 
@@ -155,31 +191,4 @@ public class MenuPrincipal extends AppCompatActivity  implements iRvSuspensiones
         return false;
     }
 
-
-
-    public int obternetSuspensionesCargadas(Context context) {
-        int numSuspensiones = 0;
-        constructorSuspensiones = new ConstructorSuspensiones(context);
-        suspensiones = constructorSuspensiones.obtenerDatos();
-        numSuspensiones = suspensiones.size();
-        if (numSuspensiones != 0){
-            numSuspensionesCargadas.setText("Cargadas: " + numSuspensiones);
-            Toast toast1 = Toast.makeText(getApplicationContext(), "Cargadas:" + numSuspensiones, Toast.LENGTH_SHORT);
-            toast1.show();
-        }else{
-
-        }
-    return numSuspensiones;
-
-    }
-
-    @Override
-    public void obternetSuspensiones() {
-
-    }
-
-    @Override
-    public void mostrarSuspensionesRV() {
-
-    }
 }

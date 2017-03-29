@@ -14,12 +14,11 @@ import co.macrosystem.cobranzasmoviles.pojo.Suspension;
 import co.macrosystem.cobranzasmoviles.presentador.RvSuspensionesPresentador;
 import co.macrosystem.cobranzasmoviles.presentador.iRvSuspensionesPresentador;
 
-public class SuspensionesActivity extends AppCompatActivity implements iSuspensionesActivityView {
+public class SuspensionesActivityRestantes extends AppCompatActivity implements iSuspensionesActivityRestantesView {
 
-    ArrayList<Suspension> suspensiones = null;
+    //ArrayList<Suspension> suspensiones = null;
     private RecyclerView rvListaSuspensiones;
     private iRvSuspensionesPresentador presentador;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,14 +28,17 @@ public class SuspensionesActivity extends AppCompatActivity implements iSuspensi
         toolbar.setTitle(R.string.app_name);
         toolbar.setLogo(R.drawable.logo_cobranzas_title);
         setSupportActionBar(toolbar);
-
-        rvListaSuspensiones = (RecyclerView) findViewById(R.id.rvSuspensiones);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        generarLinearLayoutVertical();
+        //capturamos el RecyclerView que se esta utilizand en la actividad
+        rvListaSuspensiones = (RecyclerView) findViewById(R.id.rvSuspensiones);
+
+        /**
+         * instanciamos el iRvSuspensionesPresentador llamado presentador --> ver la interface iRvSuspensionesPresentador
+         * el el package presentador enviando como parametros this que es la interface iSuspensionesActivityRestantesView
+         * y el contexto.
+          */
         presentador = new RvSuspensionesPresentador(this, getBaseContext());
-
-
     }
 
     @Override

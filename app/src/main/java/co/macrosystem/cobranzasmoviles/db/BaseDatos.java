@@ -98,9 +98,10 @@ public class BaseDatos extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-
-
-    //un ejemplo con ContentValues
+    /**
+     * método que permite insertar en SQLite las suspensiones que vendran de la base de datos remota
+     * a través de un Web Service.
+     */
     public void InsertarSuspensionSQLite(ContentValues contentValues){
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(ConstantesBaseDatos.TABLE_SUSPENSIONES, null, contentValues);
@@ -108,78 +109,16 @@ public class BaseDatos extends SQLiteOpenHelper{
     }
 
 
-    //Agregar la gestion del Web Service para obtener el usuario desde la database remota de Gestion Renovadora
-    //ESTA SIN TERMINAR
-    public void ConsultarSuspensionesPorUser(BaseDatos db){
-        Suspension suspension = new Suspension();
-        ArrayList<Suspension> suspensions = new ArrayList<>();
 
-        //consultar medntValueiante web service y llenar un objeto Suspension
-
-        //insertar en sqlite
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_MATRICULA, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_NUM_PROCESO, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_NUM_MEDIDOR, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_SUSCRIPTOR, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_CICLO, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_MUNICIPIO, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_DIRECCION, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_ACTIVIDAD, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_TIPO_ACTIVIDAD, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_COD_ACCION, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_DESCR_ACCION, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_COD_TECNICO, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_GLOSA, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_PROVEEDOR, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_USUARIO, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_ESTADO, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_NUM_STICKER, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_ESTADO_STICKER, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_SELLOSERIAL, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_SELLOSERIAL_ESTA, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_COINC_MAT_MEDI, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_CON_PAGO, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_TIENE_ENERGIA, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_LECTURA, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_NOM_CONTACTO, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_NUM_CONTACTO, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_RECHAZADO, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_FOTO, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_LATITUD, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_LONGITUD, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_EJECU, /*a continuacion el valor obtenido del WS */ "");
-        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_CARGA, /*a continuacion el valor obtenido del WS */ "");
-        InsertarSuspensionSQLite(contentValues);
-    }
-
-
-
-    public Usuario ValidarUsuario(String usuario, String password){
-        Usuario u = null;
-        String query = "SELECT * FROM " + ConstantesBaseDatos.TABLE_USUARIO +
-                " WHERE " + ConstantesBaseDatos.TABLE_USUARIO_USUARIO + " = " + usuario +
-                " AND " + ConstantesBaseDatos.TABLE_USUARIO_PASSWORD + " = " + password;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor registros = db.rawQuery(query, null);
-        while (registros.moveToNext()){
-            u = new Usuario();
-            u.setUsua_usuario(registros.getString(1));
-            u.setUsua_estado(registros.getString(3));
-            u.setRol_nombre(registros.getString(4));
-            u.setNomape(registros.getString(5));
-        }
-        db.close();
-        return u;
-    }
 
     //Metodo full, se obtienen todas las ordenes de suspension que se encuentra en SQLite
     public ArrayList<Suspension> obtenerSuspensionesSQLite(){
         ArrayList<Suspension> supensiones = new ArrayList<>();
         String query = "SELECT SUSP_MATRICULA,  SUSP_NUM_PROCESO, SUSP_NUM_MEDIDOR, SUSP_SUSCRIPTOR, SUSP_CICLO, SUSP_MUNICIPIO, SUSP_DIRECCION, " +
-                        "SUSP_FECHA_ACTI, SUSP_TIPO_ACTI, SUSP_COD_ACCION, SUSP_DESCR_ACCION, SUSP_COD_TECNICO, SUSP_GLOSA, SUSP_PROVEEDOR, SUSP_FECHA_CARGA " +
-                "FROM " + ConstantesBaseDatos.TABLE_SUSPENSIONES;
+                        "SUSP_FECHA_ACTI, SUSP_TIPO_ACTI, SUSP_COD_ACCION, SUSP_DESCR_ACCION, SUSP_COD_TECNICO, SUSP_GLOSA, SUSP_PROVEEDOR, SUSP_FECHA_CARGA, SUSP_USUARIO " +
+                "FROM " + ConstantesBaseDatos.TABLE_SUSPENSIONES ;
+//                " WHERE " + ConstantesBaseDatos.TABLE_SUSPENSIONES_USUARIO + " = '" + user + "'" +
+//                " AND " + ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_CARGA + " = '" + fechaCarga + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor registros = db.rawQuery(query, null);
 
@@ -200,6 +139,7 @@ public class BaseDatos extends SQLiteOpenHelper{
             suspensionActual.setSUSP_GLOSA(registros.getString(12));
             suspensionActual.setSUSP_PROVEEDOR(registros.getString(13));
             suspensionActual.setSUSP_FECHA_CARGA(registros.getString(14));
+            suspensionActual.setSUSP_USUARIO(registros.getString(15));
             supensiones.add(suspensionActual);
         }
 
@@ -207,14 +147,29 @@ public class BaseDatos extends SQLiteOpenHelper{
 
         return supensiones;
     }
+    //implementada para mostrar la cantidad de Suspensiones cargadas en SQLite segun usuario y fecha
+    public int totalSuspensionesCargadasDia(String user, String fechaCarga){
+        int total = 0;
+        String query = "SELECT count(*) FROM " + ConstantesBaseDatos.TABLE_SUSPENSIONES +
+                " WHERE " + ConstantesBaseDatos.TABLE_SUSPENSIONES_USUARIO + " = '" + user + "'" +
+                " AND " + ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_CARGA + " = '" + fechaCarga + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor registros = db.rawQuery(query, null);
+        registros.moveToFirst();
+        total = registros.getInt(0);
+        registros.close();
+        db.close();
+        return total;
+    }
 
+    //Procesar suspension y almacenarla en SQLite
     public void RegistrarSuspensionProcesada(ContentValues contentValues){
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(ConstantesBaseDatos.TABLE_SUSPENSIONES, null, contentValues);
         db.close();
-
+        }
     }
 
 
 
-}
+
