@@ -14,7 +14,7 @@ import co.macrosystem.cobranzasmoviles.pojo.Suspension;
 import co.macrosystem.cobranzasmoviles.presentador.RvSuspensionesPresentador;
 import co.macrosystem.cobranzasmoviles.presentador.iRvSuspensionesPresentador;
 
-public class SuspensionesActivitySubidas extends AppCompatActivity implements iSuspensionesActivitySubidasView{
+public class SuspensionesActivitySubidas extends AppCompatActivity {
 
     private RecyclerView rvListaSuspensionesSubidas;
     private iRvSuspensionesPresentador presentador;
@@ -36,21 +36,5 @@ public class SuspensionesActivitySubidas extends AppCompatActivity implements iS
 
     }
 
-    @Override
-    public void generarLinearLayoutVertical() {
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        rvListaSuspensionesSubidas.setLayoutManager(llm);
-    }
 
-    @Override
-    public SuspensionAdaptador crearAdaptador(ArrayList<Suspension> suspensiones) {
-        SuspensionAdaptador adaptador = new SuspensionAdaptador(suspensiones, this);
-        return adaptador;
-    }
-
-    @Override
-    public void inicializarAdaptadorRV(SuspensionAdaptador adaptador) {
-        rvListaSuspensionesSubidas.setAdapter(adaptador);
-    }
 }

@@ -19,6 +19,7 @@ public class SuspensionesActivityRestantes extends AppCompatActivity implements 
     //ArrayList<Suspension> suspensiones = null;
     private RecyclerView rvListaSuspensionesRestantes;
     private iRvSuspensionesPresentador presentador;
+    private String estado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,9 @@ public class SuspensionesActivityRestantes extends AppCompatActivity implements 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Bundle extras = getIntent().getExtras();
+        estado = extras.getString("estado");
+
         //capturamos el RecyclerView que se esta utilizand en la actividad
         rvListaSuspensionesRestantes = (RecyclerView) findViewById(R.id.rvSuspensiones);
 
@@ -38,7 +42,7 @@ public class SuspensionesActivityRestantes extends AppCompatActivity implements 
          * el el package presentador enviando como parametros this que es la interface iSuspensionesActivityRestantesView
          * y el contexto.
           */
-        presentador = new RvSuspensionesPresentador(this, getBaseContext());
+        presentador = new RvSuspensionesPresentador(this, getBaseContext(), estado);
     }
 
     @Override

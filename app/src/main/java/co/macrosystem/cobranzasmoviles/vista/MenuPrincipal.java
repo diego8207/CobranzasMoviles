@@ -175,13 +175,25 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
 
     public void visualizarSuspensionesRestantes(View view){
         intent = new Intent(context, SuspensionesActivityRestantes.class);
+        intent.putExtra("estado", "restantes");
         startActivity(intent);
     }
 
     public void visualizarSuspensionesSubidas(View view){
-        intent = new Intent(context, SuspensionesActivitySubidas.class);
+        intent = new Intent(context, SuspensionesActivityRestantes.class);
+        intent.putExtra("estado", "subidas");
         startActivity(intent);
     }
+
+    public void visualizarSuspensionesProcesadas(View view){
+        intent = new Intent(context, SuspensionesActivityRestantes.class);
+        intent.putExtra("estado", "procesadas");
+        startActivity(intent);
+    }
+
+
+
+
 
 
     private Boolean ValidarConexionInternet(){

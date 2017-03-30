@@ -16,12 +16,13 @@ public class ConstructorSuspensiones {
 
     private Context context;
 
+
     public ConstructorSuspensiones(Context context) {
         this.context = context;
     }
 
 
-    public ArrayList<Suspension> obtenerDatos(){
+    public ArrayList<Suspension> obtenerDatos(String estado){
         ArrayList<Suspension> suspensiones = new ArrayList<Suspension>();
         //Consultamos en SQLite
         BaseDatos db = new BaseDatos(context);
@@ -32,7 +33,7 @@ public class ConstructorSuspensiones {
         //registrarSuspensionesSQLite(db);
 
         // LUEGO PODREMOS AUTOMATIZAR CON LOS WEB SERVICES
-        suspensiones = db.obtenerSuspensionesSQLite();
+        suspensiones = db.obtenerSuspensionesSQLite(estado);
 
         return suspensiones;
     }
