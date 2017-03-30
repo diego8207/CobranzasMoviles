@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         /**
-         * si ambos capos se encuentran con datos se debe ejecutar el siguiente codigo.
+         * si ambos campos se encuentran con datos se debe ejecutar el siguiente codigo.
          * el cual debe validar en base de datos local o remota las credenciales y
          * posteriormente visualizar la actividad segun su rol.
          */

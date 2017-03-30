@@ -18,35 +18,41 @@
         <activity android:name=".vista.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".vista.MenuPrincipal" />
-
         <activity
             android:name=".vista.SuspensionesActivityRestantes"
             android:label="@string/title_activity_suspensiones"
             android:parentActivityName=".vista.MenuPrincipal"
-            android:theme="@style/AppTheme" >
-            <!--Soporte para versiones 4.0 o menores -->
+            android:theme="@style/AppTheme">
+
+            <!-- Soporte para versiones 4.0 o menores -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".vista.MenuPrincipal">
-            </meta-data>
+                android:value=".vista.MenuPrincipal"></meta-data>
         </activity>
-
-        <activity android:name=".vista.form_suspensiones_Activity"
+        <activity
+            android:name=".vista.form_suspensiones_Activity"
             android:parentActivityName=".vista.SuspensionesActivityRestantes">
-            <!--Soporte para versiones 4.0 o menores -->
+
+            <!-- Soporte para versiones 4.0 o menores -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".vista.SuspensionesActivityRestantes">
-            </meta-data>
+                android:value=".vista.SuspensionesActivityRestantes"></meta-data>
         </activity>
+        <activity
+            android:name=".vista.SuspensionesActivitySubidas"
+            android:parentActivityName=".vista.MenuPrincipal"
+            android:theme="@style/AppTheme">
 
-
-
-
+            <!-- Soporte para versiones 4.0 o menores -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".vista.MenuPrincipal"></meta-data>
+        </activity>
     </application>
 
 </manifest>

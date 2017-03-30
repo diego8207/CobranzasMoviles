@@ -5,5 +5,7 @@ package co.macrosystem.cobranzasmoviles.presentador;
  */
 
 public interface iMenuPrincipalPresentador {
-    
+
+    public int obtenerCantSuspensionesEstado(String estado);
+
 }

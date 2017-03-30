@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -116,8 +117,8 @@ public class BaseDatos extends SQLiteOpenHelper{
         ArrayList<Suspension> supensiones = new ArrayList<>();
         String query = "SELECT SUSP_MATRICULA,  SUSP_NUM_PROCESO, SUSP_NUM_MEDIDOR, SUSP_SUSCRIPTOR, SUSP_CICLO, SUSP_MUNICIPIO, SUSP_DIRECCION, " +
                         "SUSP_FECHA_ACTI, SUSP_TIPO_ACTI, SUSP_COD_ACCION, SUSP_DESCR_ACCION, SUSP_COD_TECNICO, SUSP_GLOSA, SUSP_PROVEEDOR, SUSP_FECHA_CARGA, SUSP_USUARIO " +
-                "FROM " + ConstantesBaseDatos.TABLE_SUSPENSIONES ;
-//                " WHERE " + ConstantesBaseDatos.TABLE_SUSPENSIONES_USUARIO + " = '" + user + "'" +
+                "FROM " + ConstantesBaseDatos.TABLE_SUSPENSIONES +
+                " WHERE SUSP_ESTADO like '" + "restantes" + "'" ;
 //                " AND " + ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_CARGA + " = '" + fechaCarga + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor registros = db.rawQuery(query, null);
@@ -167,8 +168,24 @@ public class BaseDatos extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(ConstantesBaseDatos.TABLE_SUSPENSIONES, null, contentValues);
         db.close();
-        }
     }
+
+    public int obtenerCantSuspensionesEstadoSQLite(String estado){
+        int total = 0;
+        String query = "SELECT count(*) FROM SUSPENSIONES WHERE SUSP_ESTADO like '"+ estado + "' ";
+        //Toast.makeText(context, query + total, Toast.LENGTH_SHORT).show();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor registros = db.rawQuery(query, null);
+        registros.moveToFirst();
+        total = registros.getInt(0);
+        //Toast.makeText(context, "TOTAL ------> " + total, Toast.LENGTH_SHORT).show();
+        registros.close();
+        db.close();
+        db.close();
+
+        return total;
+    }
+}
 
 
 

@@ -64,6 +64,7 @@ public class Suspension implements Parcelable {
         this.SUSP_ESTADO = SUSP_ESTADO;
         this.SUSP_PROVEEDOR = SUSP_PROVEEDOR;
         this.SUSP_FECHA_CARGA = SUSP_FECHA_CARGA;
+
     }
 
     public String getSUSP_MATRICULA() {

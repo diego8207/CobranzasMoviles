@@ -40,6 +40,9 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
     private ViewGroup linearLayoutDetails;
     private ImageView imageViewExpand;
     private TextView numSuspensionesCargadas;
+    private TextView numSuspensionesSubidas;
+    private TextView numSuspensionesProcesadas;
+    private TextView numSuspensionesRestantes;
     private ImageButton imgBtnSuspensionesRestantes;
     private Toolbar toolbarCard;
     Toolbar toolbar;
@@ -54,6 +57,9 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         context = this.getBaseContext();
 
         numSuspensionesCargadas = (TextView) findViewById(R.id.txtSuspCargadas);
+        numSuspensionesRestantes = (TextView) findViewById(R.id.lblCantRestantes);
+        numSuspensionesSubidas = (TextView) findViewById(R.id.lblCantSubidas);
+        numSuspensionesProcesadas = (TextView) findViewById(R.id.lblCantProcesadas);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         imageViewExpand = (ImageView) findViewById(R.id.imageViewExpand);
         linearLayoutDetails = (ViewGroup) findViewById(R.id.linearLayoutDetails);
@@ -63,11 +69,16 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         inicializarToolBarPrincipal();
         inializararToolBarCV(context);
         validarInternet(context);
-
-
         obternetSuspensionesCargadas();
+        mostrarCantidades(context);
 
 
+    }
+
+    public void mostrarCantidades(Context context){
+        numSuspensionesRestantes.setText(String.valueOf(constructorSuspensiones.obtenerSuspensionesRestantesEstado("restantes")));
+        numSuspensionesSubidas.setText(String.valueOf(constructorSuspensiones.obtenerSuspensionesRestantesEstado("subidas")));
+        numSuspensionesProcesadas.setText(String.valueOf(constructorSuspensiones.obtenerSuspensionesRestantesEstado("procesadas")));
     }
 
     public String fechaDeHoy(){
@@ -76,9 +87,6 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         return formatoFecha.format(fechaActual);
     }
 
-
-    //si hace parte de la interfaz iMenuPrincipalView porque hay una interaccion directa con
-    //el TextView numSuspensionesCargadas
     @Override
     public void toggleDetailsSuspensiones(View view) {
         if (linearLayoutDetails.getVisibility() == View.GONE) {
@@ -92,8 +100,6 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         }
     }
 
-    //si hace parte de la interfaz iMenuPrincipalView porque hay una interaccion directa con
-    //el TextView numSuspensionesCargadas
     @Override
     public void rotateSuspensiones(float angle) {
         Animation animation = new RotateAnimation(0.0f, angle, Animation.RELATIVE_TO_SELF, 0.5f,
@@ -110,6 +116,7 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         numSuspensiones = constructorSuspensiones.ObtenerTotalSuspensionesCargadas();
         //numSuspensiones = suspensiones.size();
         if (numSuspensiones != 0){
+            mostrarCantidades(context);
             numSuspensionesCargadas.setText("Cargadas por analista: " + numSuspensiones);
             Toast toast1 = Toast.makeText(getApplicationContext(), "Cargadas:" + numSuspensiones, Toast.LENGTH_SHORT);
             toast1.show();
@@ -117,9 +124,6 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
             numSuspensionesCargadas.setText("No hay Suspensiones Cargadas: " + numSuspensiones);
         }
     }
-
-    //si hace parte de la interfaz iMenuPrincipalView porque hay una interaccion directa con
-    //el TextView numSuspensionesCargadas
 
     @Override
     public void inializararToolBarCV(final Context context){
@@ -144,8 +148,6 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         });
     }
 
-    //si hace parte de la interfaz iMenuPrincipalView porque hay una interaccion directa con
-    //el TextView numSuspensionesCargadas
     @Override
     public void inicializarToolBarPrincipal(){
         Context context = this.getBaseContext();
@@ -171,10 +173,13 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         }
     }
 
-    //si hace parte de la interfaz iMenuPrincipalView porque hay una interaccion directa con
-    //el TextView numSuspensionesCargadas
     public void visualizarSuspensionesRestantes(View view){
         intent = new Intent(context, SuspensionesActivityRestantes.class);
+        startActivity(intent);
+    }
+
+    public void visualizarSuspensionesSubidas(View view){
+        intent = new Intent(context, SuspensionesActivitySubidas.class);
         startActivity(intent);
     }
 
@@ -190,5 +195,7 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         }
         return false;
     }
+
+
 
 }

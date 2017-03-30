@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import co.macrosystem.cobranzasmoviles.db.ConstructorSuspensiones;
 import co.macrosystem.cobranzasmoviles.pojo.Suspension;
+import co.macrosystem.cobranzasmoviles.vista.SuspensionesActivityRestantes;
+import co.macrosystem.cobranzasmoviles.vista.SuspensionesActivitySubidas;
 import co.macrosystem.cobranzasmoviles.vista.iSuspensionesActivityRestantesView;
 
 /**
@@ -19,7 +21,7 @@ public class RvSuspensionesPresentador implements iRvSuspensionesPresentador {
     private ArrayList<Suspension> suspensiones;
     private ConstructorSuspensiones constructorSuspensiones;
 
-    public RvSuspensionesPresentador(iSuspensionesActivityRestantesView iSuspensionesActivityRestantesView, Context context) {
+    public RvSuspensionesPresentador(SuspensionesActivityRestantes iSuspensionesActivityRestantesView, Context context) {
         this.iSuspensionesActivityRestantesView = iSuspensionesActivityRestantesView;
         this.context = context;
         obternerSuspensiones();
