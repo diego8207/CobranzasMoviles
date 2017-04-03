@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -46,7 +47,7 @@ public class SuspensionAdaptador extends RecyclerView.Adapter<SuspensionAdaptado
         suspensionViewHolder.tvMatricula.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(activity, suspension.getGlosa(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(activity, "LECTURA : " + suspension.getSUSP_LECTURA(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(activity, form_suspensiones_Activity.class);
                 intent.putExtra("objSuspension",suspension);
                 activity.startActivity(intent);

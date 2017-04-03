@@ -75,7 +75,6 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         obternetSuspensionesCargadas();
         mostrarCantidades(context);
 
-
     }
 
     public void mostrarCantidades(Context context){
@@ -122,7 +121,8 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         if (numSuspensiones != 0){
             mostrarCantidades(context);
             numSuspensionesCargadas.setText("Cargadas por analista: " + numSuspensiones);
-            Toast toast1 = Toast.makeText(getApplicationContext(), "Cargadas:" + numSuspensiones, Toast.LENGTH_SHORT);
+            Toast.makeText(MenuPrincipal.this, "Sincronizando Suspensiones", Toast.LENGTH_SHORT).show();
+            Toast toast1 = Toast.makeText(getApplicationContext(), "Suspensiones Cargadas:" + numSuspensiones, Toast.LENGTH_SHORT);
             toast1.show();
         }else{
             numSuspensionesCargadas.setText("No hay Suspensiones Cargadas: " + numSuspensiones);
@@ -143,8 +143,9 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
                     case R.id.mSincronizar:
                         BaseDatos db = new BaseDatos(context);
                         constructorSuspensiones.registrarSuspensionesSQLite(db);
+
                         obternetSuspensionesCargadas();
-                        Toast.makeText(MenuPrincipal.this, "Sincronizando Suspensiones", Toast.LENGTH_SHORT).show();
+
                         break;
                 }
                 return true;

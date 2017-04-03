@@ -124,6 +124,7 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
         intent = new Intent(this, MenuPrincipal.class);
 
         suspension = getIntent().getParcelableExtra("objSuspension");
+
         Toolbar toolbarCard = (Toolbar) findViewById(R.id.toolbarCardFormSuspensiones);
         toolbarCard.setTitle("Matricula: " + suspension.getSUSP_MATRICULA() + "  ::: " + suspension.getSUSP_ESTADO() + " :::");
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -145,6 +146,8 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
         txtGlosa = (TextView) findViewById(R.id.txtGlosa);
         txtProveedor = (TextView) findViewById(R.id.txtProveedor);
         txtFechaCarga = (TextView) findViewById(R.id.txtfechaCarga);
+
+
 
         //capturamos los elementos del formulario que van a estar disponibles para ingresar informacion
 
@@ -172,9 +175,6 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
 
         rbtn_rechazo_si = (RadioButton) findViewById(R.id.rbtn_rechazo_si);
         rbtn_rechazo_no = (RadioButton) findViewById(R.id.rbtn_rechazo_no);
-
-
-
 
         btnRegistrar = (Button) findViewById(R.id.btnRegistrar);
 
@@ -227,6 +227,7 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
         txtProveedor.setText(suspension.getSUSP_PROVEEDOR());
         txtFechaCarga.setText(suspension.getSUSP_FECHA_CARGA());
 
+
         /**
          * Vamos a validar si es una suspension procesada o subida debe mostrar en solo lectura la informacion
          */
@@ -255,32 +256,39 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
             rbtn_rechazo_si.setEnabled(false);
             rbtn_rechazo_no.setEnabled(false);
             btnRegistrar.setEnabled(false);
+
             if (suspen.equals("subidas")){
                 btnRegistrar.setText("SUBIDA");
                 btnRegistrar.setBackgroundColor(getResources().getColor(R.color.teal));
                 toolbarCard.setBackgroundColor(getResources().getColor(R.color.teal));
                 toolbar.setBackgroundColor(getResources().getColor(R.color.teal));
+
+                //crear una funcion que cargue todos los elementos de la suspension
+                //asi le sirve a subidas como a procesadas
+                visualizarSoloLectura(suspension);
+
             }else if (suspen.equals("procesadas")){
-                btnRegistrar.setText("PROCESADA");
+                btnRegistrar.setText("PROCESADA: " + suspension.getSUSP_FECHA_EJECUCION());
                 btnRegistrar.setBackgroundColor(getResources().getColor(R.color.orange));
                 toolbarCard.setBackgroundColor(getResources().getColor(R.color.orange));
                 toolbar.setBackgroundColor(getResources().getColor(R.color.orange));
+
+                visualizarSoloLectura(suspension);
+
             }
         }else{
             txtObservaciones.setText("");
         }
 
+        //Log.e(null, "MATRICULA: " + suspension.getSUSP_MATRICULA());
+        //Log.e(null, "FECHA DE CARGA: " + suspension.getSUSP_FECHA_CARGA());
 
-        Log.e(null, "MATRICULA: " + suspension.getSUSP_MATRICULA());
-        Log.e(null, "FECHA DE CARGA: " + suspension.getSUSP_FECHA_CARGA());
-        Log.e(null, "Datos almacenados en esta suspension: ");
-
-        //Creamos un ArrayAdapter para el Spinner de estado del sello
+        //Creamos un ArrayAdapter para el Spinner de estado del sello serial
         ArrayAdapter<String> arrayAdapterSello = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, SPNR_ESTADO_SELLO);
         spnrEstadoSello.setAdapter(arrayAdapterSello);
 
         IniciarServicioGPS();
-        procesarSuspension(context);//--------------------------------------------------------
+        procesarSuspension(context);//--------------------- SOLO CUANDO ESTA HABILITADO EL BOTON DE PROCESAR -----------------------------------
 
     }
 
@@ -368,8 +376,9 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
             error_estado_sticker.setVisibility(View.GONE);
             validaformulario = true;
 
-            if (rbtn_estado_roto.isChecked())
+            if (rbtn_estado_roto.isChecked()) {
                 suspension.setSUSP_ESTADO_STICKER("Roto");
+            }
             if (rbtn_estado_No_instal.isChecked()) {
                 suspension.setSUSP_ESTADO_STICKER("No instalado");
             }
@@ -634,6 +643,61 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
 
         txtLatitudGPS.setText(null);
         txtLongitudGPS.setText(null);
+    }
+
+    public void visualizarSoloLectura(Suspension suspension){
+        txtSticker.setText(suspension.getSUSP_NUM_STICKER());
+
+        String estadoSticker = suspension.getSUSP_ESTADO_STICKER();
+        switch (estadoSticker){
+            case "Sin diligenciar"  : rbtn_estado_sin_diligen.setEnabled(true); rbtn_estado_sin_diligen.setChecked(true); break;
+            case "No instalado"     : rbtn_estado_No_instal.setEnabled(true); rbtn_estado_No_instal.setChecked(true); break;
+            case "Roto"             : rbtn_estado_roto.setEnabled(true); rbtn_estado_roto.setChecked(true); break;
+        }
+
+        txtSelloSerial.setText(suspension.getSUSP_SELLOSERIAL());
+
+        String estadoSello = suspension.getSUSP_SELLOSERIAL_ESTADO();
+        Toast.makeText(this, "ESTADO SELLO : " + estadoSello, Toast.LENGTH_SHORT).show();
+        switch (estadoSello){
+            case "Roto"             : spnrEstadoSello.setText("Roto"); break;
+            case "No instalado"     : spnrEstadoSello.setText("No instalado"); break;
+            case "Sin diligenciar"  : spnrEstadoSello.setText("Sin diligenciar"); break;
+            case "No reportado"     : spnrEstadoSello.setText("No reportado"); break;
+            case "Conforme"         : spnrEstadoSello.setText("Conforme"); break;
+        }
+
+        String matriMedi = suspension.getSUSP_COINC_MAT_MEDI();
+        switch (matriMedi){
+            case "Si" : rbtn_si_matr_med.setChecked(true); rbtn_si_matr_med.setEnabled(true); break;
+            case "No" : rbtn_no_matr_med.setChecked(true); rbtn_no_matr_med.setEnabled(true); break;
+        }
+
+        String matriPago = suspension.getSUSP_CON_PAGO();
+        switch (matriPago){
+            case "Si" : rbtn_mcp_si.setChecked(true); rbtn_mcp_si.setEnabled(true); break;
+            case "No" : rbtn_mcp_no.setChecked(true); rbtn_mcp_no.setEnabled(true); break;
+        }
+
+        String energia = suspension.getSUSP_TIENE_ENERGIA();
+        switch (energia){
+            case "Si" : rbtn_luz_si.setChecked(true); rbtn_luz_si.setEnabled(true); break;
+            case "No" : rbtn_luz_no.setChecked(true); rbtn_luz_no.setEnabled(true); break;
+        }
+
+        txtLectura.setText(suspension.getSUSP_LECTURA());
+        txtNom_contacto.setText(suspension.getSUSP_NOM_CONTACTO());
+        txtTel_celular.setText(suspension.getSUSP_NUM_CONTACTO());
+        txtObservaciones.setText(suspension.getSUSP_OBSERVACIONES());
+
+        String rechazo = suspension.getSUSP_RECHAZADO();
+        switch (rechazo){
+            case "Si" : rbtn_rechazo_si.setChecked(true); rbtn_rechazo_si.setEnabled(true); break;
+            case "No" : rbtn_rechazo_no.setChecked(true); rbtn_rechazo_no.setEnabled(true); break;
+        }
+
+        txtLatitudGPS.setText(suspension.getSUSP_LATITUD());
+        txtLongitudGPS.setText(suspension.getSUSP_LONGITUD());
     }
 
 

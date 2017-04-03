@@ -28,24 +28,24 @@ public class Suspension implements Parcelable {
     private String SUSP_GLOSA;
     private String SUSP_USUARIO;
     private String SUSP_ESTADO;
-    private String SUSP_NUM_STICKER;
-    private String SUSP_ESTADO_STICKER;
-    private String SUSP_SELLOSERIAL;
-    private String SUSP_SELLOSERIAL_ESTADO;
-    private String SUSP_COINC_MAT_MEDI;
-    private String SUSP_CON_PAGO;
-    private String SUSP_TIENE_ENERGIA;
-    private String SUSP_LECTURA;
-    private String SUSP_NOM_CONTACTO;
-    private String SUSP_NUM_CONTACTO;
-    private String SUSP_OBSERVACIONES;
-    private String SUSP_RECHAZADO;
-    private String SUSP_FOTO;
-    private String SUSP_LATITUD;
-    private String SUSP_LONGITUD;
-    private String SUSP_PROVEEDOR;
-    private String SUSP_FECHA_CARGA;
-    private String SUSP_FECHA_EJECUCION;
+    private String SUSP_NUM_STICKER = "";
+    private String SUSP_ESTADO_STICKER = "";
+    private String SUSP_SELLOSERIAL = "";
+    private String SUSP_SELLOSERIAL_ESTADO = "";
+    private String SUSP_COINC_MAT_MEDI = "";
+    private String SUSP_CON_PAGO = "";
+    private String SUSP_TIENE_ENERGIA= "";
+    private String SUSP_LECTURA = "";
+    private String SUSP_NOM_CONTACTO = "";
+    private String SUSP_NUM_CONTACTO = "";
+    private String SUSP_OBSERVACIONES = "";
+    private String SUSP_RECHAZADO = "";
+    private String SUSP_FOTO = "";
+    private String SUSP_LATITUD = "";
+    private String SUSP_LONGITUD = "";
+    private String SUSP_PROVEEDOR = "";
+    private String SUSP_FECHA_CARGA = "";
+    private String SUSP_FECHA_EJECUCION = "";
 
     public Suspension() {
     }

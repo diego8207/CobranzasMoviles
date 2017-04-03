@@ -38,10 +38,10 @@ public class SuspensionesActivity extends AppCompatActivity implements iSuspensi
 
         Bundle extras = getIntent().getExtras();
         try {
-            estado = extras.getString("estado").toString();
+            estado = extras.getString("estado");
         }catch (java.lang.NullPointerException e){
             Bundle extras2 = getIntent().getExtras();
-            estado = extras2.getString("estado").toString();
+            estado = extras2.getString("estado");
         }
 
 
