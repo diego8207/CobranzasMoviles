@@ -24,7 +24,7 @@
         </activity>
         <activity android:name=".vista.MenuPrincipal" />
         <activity
-            android:name=".vista.SuspensionesActivityRestantes"
+            android:name=".vista.SuspensionesActivity"
             android:label="@string/title_activity_suspensiones"
             android:parentActivityName=".vista.MenuPrincipal"
             android:theme="@style/AppTheme">
@@ -32,27 +32,10 @@
             <!-- Soporte para versiones 4.0 o menores -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".vista.MenuPrincipal"></meta-data>
+                android:value=".vista.MenuPrincipal" />
         </activity>
-        <activity
-            android:name=".vista.form_suspensiones_Activity"
-            android:parentActivityName=".vista.SuspensionesActivityRestantes">
-
-            <!-- Soporte para versiones 4.0 o menores -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".vista.SuspensionesActivityRestantes"></meta-data>
-        </activity>
-        <activity
-            android:name=".vista.SuspensionesActivitySubidas"
-            android:parentActivityName=".vista.MenuPrincipal"
-            android:theme="@style/AppTheme">
-
-            <!-- Soporte para versiones 4.0 o menores -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".vista.MenuPrincipal"></meta-data>
-        </activity>
+        <activity android:name=".vista.form_suspensiones_Activity"></activity>
+        <activity android:name=".vista.SuspensionesMostrarActivity"></activity>
     </application>
 
 </manifest>

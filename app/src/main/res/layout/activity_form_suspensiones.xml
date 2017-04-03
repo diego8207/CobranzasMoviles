@@ -699,7 +699,6 @@
                         android:layout_height="70dp"
                         android:text="Registrar"
                         android:layout_marginTop="50dp"
-                        android:onClick="validar"
                         android:theme="@style/MiRaisedButton"
                         android:textSize="20sp"
                         tools:textStyle="bold" />

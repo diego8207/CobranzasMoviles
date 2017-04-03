@@ -3,6 +3,10 @@ package co.macrosystem.cobranzasmoviles.pojo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Diego Velez on 08/02/2017.
  */
@@ -324,7 +328,7 @@ public class Suspension implements Parcelable {
     }
 
     public String getSUSP_FECHA_EJECUCION() {
-        return SUSP_FECHA_EJECUCION;
+        return fechaDeHoy();
     }
 
     public void setSUSP_FECHA_EJECUCION(String SUSP_FECHA_EJECUCION) {
@@ -359,6 +363,25 @@ public class Suspension implements Parcelable {
         dest.writeString(SUSP_ESTADO);
         dest.writeString(SUSP_PROVEEDOR);
         dest.writeString(SUSP_FECHA_CARGA);
+
+        dest.writeString(SUSP_NUM_STICKER);
+        dest.writeString(SUSP_ESTADO_STICKER);
+        dest.writeString(SUSP_SELLOSERIAL);
+        dest.writeString(SUSP_SELLOSERIAL_ESTADO);
+        dest.writeString(SUSP_COINC_MAT_MEDI);
+        dest.writeString(SUSP_CON_PAGO);
+        dest.writeString(SUSP_TIENE_ENERGIA);
+        dest.writeString(SUSP_LECTURA);
+        dest.writeString(SUSP_NOM_CONTACTO);
+        dest.writeString(SUSP_NUM_CONTACTO);
+        dest.writeString(SUSP_OBSERVACIONES);
+        dest.writeString(SUSP_RECHAZADO);
+        dest.writeString(SUSP_FOTO);
+        dest.writeString(SUSP_LATITUD);
+        dest.writeString(SUSP_LONGITUD);
+        dest.writeString(SUSP_FECHA_CARGA);
+
+
     }
 
     private void readFromParcel(Parcel in) {
@@ -379,6 +402,23 @@ public class Suspension implements Parcelable {
         SUSP_ESTADO = in.readString();
         SUSP_PROVEEDOR = in.readString();
         SUSP_FECHA_CARGA = in.readString();
+
+        SUSP_NUM_STICKER = in.readString();
+        SUSP_ESTADO_STICKER = in.readString();
+        SUSP_SELLOSERIAL = in.readString();
+        SUSP_SELLOSERIAL_ESTADO = in.readString();
+        SUSP_COINC_MAT_MEDI = in.readString();
+        SUSP_CON_PAGO = in.readString();
+        SUSP_TIENE_ENERGIA = in.readString();
+        SUSP_LECTURA = in.readString();
+        SUSP_NOM_CONTACTO = in.readString();
+        SUSP_NUM_CONTACTO = in.readString();
+        SUSP_OBSERVACIONES = in.readString();
+        SUSP_RECHAZADO = in.readString();
+        SUSP_FOTO = in.readString();
+        SUSP_LATITUD = in.readString();
+        SUSP_LONGITUD = in.readString();
+        SUSP_FECHA_CARGA = in.readString();
     }
 
     public Suspension(Parcel in) {
@@ -398,6 +438,12 @@ public class Suspension implements Parcelable {
 
 
     };
+
+    public String fechaDeHoy(){
+        Date fechaActual = new Date();
+        DateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        return formatoFecha.format(fechaActual);
+    }
 
 
 }

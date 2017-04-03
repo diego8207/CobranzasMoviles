@@ -27,8 +27,6 @@ import co.macrosystem.cobranzasmoviles.R;
 import co.macrosystem.cobranzasmoviles.db.BaseDatos;
 import co.macrosystem.cobranzasmoviles.db.ConstructorSuspensiones;
 import co.macrosystem.cobranzasmoviles.pojo.Suspension;
-import co.macrosystem.cobranzasmoviles.presentador.RvSuspensionesPresentador;
-import co.macrosystem.cobranzasmoviles.presentador.iRvSuspensionesPresentador;
 
 public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalView {
 
@@ -43,6 +41,8 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
     private TextView numSuspensionesSubidas;
     private TextView numSuspensionesProcesadas;
     private TextView numSuspensionesRestantes;
+    private ImageButton imgBtnSuspensionesProcesadas;
+    private ImageButton imgBtnSuspensionesSubidas;
     private ImageButton imgBtnSuspensionesRestantes;
     private Toolbar toolbarCard;
     Toolbar toolbar;
@@ -61,8 +61,11 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         numSuspensionesSubidas = (TextView) findViewById(R.id.lblCantSubidas);
         numSuspensionesProcesadas = (TextView) findViewById(R.id.lblCantProcesadas);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         imageViewExpand = (ImageView) findViewById(R.id.imageViewExpand);
         linearLayoutDetails = (ViewGroup) findViewById(R.id.linearLayoutDetails);
+        imgBtnSuspensionesProcesadas = (ImageButton) findViewById(R.id.imgBtnSuspensionesProcesadas);
+        imgBtnSuspensionesSubidas = (ImageButton) findViewById(R.id.imgBtnSuspensionesSubidas);
         imgBtnSuspensionesRestantes = (ImageButton) findViewById(R.id.imgBtnSuspensionesRestantes);
         toolbarCard = (Toolbar) findViewById(R.id.toolbarCardSuspensiones);
 
@@ -109,6 +112,7 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         imageViewExpand.startAnimation(animation);
     }
 
+    //OJO HAY QUE PASAR COMO PARAMETROS EL USUARIO Y LA FECHA PARA QUE LA CONSULTA QUEDE DINAMICA ----------------------------------
     public void obternetSuspensionesCargadas() {
         int numSuspensiones = 0;
         constructorSuspensiones = new ConstructorSuspensiones(context);
@@ -174,19 +178,19 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
     }
 
     public void visualizarSuspensionesRestantes(View view){
-        intent = new Intent(context, SuspensionesActivityRestantes.class);
+        intent = new Intent(context, SuspensionesActivity.class);
         intent.putExtra("estado", "restantes");
         startActivity(intent);
     }
 
     public void visualizarSuspensionesSubidas(View view){
-        intent = new Intent(context, SuspensionesActivityRestantes.class);
+        intent = new Intent(context, SuspensionesActivity.class);
         intent.putExtra("estado", "subidas");
         startActivity(intent);
     }
 
     public void visualizarSuspensionesProcesadas(View view){
-        intent = new Intent(context, SuspensionesActivityRestantes.class);
+        intent = new Intent(context, SuspensionesActivity.class);
         intent.putExtra("estado", "procesadas");
         startActivity(intent);
     }

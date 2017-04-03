@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import co.macrosystem.cobranzasmoviles.pojo.Suspension;
 import co.macrosystem.cobranzasmoviles.pojo.Usuario;
 import static co.macrosystem.cobranzasmoviles.db.ConstantesBaseDatos.DATABASE_NAME;
 import static co.macrosystem.cobranzasmoviles.db.ConstantesBaseDatos.DATABASE_VERSION;
+import static co.macrosystem.cobranzasmoviles.db.ConstantesBaseDatos.TABLE_SUSPENSIONES;
 
 public class BaseDatos extends SQLiteOpenHelper{
 
@@ -109,6 +111,13 @@ public class BaseDatos extends SQLiteOpenHelper{
         db.close();
     }
 
+    //Procesar suspension y almacenarla en SQLite
+    public void RegistrarSuspensionProcesada(ContentValues contentValues){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update(TABLE_SUSPENSIONES, contentValues, "SUSP_MATRICULA=" + contentValues.get("SUSP_MATRICULA"), null);
+        db.close();
+    }
+
 
 
 
@@ -116,7 +125,7 @@ public class BaseDatos extends SQLiteOpenHelper{
     public ArrayList<Suspension> obtenerSuspensionesSQLite(String estado){
         ArrayList<Suspension> supensiones = new ArrayList<>();
         String query = "SELECT SUSP_MATRICULA,  SUSP_NUM_PROCESO, SUSP_NUM_MEDIDOR, SUSP_SUSCRIPTOR, SUSP_CICLO, SUSP_MUNICIPIO, SUSP_DIRECCION, " +
-                        "SUSP_FECHA_ACTI, SUSP_TIPO_ACTI, SUSP_COD_ACCION, SUSP_DESCR_ACCION, SUSP_COD_TECNICO, SUSP_GLOSA, SUSP_PROVEEDOR, SUSP_FECHA_CARGA, SUSP_USUARIO " +
+                        "SUSP_FECHA_ACTI, SUSP_TIPO_ACTI, SUSP_COD_ACCION, SUSP_DESCR_ACCION, SUSP_COD_TECNICO, SUSP_GLOSA, SUSP_PROVEEDOR, SUSP_FECHA_CARGA, SUSP_USUARIO, SUSP_ESTADO " +
                 "FROM " + ConstantesBaseDatos.TABLE_SUSPENSIONES +
                 " WHERE SUSP_ESTADO like '" + estado + "'" ;
 //                " AND " + ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_CARGA + " = '" + fechaCarga + "'";
@@ -141,6 +150,7 @@ public class BaseDatos extends SQLiteOpenHelper{
             suspensionActual.setSUSP_PROVEEDOR(registros.getString(13));
             suspensionActual.setSUSP_FECHA_CARGA(registros.getString(14));
             suspensionActual.setSUSP_USUARIO(registros.getString(15));
+            suspensionActual.setSUSP_ESTADO(registros.getString(16));
             supensiones.add(suspensionActual);
         }
 
@@ -163,12 +173,7 @@ public class BaseDatos extends SQLiteOpenHelper{
         return total;
     }
 
-    //Procesar suspension y almacenarla en SQLite
-    public void RegistrarSuspensionProcesada(ContentValues contentValues){
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(ConstantesBaseDatos.TABLE_SUSPENSIONES, null, contentValues);
-        db.close();
-    }
+
 
     public int obtenerCantSuspensionesEstadoSQLite(String estado){
         int total = 0;

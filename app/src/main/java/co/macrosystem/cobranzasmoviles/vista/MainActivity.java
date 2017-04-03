@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+   /*     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             } else {
@@ -101,13 +101,13 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             locationManager.removeUpdates(locationListener);
-        }
+        } */
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //Validamos si hay GPS activo
+     /*   //Validamos si hay GPS activo
         if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
             AlertNoGps();
         }
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
+*/
 
     }
 
@@ -156,9 +156,6 @@ public class MainActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(txtUser.getText()) && !TextUtils.isEmpty(txtPassw.getText())){
             Intent intent = new Intent(this, MenuPrincipal.class);
             startActivity(intent);
-
-
-
         }
 
         /**

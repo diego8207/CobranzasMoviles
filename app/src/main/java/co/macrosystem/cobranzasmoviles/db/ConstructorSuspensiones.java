@@ -2,6 +2,7 @@ package co.macrosystem.cobranzasmoviles.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -15,7 +16,15 @@ import co.macrosystem.cobranzasmoviles.pojo.Suspension;
 public class ConstructorSuspensiones {
 
     private Context context;
+    public static String estado = "";
 
+    public static String getEstado() {
+        return estado;
+    }
+
+    public static void setEstado(String estado) {
+        ConstructorSuspensiones.estado = estado;
+    }
 
     public ConstructorSuspensiones(Context context) {
         this.context = context;
@@ -111,8 +120,11 @@ public class ConstructorSuspensiones {
     }
 
     //Enviamos la suspension a la capa de datos para ser insertada en SQLite
+    //FULL YA ESTA LISTA
     public void procesarSuspension(Suspension suspension){
+
         BaseDatos db = new BaseDatos(context);
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_MATRICULA, suspension.getSUSP_MATRICULA());
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_NUM_STICKER, suspension.getSUSP_NUM_STICKER());
@@ -132,6 +144,7 @@ public class ConstructorSuspensiones {
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_LONGITUD, suspension.getSUSP_LONGITUD());
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_EJECU, suspension.getSUSP_FECHA_EJECUCION());
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_FECHA_CARGA, suspension.getSUSP_FECHA_CARGA());
+        contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_ESTADO, "procesadas");
 
         db.RegistrarSuspensionProcesada(contentValues);
 

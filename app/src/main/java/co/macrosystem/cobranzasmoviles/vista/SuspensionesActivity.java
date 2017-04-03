@@ -10,36 +10,50 @@ import java.util.ArrayList;
 
 import co.macrosystem.cobranzasmoviles.R;
 import co.macrosystem.cobranzasmoviles.adapter.SuspensionAdaptador;
+import co.macrosystem.cobranzasmoviles.db.ConstructorSuspensiones;
 import co.macrosystem.cobranzasmoviles.pojo.Suspension;
 import co.macrosystem.cobranzasmoviles.presentador.RvSuspensionesPresentador;
 import co.macrosystem.cobranzasmoviles.presentador.iRvSuspensionesPresentador;
 
-public class SuspensionesActivityRestantes extends AppCompatActivity implements iSuspensionesActivityRestantesView {
+public class SuspensionesActivity extends AppCompatActivity implements iSuspensionesActivityView {
 
     //ArrayList<Suspension> suspensiones = null;
     private RecyclerView rvListaSuspensionesRestantes;
     private iRvSuspensionesPresentador presentador;
-    private String estado;
+    private ConstructorSuspensiones constructorSuspensiones;
+    public String estado="";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_suspensiones_restantes);
+        setContentView(R.layout.activity_suspensiones);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
         //toolbar.setLogo(R.drawable.logo_cobranzas_title);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle extras = getIntent().getExtras();
-        estado = extras.getString("estado");
+        try {
+            estado = extras.getString("estado").toString();
+        }catch (java.lang.NullPointerException e){
+            Bundle extras2 = getIntent().getExtras();
+            estado = extras2.getString("estado").toString();
+        }
+
+
+
+
 
         //capturamos el RecyclerView que se esta utilizand en la actividad
         rvListaSuspensionesRestantes = (RecyclerView) findViewById(R.id.rvSuspensiones);
 
         /**
          * instanciamos el iRvSuspensionesPresentador llamado presentador --> ver la interface iRvSuspensionesPresentador
-         * el el package presentador enviando como parametros this que es la interface iSuspensionesActivityRestantesView
+         * el el package presentador enviando como parametros this que es la interface iSuspensionesActivityView
          * y el contexto.
           */
         presentador = new RvSuspensionesPresentador(this, getBaseContext(), estado);

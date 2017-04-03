@@ -6,9 +6,8 @@ import java.util.ArrayList;
 
 import co.macrosystem.cobranzasmoviles.db.ConstructorSuspensiones;
 import co.macrosystem.cobranzasmoviles.pojo.Suspension;
-import co.macrosystem.cobranzasmoviles.vista.SuspensionesActivityRestantes;
-import co.macrosystem.cobranzasmoviles.vista.SuspensionesActivitySubidas;
-import co.macrosystem.cobranzasmoviles.vista.iSuspensionesActivityRestantesView;
+import co.macrosystem.cobranzasmoviles.vista.SuspensionesActivity;
+import co.macrosystem.cobranzasmoviles.vista.iSuspensionesActivityView;
 
 /**
  * Created by Diego Velez on 16/03/2017.
@@ -16,14 +15,14 @@ import co.macrosystem.cobranzasmoviles.vista.iSuspensionesActivityRestantesView;
 
 public class RvSuspensionesPresentador implements iRvSuspensionesPresentador {
 
-    private iSuspensionesActivityRestantesView iSuspensionesActivityRestantesView;
+    private iSuspensionesActivityView iSuspensionesActivityView;
     private Context context;
 
     private ArrayList<Suspension> suspensiones;
     private ConstructorSuspensiones constructorSuspensiones;
 
-    public RvSuspensionesPresentador(SuspensionesActivityRestantes iSuspensionesActivityRestantesView, Context context, String estado) {
-        this.iSuspensionesActivityRestantesView = iSuspensionesActivityRestantesView;
+    public RvSuspensionesPresentador(SuspensionesActivity iSuspensionesActivityView, Context context, String estado) {
+        this.iSuspensionesActivityView = iSuspensionesActivityView;
         this.context = context;
         obternerSuspensiones(estado);
     }
@@ -37,8 +36,8 @@ public class RvSuspensionesPresentador implements iRvSuspensionesPresentador {
 
     @Override
     public void mostrarSuspensionesRV() {
-        iSuspensionesActivityRestantesView.inicializarAdaptadorRV(iSuspensionesActivityRestantesView.crearAdaptador(suspensiones));
-        iSuspensionesActivityRestantesView.generarLinearLayoutVertical();
+        iSuspensionesActivityView.inicializarAdaptadorRV(iSuspensionesActivityView.crearAdaptador(suspensiones));
+        iSuspensionesActivityView.generarLinearLayoutVertical();
     }
 
     @Override

@@ -112,14 +112,14 @@
                         <TextView
                             android:id="@+id/procesadas"
                             android:layout_column="0"
-                            android:layout_row="0"
+                            android:layout_row="1"
                             android:layout_gravity="center_vertical"
                             android:textSize="18sp"
                             android:text="PROCESADAS: " />
                         <TextView
                             android:id="@+id/subidas"
                             android:layout_column="0"
-                            android:layout_row="1"
+                            android:layout_row="0"
                             android:layout_gravity="center_vertical"
                             android:textSize="18sp"
                             android:text="SUBIDAS: " />
@@ -134,7 +134,7 @@
                         <TextView
                             android:id="@+id/lblCantProcesadas"
                             android:layout_column="1"
-                            android:layout_row="0"
+                            android:layout_row="1"
                             android:textSize="35sp"
                             android:text="#"
                             android:layout_gravity="center"/>
@@ -142,7 +142,7 @@
                         <TextView
                             android:id="@+id/lblCantSubidas"
                             android:layout_column="1"
-                            android:layout_row="1"
+                            android:layout_row="0"
                             android:textSize="35sp"
                             android:text="#"
                             android:layout_gravity="center"/>
@@ -151,9 +151,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="2"
-                            android:layout_row="0"
+                            android:layout_row="1"
                             card_view:srcCompat="@drawable/rotate"
-                            android:id="@+id/imageButton1"
+                            android:id="@+id/imgBtnSuspensionesProcesadas"
                             android:elevation="4dp"
                             android:onClick="visualizarSuspensionesProcesadas"/>
 
@@ -161,7 +161,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="2"
-                            android:layout_row="1"
+                            android:layout_row="0"
                             card_view:srcCompat="@drawable/servidor_web"
                             android:id="@+id/imgBtnSuspensionesSubidas"
                             android:elevation="4dp"
