@@ -49,7 +49,7 @@ public class ConstructorSuspensiones {
 
     public ArrayList<Suspension> obtenerSuspensionesWebService(){
 
-        
+        ConsumirWS("Dvargas", "27/02/2017");
         /**
          * Aqui estamos insertando en SQLite datos Dummy pero pronto se implementara info de un web service
          */
@@ -66,6 +66,10 @@ public class ConstructorSuspensiones {
         suspensiones.add(new Suspension("215367","6677138865","6677006099","CASTRO BUITRAGO CARMENZA","9 - Ibague 9","1 - IBAGUE","APT 13 CS.9 2ETAPA C.S.BOLIVAR","27/02/2017" ,"11 - Suspension","904"," Rec BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
         suspensiones.add(new Suspension("428350","70753805","20101006357","ARIAS BEDOYA OMAIRA","9 - Ibague 9","1 - IBAGUE","MNZ 17 CS 10 2DA ET SIMON BOLIVAR","27/02/2017" ,"11 - Suspension","904","Susver BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
         return suspensiones;
+    }
+
+    private void ConsumirWS(String usuario, String fecha) {
+
     }
 
     public boolean registrarSuspensionesSQLite(BaseDatos db){

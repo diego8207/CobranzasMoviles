@@ -7,14 +7,14 @@ package co.macrosystem.cobranzasmoviles.db;
 
 public class WService {
     // Método que queremos ejecutar en el servicio web
-    public static final String Metodo = "ConsultarUsuarios";
-    public static final String MetodoLogin = "ConsultarUsuario";
+    public static final String Metodo = "WSSuspensiones";
+    public static final String MetodoLogin = "WSSuspensiones";
     // Namespace definido en el servicio web
     public static final String namespace = "http://webservices/";
     // namespace + metodo
-    public static final String accionSoap = "http://webservices//ConsultarUsuarios";
+    public static final String accionSoap = "http://webservices//WSSuspensiones";
     // Fichero de definicion del servcio web
-    public static final String url = "http://192.168.1.6:8090/WSUsuario/WSGestionUsuario?wsdl";
+    public static final String url = "http://192.168.1.8:8090/WS_FORMULARIOS/WSSuspensiones?wsdl";
     private boolean boolres = false;
 /*
     public boolean invoceWS() {

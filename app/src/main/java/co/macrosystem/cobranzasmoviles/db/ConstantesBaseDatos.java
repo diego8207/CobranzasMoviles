@@ -64,4 +64,14 @@ public class ConstantesBaseDatos {
     public static final String TABLE_SUSPENSIONES_LONGITUD          = "SUSP_LONGITUD";
     public static final String TABLE_SUSPENSIONES_FECHA_EJECU       = "SUSP_FECHA_EJECU";
     public static final String TABLE_SUSPENSIONES_FECHA_CARGA       = "SUSP_FECHA_CARGA";
+
+    // Método que queremos ejecutar en el servicio web
+    public static final String Metodo = "WSSuspensiones";
+    // Namespace definido en el servicio web
+    private static final String namespace = "http://webservices/";
+    // namespace + metodo
+    private static final String accionSoap = "http://webservices/WSSuspensiones";
+    // Fichero de definicion del servcio web
+    private static final String url = "http://localhost:8090/WS_FORMULARIOS/WSSuspensiones?wsdl";
+
 }

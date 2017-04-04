@@ -1,25 +1,37 @@
 package co.macrosystem.cobranzasmoviles.vista;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Vector;
 
 import co.macrosystem.cobranzasmoviles.DialogoConfirmacion;
 import co.macrosystem.cobranzasmoviles.ExpandAndCollapseViewUtil;
@@ -28,12 +40,22 @@ import co.macrosystem.cobranzasmoviles.db.BaseDatos;
 import co.macrosystem.cobranzasmoviles.db.ConstructorSuspensiones;
 import co.macrosystem.cobranzasmoviles.pojo.Suspension;
 
+import static co.macrosystem.cobranzasmoviles.db.ConstantesBaseDatos.Metodo;
+import static co.macrosystem.cobranzasmoviles.db.WService.accionSoap;
+import static co.macrosystem.cobranzasmoviles.db.WService.namespace;
+import static co.macrosystem.cobranzasmoviles.db.WService.url;
+
 public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalView {
 
     private Context context;
     private ArrayList<Suspension> suspensiones = null;
     private ConstructorSuspensiones constructorSuspensiones;
     int numSuspensiones=0;
+
+    private boolean boolres=false;
+    private ListView lista;
+    private ArrayList<Suspension> suspensionesWS;
+    private ArrayAdapter<Suspension> adapter;
 
     private ViewGroup linearLayoutDetails;
     private ImageView imageViewExpand;
@@ -119,6 +141,8 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         numSuspensiones = constructorSuspensiones.ObtenerTotalSuspensionesCargadas();
         //numSuspensiones = suspensiones.size();
         if (numSuspensiones != 0){
+            ProgressDialog progress = new ProgressDialog(this);
+            consumir(progress, this);
             mostrarCantidades(context);
             numSuspensionesCargadas.setText("Cargadas por analista: " + numSuspensiones);
             Toast.makeText(MenuPrincipal.this, "Sincronizando Suspensiones", Toast.LENGTH_SHORT).show();
@@ -211,6 +235,113 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
             e.printStackTrace();
         }
         return false;
+    }
+
+    //ESTE ES EL METODO PRINCIPAL DONDE LLAMAMOS CREAMOS EL HILO DE CARGA DE SUSPENSIONES
+    public  void consumir(ProgressDialog progress, MenuPrincipal activity){
+        progress.setMessage("Descargando Suspensiones del servidor");
+        new consumirAsyc(progress, activity).execute();
+    }
+
+    public class consumirAsyc extends  android.os.AsyncTask<Void, Void, Void>{
+
+        ProgressDialog progress;
+        MenuPrincipal menuPrincipal;
+
+        //Constructor del hilo
+        public consumirAsyc(ProgressDialog progress, MenuPrincipal menuPrincipal) {
+            this.progress = progress;
+            this.menuPrincipal = menuPrincipal;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            //AQUI PONEMOS LA BARRA DE CARGA O PROGRESSBAR
+            //Toast.makeText(getApplicationContext(), "Descargando..", Toast.LENGTH_SHORT).show();
+            progress.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            if(boolres){
+                Toast.makeText(getApplicationContext(), " Suspensiones Descargadas y registradas en el Móvil", Toast.LENGTH_SHORT).show();
+            }
+            //Toast.makeText(getApplicationContext(), "Finalizada..", Toast.LENGTH_SHORT).show();
+            progress.dismiss();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            boolres=invoceWS();
+            return null;
+        }
+
+
+
+
+
+    }
+
+    public boolean invoceWS(){
+        boolean res=false;
+        try {
+
+            SoapObject request = new SoapObject(namespace, Metodo);
+            request.addProperty("usuario", "Dvargas");//por ahora usamos usuario Dummy
+            SoapSerializationEnvelope sobre = new SoapSerializationEnvelope(SoapEnvelope. VER11);
+            //sobre.dotNet = true;
+            sobre.setOutputSoapObject(request);
+            HttpTransportSE transporte = new HttpTransportSE(url);
+            transporte.call(accionSoap, sobre);    // Llamada
+            Vector<?> responseVector=null;
+            SoapObject soapObject=null;
+            suspensionesWS = new ArrayList<>();
+            if(sobre.getResponse() instanceof Vector)
+                responseVector = (Vector<?>) sobre.getResponse();//almacenar en vector
+            else
+                soapObject=(SoapObject)sobre.getResponse();
+            if(responseVector!=null){
+                int count=responseVector.size();
+                for (int i = 0; i <count; ++i) { //Cada registro encontrado
+                    SoapObject test=(SoapObject)responseVector.get(i);
+                    suspensionesWS.add(leerSoap(test));
+                }
+            }else{
+                if(soapObject!=null)
+                    suspensionesWS.add(leerSoap(soapObject));
+            }
+            res=true;
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage());
+        }
+
+        return res;
+    }
+
+    private Suspension leerSoap(SoapObject soapObj){
+        Suspension suspension = new Suspension();
+        String SUSP_MATRICULA = soapObj.getProperty("SUSP_MATRICULA").toString();
+        String SUSP_NUM_PROCESO = soapObj.getProperty("SUSP_NUM_PROCESO").toString();
+        String SUSP_NUM_MEDIDOR = soapObj.getProperty("SUSP_NUM_MEDIDOR").toString();
+        String SUSP_SUSCRIPTOR = soapObj.getProperty("SUSP_SUSCRIPTOR").toString();
+        String SUSP_CICLO = soapObj.getProperty("SUSP_CICLO").toString();
+        String SUSP_MUNICIPIO = soapObj.getProperty("SUSP_MUNICIPIO").toString();
+        String SUSP_DIRECCION = soapObj.getProperty("SUSP_DIRECCION").toString();
+        String SUSP_FECHA_ACTI = soapObj.getProperty("SUSP_FECHA_ACTI").toString();
+        String SUSP_TIPO_ACTI = soapObj.getProperty("SUSP_TIPO_ACTI").toString();
+        String SUSP_COD_ACCION = soapObj.getProperty("SUSP_COD_ACCION").toString();
+        String SUSP_DESCR_ACCION = soapObj.getProperty("SUSP_DESCR_ACCION").toString();
+        String SUSP_COD_TECNICO = soapObj.getProperty("SUSP_COD_TECNICO").toString();
+        String SUSP_GLOSA = soapObj.getProperty("SUSP_GLOSA").toString();
+        String SUSP_PROVEEDOR = soapObj.getProperty("SUSP_PROVEEDOR").toString();
+        String SUSP_ESTADO = soapObj.getProperty("SUSP_ESTADO").toString();
+        String SUSP_FECHA_CARGA = soapObj.getProperty("SUSP_FECHA_CARGA").toString();
+
+        Log.i("MATRICULA: ", SUSP_MATRICULA);
+
+        suspension = new Suspension(SUSP_MATRICULA, SUSP_NUM_PROCESO, SUSP_NUM_MEDIDOR, SUSP_SUSCRIPTOR, SUSP_CICLO, SUSP_MUNICIPIO, SUSP_DIRECCION, SUSP_FECHA_ACTI, SUSP_TIPO_ACTI, SUSP_COD_ACCION, SUSP_DESCR_ACCION, SUSP_COD_TECNICO, SUSP_GLOSA, SUSP_PROVEEDOR, "Dvargas", SUSP_ESTADO, SUSP_FECHA_CARGA);
+
+        return suspension;
     }
 
 
