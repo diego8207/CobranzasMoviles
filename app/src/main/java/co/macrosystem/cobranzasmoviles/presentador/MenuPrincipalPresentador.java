@@ -22,9 +22,9 @@ public class MenuPrincipalPresentador implements iMenuPrincipalPresentador{
     }
 
     @Override
-    public int obtenerCantSuspensionesEstado(String estado) {
+    public int obtenerCantSuspensionesEstado(String estado, String usuario) {
         constructorSuspensiones = new ConstructorSuspensiones(context);
-        cant = constructorSuspensiones.obtenerSuspensionesRestantesEstado(estado);
+        cant = constructorSuspensiones.obtenerSuspensionesRestantesEstado(estado, usuario);
         return cant;
     }
 }

@@ -297,7 +297,7 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
             @Override
             public void onClick(View view) {
                 ConstructorSuspensiones constructorSuspensiones =  new ConstructorSuspensiones(view.getContext());
-                if (validar()){
+                if (validar(suspension)){
                     try {
                         constructorSuspensiones.procesarSuspension(suspension);
                         Toast.makeText(context, "Suspension procesada exitosamente ! ", Toast.LENGTH_SHORT).show();
@@ -307,7 +307,7 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
                         Log.i("Excepcion Nula", e.toString());
                     }
                 }else{
-                    Toast.makeText(context, "Error al procesar el formulario ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Formulario incompleto", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -322,9 +322,10 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
 
     }
 
-    //Metodo que valida todos los campos obligatorios del formulario de suspension.
-    public boolean validar() {
+    //Metodo que valida todos los campos obligatorios del formulario de p_suspension.
+    public boolean validar(Suspension p_suspension) {
         boolean validaformulario = false;
+        int contador = 0;
         IniciarServicioGPS();
 
 
@@ -358,15 +359,15 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
 
         } else {
             error_Opciones_estado_sello.setVisibility(View.GONE);
-            suspension.setSUSP_SELLOSERIAL_ESTADO(itemSeleccionadoEstadoSello);
-            validaformulario = true;
+            p_suspension.setSUSP_SELLOSERIAL_ESTADO(itemSeleccionadoEstadoSello);
+            contador ++;
         }
 
 
         /**
          * Validamos si el RadioGroup ha sido seleccionado: en case de que no
          * que muestre el un textview con el mensaje de error en caso contrario
-         * que almacene el valor selecionado en el objeto suspension
+         * que almacene el valor selecionado en el objeto p_suspension
          */
         if (estadoEstickerSelected == -1) {
             stickerRbgError = getString(R.string.rgbopcionesError);
@@ -377,14 +378,15 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
             validaformulario = true;
 
             if (rbtn_estado_roto.isChecked()) {
-                suspension.setSUSP_ESTADO_STICKER("Roto");
+                p_suspension.setSUSP_ESTADO_STICKER("Roto");
             }
             if (rbtn_estado_No_instal.isChecked()) {
-                suspension.setSUSP_ESTADO_STICKER("No instalado");
+                p_suspension.setSUSP_ESTADO_STICKER("No instalado");
             }
             if (rbtn_estado_sin_diligen.isChecked()) {
-                suspension.setSUSP_ESTADO_STICKER("Sin diligenciar");
+                p_suspension.setSUSP_ESTADO_STICKER("Sin diligenciar");
             }
+            contador ++;
         }
 
         if (matriculaMedidorSelected == -1) {
@@ -396,14 +398,15 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
             validaformulario = true;
 
             if (rbtn_si_matr_med.isChecked()) {
-                suspension.setSUSP_COINC_MAT_MEDI("Si");
+                p_suspension.setSUSP_COINC_MAT_MEDI("Si");
             }
             if (rbtn_no_matr_med.isChecked()) {
-                suspension.setSUSP_COINC_MAT_MEDI("No");
+                p_suspension.setSUSP_COINC_MAT_MEDI("No");
             }
             if (rbtn_no_aplica_matr_med.isChecked()) {
-                suspension.setSUSP_COINC_MAT_MEDI("No aplica");
+                p_suspension.setSUSP_COINC_MAT_MEDI("No aplica");
             }
+            contador ++;
         }
 
         if (matriculaPagoSelected == -1) {
@@ -415,14 +418,15 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
             validaformulario = true;
 
             if (rbtn_mcp_si.isChecked()) {
-                suspension.setSUSP_CON_PAGO("Si");
+                p_suspension.setSUSP_CON_PAGO("Si");
             }
             if (rbtn_mcp_no.isChecked()) {
-                suspension.setSUSP_CON_PAGO("No");
+                p_suspension.setSUSP_CON_PAGO("No");
             }
             if (rbtn_mcp_no_aplica.isChecked()) {
-                suspension.setSUSP_CON_PAGO("No aplica");
+                p_suspension.setSUSP_CON_PAGO("No aplica");
             }
+            contador ++;
         }
 
         if (energiaSelected == -1) {
@@ -434,14 +438,15 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
             validaformulario = true;
 
             if (rbtn_luz_si.isChecked()) {
-                suspension.setSUSP_TIENE_ENERGIA("Si");
+                p_suspension.setSUSP_TIENE_ENERGIA("Si");
             }
             if (rbtn_luz_no.isChecked()) {
-                suspension.setSUSP_TIENE_ENERGIA("No");
+                p_suspension.setSUSP_TIENE_ENERGIA("No");
             }
             if (rbtn_luz_no_aplica.isChecked()) {
-                suspension.setSUSP_TIENE_ENERGIA("No aplica");
+                p_suspension.setSUSP_TIENE_ENERGIA("No aplica");
             }
+            contador ++;
         }
 
         if (rechazoSelected == -1) {
@@ -453,71 +458,70 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
             validaformulario = true;
 
             if (rbtn_rechazo_si.isChecked()) {
-                suspension.setSUSP_RECHAZADO("Si");
+                p_suspension.setSUSP_RECHAZADO("Si");
             }
             if (rbtn_rechazo_no.isChecked()) {
-                suspension.setSUSP_RECHAZADO("No");
+                p_suspension.setSUSP_RECHAZADO("No");
             }
+            contador ++;
         }
 
         /**-----------------------------------------------------------------------------------
          * validamos si los InputEditText estan vacios para visualizar mensaje de error
-         * en caso contrario almacenamos el valor en el objeto suspension
+         * en caso contrario almacenamos el valor en el objeto p_suspension
          */
 
         if (TextUtils.isEmpty(txtSticker.getText())) {
             stickerError = getString(R.string.obligatorio);
 
         } else {
-            suspension.setSUSP_NUM_STICKER(txtSticker.getText().toString());
-            validaformulario = true;
+            p_suspension.setSUSP_NUM_STICKER(txtSticker.getText().toString());
+            contador ++;
         }
 
         if (TextUtils.isEmpty(txtSelloSerial.getText())) {
             selloSerialError = getString(R.string.obligatorio);
 
         } else {
-            suspension.setSUSP_SELLOSERIAL(txtSelloSerial.getText().toString());
-            validaformulario = true;
+            p_suspension.setSUSP_SELLOSERIAL(txtSelloSerial.getText().toString());
+            contador ++;
         }
 
         if (TextUtils.isEmpty(txtLectura.getText())) {
             lecturaError = getString(R.string.obligatorio);
 
         } else {
-            suspension.setSUSP_LECTURA(txtLectura.getText().toString());
-            validaformulario = true;
+            p_suspension.setSUSP_LECTURA(txtLectura.getText().toString());
+            contador ++;
         }
 
         if (TextUtils.isEmpty(txtNom_contacto.getText())) {
             contactoError = getString(R.string.obligatorio);
 
         } else {
-            suspension.setSUSP_NOM_CONTACTO(txtNom_contacto.getText().toString());
-            validaformulario = true;
+            p_suspension.setSUSP_NOM_CONTACTO(txtNom_contacto.getText().toString());
+            contador ++;
         }
 
         if (TextUtils.isEmpty(txtTel_celular.getText())) {
             TelCelularError = getString(R.string.obligatorio);
 
         } else {
-            suspension.setSUSP_NUM_CONTACTO(txtTel_celular.getText().toString());
-            validaformulario = true;
+            p_suspension.setSUSP_NUM_CONTACTO(txtTel_celular.getText().toString());
+            contador ++;
         }
 
         if (TextUtils.isEmpty(txtObservaciones.getText())) {
             observacionesError = getString(R.string.obligatorio);
 
         } else {
-            suspension.setSUSP_OBSERVACIONES(txtObservaciones.getText().toString());
-            validaformulario = true;
+            p_suspension.setSUSP_OBSERVACIONES(txtObservaciones.getText().toString());
+            contador ++;
         }/**
          * FIN DE LA VALIDACION DE OBJETOS DE SOLO LECTURA PARA FORMULARIOS
          * PROCESADOS Y SUBIDOS
          * -----------------------------------------------------------------------------------
          */
-
-
 
         //asignamos el error a cada TextImputLayout para que se pueda visualizar cuando se presenten las validaciones
         toggleTextInputLayoutError(til_sticker, stickerError);
@@ -529,6 +533,19 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
 
         IniciarServicioGPS();
         muestraUbicacionActual();
+
+
+        /**
+         * este contador fue creado para controlar la validacion del formulario,
+         * por cada campo diligenciado se incrementa en uno hasta llegar a 12
+         * si no ha llegado a la cantidad de campos que deben ser diligenciados
+         * retornara un false  no dejara procesar la suspension.
+         */
+        if (contador == 12){
+            validaformulario = true;
+        }else{
+            validaformulario = false;
+        }
 
         //visualizarInformacion(); //muestra en un Toast todos los datos capturados en el formulario
         return validaformulario;
@@ -658,7 +675,7 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
         txtSelloSerial.setText(suspension.getSUSP_SELLOSERIAL());
 
         String estadoSello = suspension.getSUSP_SELLOSERIAL_ESTADO();
-        Toast.makeText(this, "ESTADO SELLO : " + estadoSello, Toast.LENGTH_SHORT).show();
+
         switch (estadoSello){
             case "Roto"             : spnrEstadoSello.setText("Roto"); break;
             case "No instalado"     : spnrEstadoSello.setText("No instalado"); break;

@@ -1,10 +1,10 @@
 package co.macrosystem.cobranzasmoviles.vista;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -15,47 +15,39 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Vector;
-
-import co.macrosystem.cobranzasmoviles.DialogoConfirmacion;
 import co.macrosystem.cobranzasmoviles.ExpandAndCollapseViewUtil;
 import co.macrosystem.cobranzasmoviles.R;
 import co.macrosystem.cobranzasmoviles.db.BaseDatos;
 import co.macrosystem.cobranzasmoviles.db.ConstructorSuspensiones;
 import co.macrosystem.cobranzasmoviles.pojo.Suspension;
-
 import static co.macrosystem.cobranzasmoviles.db.ConstantesBaseDatos.Metodo;
-import static co.macrosystem.cobranzasmoviles.db.WService.accionSoap;
-import static co.macrosystem.cobranzasmoviles.db.WService.namespace;
-import static co.macrosystem.cobranzasmoviles.db.WService.url;
+import static co.macrosystem.cobranzasmoviles.db.ConstantesBaseDatos.accionSoap;
+import static co.macrosystem.cobranzasmoviles.db.ConstantesBaseDatos.namespace;
+import static co.macrosystem.cobranzasmoviles.db.ConstantesBaseDatos.url;
 
 public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalView {
 
     private Context context;
     private ArrayList<Suspension> suspensiones = null;
     private ConstructorSuspensiones constructorSuspensiones;
-    int numSuspensiones=0;
 
     private boolean boolres=false;
-    private ListView lista;
     private ArrayList<Suspension> suspensionesWS;
     private ArrayAdapter<Suspension> adapter;
+    private SharedPreferences datos_compartidos;
+    private String usuarioShare;
 
     private ViewGroup linearLayoutDetails;
     private ImageView imageViewExpand;
@@ -63,20 +55,25 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
     private TextView numSuspensionesSubidas;
     private TextView numSuspensionesProcesadas;
     private TextView numSuspensionesRestantes;
-    private ImageButton imgBtnSuspensionesProcesadas;
-    private ImageButton imgBtnSuspensionesSubidas;
-    private ImageButton imgBtnSuspensionesRestantes;
+
     private Toolbar toolbarCard;
     Toolbar toolbar;
     private Intent intent;
     private static final int DURATION = 250;
     private boolean internet = false;
+    private int consecutivoHilo = 0; //VARIABLE QUE SE UTILIZARA PARA CONTROLAR LA CANTIDAD DE PROCESOS EN EL AsyncTask Y PODER ACTUALIZAR EL MENSAJE DEL ProgressBar
+    private int numSuspensiones = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_principal);
         context = this.getBaseContext();
+
+        //Ejemplo de como Recuperar datos de un SharePrefereces
+        datos_compartidos = getSharedPreferences("usuarioCompartido", 0);
+        usuarioShare = datos_compartidos.getString("usuario", "");
+        Toast.makeText(this, "usuario: " + usuarioShare , Toast.LENGTH_SHORT).show();
 
         numSuspensionesCargadas = (TextView) findViewById(R.id.txtSuspCargadas);
         numSuspensionesRestantes = (TextView) findViewById(R.id.lblCantRestantes);
@@ -86,23 +83,23 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         setSupportActionBar(toolbar);
         imageViewExpand = (ImageView) findViewById(R.id.imageViewExpand);
         linearLayoutDetails = (ViewGroup) findViewById(R.id.linearLayoutDetails);
-        imgBtnSuspensionesProcesadas = (ImageButton) findViewById(R.id.imgBtnSuspensionesProcesadas);
-        imgBtnSuspensionesSubidas = (ImageButton) findViewById(R.id.imgBtnSuspensionesSubidas);
-        imgBtnSuspensionesRestantes = (ImageButton) findViewById(R.id.imgBtnSuspensionesRestantes);
         toolbarCard = (Toolbar) findViewById(R.id.toolbarCardSuspensiones);
 
         inicializarToolBarPrincipal();
         inializararToolBarCV(context);
-        validarInternet(context);
-        obternetSuspensionesCargadas();
+        //validarInternet(context); por ahora no vamos a validar internet al inicio
+
+
+        obternetSuspensionesAlmacenadasServer();
         mostrarCantidades(context);
+        numSuspensiones = constructorSuspensiones.ObtenerCantSuspensionesCargadasSQLite(usuarioShare);
 
     }
 
     public void mostrarCantidades(Context context){
-        numSuspensionesRestantes.setText(String.valueOf(constructorSuspensiones.obtenerSuspensionesRestantesEstado("restantes")));
-        numSuspensionesSubidas.setText(String.valueOf(constructorSuspensiones.obtenerSuspensionesRestantesEstado("subidas")));
-        numSuspensionesProcesadas.setText(String.valueOf(constructorSuspensiones.obtenerSuspensionesRestantesEstado("procesadas")));
+        numSuspensionesRestantes.setText(String.valueOf(constructorSuspensiones.obtenerSuspensionesRestantesEstado("restantes", usuarioShare)));
+        numSuspensionesSubidas.setText(String.valueOf(constructorSuspensiones.obtenerSuspensionesRestantesEstado("subidas", usuarioShare)));
+        numSuspensionesProcesadas.setText(String.valueOf(constructorSuspensiones.obtenerSuspensionesRestantesEstado("procesadas", usuarioShare)));
     }
 
     public String fechaDeHoy(){
@@ -134,24 +131,24 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
     }
 
     //OJO HAY QUE PASAR COMO PARAMETROS EL USUARIO Y LA FECHA PARA QUE LA CONSULTA QUEDE DINAMICA ----------------------------------
-    public void obternetSuspensionesCargadas() {
-        int numSuspensiones = 0;
+    public void obternetSuspensionesAlmacenadasServer() {
+        //Toast.makeText(context, "Entramos a obternetSuspensionesAlmacenadasServer", Toast.LENGTH_SHORT).show();
+
         constructorSuspensiones = new ConstructorSuspensiones(context);
-        //suspensiones = constructorSuspensiones.obtenerDatos();
-        numSuspensiones = constructorSuspensiones.ObtenerTotalSuspensionesCargadas();
-        //numSuspensiones = suspensiones.size();
-        if (numSuspensiones != 0){
+
+        if (numSuspensiones == 0){
             ProgressDialog progress = new ProgressDialog(this);
-            consumir(progress, this);
-            mostrarCantidades(context);
-            numSuspensionesCargadas.setText("Cargadas por analista: " + numSuspensiones);
-            Toast.makeText(MenuPrincipal.this, "Sincronizando Suspensiones", Toast.LENGTH_SHORT).show();
-            Toast toast1 = Toast.makeText(getApplicationContext(), "Suspensiones Cargadas:" + numSuspensiones, Toast.LENGTH_SHORT);
-            toast1.show();
-        }else{
+
+                new SuspensionesAsyncTask(progress, this).execute();
+
             numSuspensionesCargadas.setText("No hay Suspensiones Cargadas: " + numSuspensiones);
+
+
+        }else{
+
         }
     }
+
 
     @Override
     public void inializararToolBarCV(final Context context){
@@ -166,9 +163,9 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
                 switch (item.getItemId()) {
                     case R.id.mSincronizar:
                         BaseDatos db = new BaseDatos(context);
-                        constructorSuspensiones.registrarSuspensionesSQLite(db);
 
-                        obternetSuspensionesCargadas();
+                        obternetSuspensionesAlmacenadasServer();
+
 
                         break;
                 }
@@ -185,22 +182,6 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         setSupportActionBar(toolbar);
     }
 
-    //si hace parte de la interfaz iMenuPrincipalView porque hay una interaccion directa con
-    //el TextView numSuspensionesCargadas
-
-    public void validarInternet(Context context){
-        //Validamos si hay conexion a internet
-        internet = ValidarConexionInternet();
-        if (internet){
-            //Toast toast1 = Toast.makeText(getApplicationContext(), "Hay conexion", Toast.LENGTH_SHORT);
-            // toast1.show();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            DialogoConfirmacion confirmacion = new DialogoConfirmacion();
-            confirmacion.show(fragmentManager, "confirmando");
-        }else{
-
-        }
-    }
 
     public void visualizarSuspensionesRestantes(View view){
         intent = new Intent(context, SuspensionesActivity.class);
@@ -222,9 +203,6 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
 
 
 
-
-
-
     private Boolean ValidarConexionInternet(){
         try {
             Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com.co");
@@ -237,88 +215,12 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         return false;
     }
 
-    //ESTE ES EL METODO PRINCIPAL DONDE LLAMAMOS CREAMOS EL HILO DE CARGA DE SUSPENSIONES
-    public  void consumir(ProgressDialog progress, MenuPrincipal activity){
-        progress.setMessage("Descargando Suspensiones del servidor");
-        new consumirAsyc(progress, activity).execute();
-    }
-
-    public class consumirAsyc extends  android.os.AsyncTask<Void, Void, Void>{
-
-        ProgressDialog progress;
-        MenuPrincipal menuPrincipal;
-
-        //Constructor del hilo
-        public consumirAsyc(ProgressDialog progress, MenuPrincipal menuPrincipal) {
-            this.progress = progress;
-            this.menuPrincipal = menuPrincipal;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            //AQUI PONEMOS LA BARRA DE CARGA O PROGRESSBAR
-            //Toast.makeText(getApplicationContext(), "Descargando..", Toast.LENGTH_SHORT).show();
-            progress.show();
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            if(boolres){
-                Toast.makeText(getApplicationContext(), " Suspensiones Descargadas y registradas en el Móvil", Toast.LENGTH_SHORT).show();
-            }
-            //Toast.makeText(getApplicationContext(), "Finalizada..", Toast.LENGTH_SHORT).show();
-            progress.dismiss();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            boolres=invoceWS();
-            return null;
-        }
 
 
 
-
-
-    }
-
-    public boolean invoceWS(){
-        boolean res=false;
-        try {
-
-            SoapObject request = new SoapObject(namespace, Metodo);
-            request.addProperty("usuario", "Dvargas");//por ahora usamos usuario Dummy
-            SoapSerializationEnvelope sobre = new SoapSerializationEnvelope(SoapEnvelope. VER11);
-            //sobre.dotNet = true;
-            sobre.setOutputSoapObject(request);
-            HttpTransportSE transporte = new HttpTransportSE(url);
-            transporte.call(accionSoap, sobre);    // Llamada
-            Vector<?> responseVector=null;
-            SoapObject soapObject=null;
-            suspensionesWS = new ArrayList<>();
-            if(sobre.getResponse() instanceof Vector)
-                responseVector = (Vector<?>) sobre.getResponse();//almacenar en vector
-            else
-                soapObject=(SoapObject)sobre.getResponse();
-            if(responseVector!=null){
-                int count=responseVector.size();
-                for (int i = 0; i <count; ++i) { //Cada registro encontrado
-                    SoapObject test=(SoapObject)responseVector.get(i);
-                    suspensionesWS.add(leerSoap(test));
-                }
-            }else{
-                if(soapObject!=null)
-                    suspensionesWS.add(leerSoap(soapObject));
-            }
-            res=true;
-        } catch (Exception e) {
-            Log.e("ERROR", e.getMessage());
-        }
-
-        return res;
-    }
 
     private Suspension leerSoap(SoapObject soapObj){
+
         Suspension suspension = new Suspension();
         String SUSP_MATRICULA = soapObj.getProperty("SUSP_MATRICULA").toString();
         String SUSP_NUM_PROCESO = soapObj.getProperty("SUSP_NUM_PROCESO").toString();
@@ -337,13 +239,162 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         String SUSP_ESTADO = soapObj.getProperty("SUSP_ESTADO").toString();
         String SUSP_FECHA_CARGA = soapObj.getProperty("SUSP_FECHA_CARGA").toString();
 
-        Log.i("MATRICULA: ", SUSP_MATRICULA);
+        Log.i("MATRICULA: ", SUSP_MATRICULA + " - " + SUSP_SUSCRIPTOR + " - Estado: " + SUSP_ESTADO);
 
-        suspension = new Suspension(SUSP_MATRICULA, SUSP_NUM_PROCESO, SUSP_NUM_MEDIDOR, SUSP_SUSCRIPTOR, SUSP_CICLO, SUSP_MUNICIPIO, SUSP_DIRECCION, SUSP_FECHA_ACTI, SUSP_TIPO_ACTI, SUSP_COD_ACCION, SUSP_DESCR_ACCION, SUSP_COD_TECNICO, SUSP_GLOSA, SUSP_PROVEEDOR, "Dvargas", SUSP_ESTADO, SUSP_FECHA_CARGA);
+        suspension = new Suspension(SUSP_MATRICULA, SUSP_NUM_PROCESO, SUSP_NUM_MEDIDOR, SUSP_SUSCRIPTOR, SUSP_CICLO, SUSP_MUNICIPIO, SUSP_DIRECCION, SUSP_FECHA_ACTI, SUSP_TIPO_ACTI, SUSP_COD_ACCION, SUSP_DESCR_ACCION, SUSP_COD_TECNICO, SUSP_GLOSA, SUSP_PROVEEDOR, usuarioShare, "restantes", SUSP_FECHA_CARGA);
 
         return suspension;
     }
 
 
+
+    /**
+     * LOS PARAMETROS SON:
+     * EL PRIMER Void ES EL MISMO Void DE doInBackground QUE ES EL TIPO DE DATOS DEL PARAMETRO SI RECIBE ESTE SEGUNDO HILO
+     * EL SEGUNDO PARAMETRO Integer, ES EL TIPO DE DATOS CON EL QUE SE ACTUALIZA EL PROGRESO
+     * EL TERCER PARAMETRO ES EL PARAMETRO DE SALIDA DE doInBackground Y ESTA SALIDA ES LO QUE TOMA COMO PARAMETRO DE ENTRADA EL METODO onPostExecute
+     */
+    public class SuspensionesAsyncTask extends AsyncTask<Void, Integer, Boolean> {
+
+        ProgressDialog progressBar;
+        MenuPrincipal menuPrincipal;
+
+        public SuspensionesAsyncTask(ProgressDialog progressBar, MenuPrincipal menuPrincipal) {
+            this.progressBar = progressBar;
+            this.menuPrincipal = menuPrincipal;
+        }
+
+        /**
+         * ESTA FUNCION ES LA QUE SE EJECUTA EN EL HILO PRINCIPAL DE LA APP
+         * AQUI SE DECLARAN E INICIAN VARIABLES, PREPARAR COMPONENTES
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            internet = ValidarConexionInternet();
+            progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressBar.setMax(100);
+            progressBar.setProgress(0);
+            if(internet){
+                progressBar.setMessage("Consultando Suspensiones ... ");
+                progressBar.show();
+            }
+
+        }
+
+        /**
+         * AQUI ES LO QUE SE HACE EN SEGUNDO PLANO, ES LA TAREA LARGA
+         * PODEMOS INVOCAR AL METODO AUXILIAR publish progressBar que permite comunicarse con el hilo principal para informar el progreso del proceso
+         *
+         * @param voids
+         * @return
+         */
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            if (internet){
+                try {
+                    SoapObject request = new SoapObject(namespace, Metodo);
+                    request.addProperty("usuario", usuarioShare);//por ahora usamos usuario Dummy
+                    SoapSerializationEnvelope sobre = new SoapSerializationEnvelope(SoapEnvelope. VER11);
+                    //sobre.dotNet = true;
+                    sobre.setOutputSoapObject(request);
+                    HttpTransportSE transporte = new HttpTransportSE(url);
+                    transporte.call(accionSoap, sobre);    // Llamada
+                    Vector<?> responseVector=null;
+                    SoapObject soapObject=null;
+                    suspensionesWS = new ArrayList<>();
+                    if(sobre.getResponse() instanceof Vector)
+                        responseVector = (Vector<?>) sobre.getResponse();//almacenar en vector
+                    else
+                        soapObject=(SoapObject)sobre.getResponse();
+                    if(responseVector!=null){
+                        int count=responseVector.size();
+
+                        constructorSuspensiones = new ConstructorSuspensiones(context);
+                        for (int i = 0; i <count; ++i) { //Cada registro encontrado
+                            SoapObject test=(SoapObject)responseVector.get(i);
+                            publishProgress(i*100/count);
+                            //AQUI ES DONDE DEBEMOS INSERTAR EN SQLITE - YA ESTAN CARGADAS TODAS LAS SUSPENSIONES
+                            Suspension suspension = leerSoap(test);
+                            constructorSuspensiones.insertarSuspensionSQLite(suspension);
+                            suspensionesWS.add(suspension);
+                        }
+
+                        numSuspensiones = suspensionesWS.size();
+
+
+                    }else{
+                        if(soapObject!=null)
+                            suspensionesWS.add(leerSoap(soapObject));
+                    }
+                } catch (Exception e) {
+
+                    Log.e("ERROR", "No se pudo establecer conexion con el Servidor. " + e.getMessage());
+                }
+            }
+
+            return true;
+        }
+
+        /**
+         * FUNCION QUE SE EJECUTA EN EL HILO PRINCIPAL CUANDO UNO EJECUTA UNA LLAMADA AL publish progressBar
+         * SE PUEDE INFORMAR EL PORCENTAJE DE PROGRESO
+         *
+         * @param values
+         */
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            progressBar.setProgress(values[0].intValue());
+
+            //actulizamos el mensaje en la barra de progreso
+            if (consecutivoHilo == 1){
+                progressBar.setMessage("Descargando Suspensiones ... ");
+            }
+        }
+
+        /**
+         * SE EJECUTA DESPUES DEL doInBackground Y SE PUEDE MOSTRAR POR EJEMPLO LOS MENSAJES
+         * DE FINALIZADO DEL PROCESO CON UN Toast.
+         *
+         * @param resultado
+         */
+        @Override
+        protected void onPostExecute(Boolean resultado) {
+            super.onPostExecute(resultado);
+            progressBar.dismiss();
+            consecutivoHilo = 0;
+            mostrarCantidades(context);
+
+            numSuspensionesCargadas.setText("Cargadas por analista: " + numSuspensiones);
+            if (resultado) {
+                if (internet){
+                    Toast.makeText(menuPrincipal, "¡ Sincronizacion exitosa !", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(menuPrincipal, "No hay conexion a Internet para sincronizar", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+        }
+
+        /**
+         * SI SE CORTA LA EJECUCION DEL SEGUNDO HILO SE EJECUTA ESTA FUNCION,
+         * SE PUEDEN CERRAR CONEXIONES PARA LIBERAR LA MEMORIA
+         */
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            Toast.makeText(menuPrincipal, "Tarea Larga cancelada en AsyncTask", Toast.LENGTH_SHORT).show();
+        }
+
+        private void UnSegundo() {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+        }
+
+    }
 
 }

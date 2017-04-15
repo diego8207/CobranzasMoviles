@@ -1,13 +1,15 @@
 package co.macrosystem.cobranzasmoviles.db;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.util.Log;
+import android.os.AsyncTask;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import co.macrosystem.cobranzasmoviles.pojo.Suspension;
+import co.macrosystem.cobranzasmoviles.vista.MenuPrincipal;
 
 /**
  * Created by Diego Velez on 16/03/2017.
@@ -31,7 +33,7 @@ public class ConstructorSuspensiones {
     }
 
 
-    public ArrayList<Suspension> obtenerDatos(String estado){
+    public ArrayList<Suspension> obtenerDatos(String estado, String usuario){
         ArrayList<Suspension> suspensiones = new ArrayList<Suspension>();
         //Consultamos en SQLite
         BaseDatos db = new BaseDatos(context);
@@ -39,21 +41,21 @@ public class ConstructorSuspensiones {
         /**
          * temporal porque este metodo es solo para obtener datos del SQLite
          */
-        //registrarSuspensionesSQLite(db);
+        //obtenerSuspensionesWS(db);
 
         // LUEGO PODREMOS AUTOMATIZAR CON LOS WEB SERVICES
-        suspensiones = db.obtenerSuspensionesSQLite(estado);
+        suspensiones = db.obtenerSuspensionesSQLite(estado, usuario);
 
         return suspensiones;
     }
 
     public ArrayList<Suspension> obtenerSuspensionesWebService(){
 
-        ConsumirWS("Dvargas", "27/02/2017");
+        ArrayList<Suspension> suspensiones = new ArrayList<Suspension>();
         /**
          * Aqui estamos insertando en SQLite datos Dummy pero pronto se implementara info de un web service
-         */
-        ArrayList<Suspension> suspensiones = new ArrayList<Suspension>();
+
+
         //vamos a poner informacion de fortma Dummy pero este ArrayList se debe llenar a ártir de un consumo de web service
         suspensiones.add(new Suspension("86403","70753452","20101009828","NOEL TORRES RINCON","9 - Ibague 9","1 - IBAGUE","MNZ 3 CASA 10 1ET.SIMON BOLIVAR","27/02/2017" ,"11 - Suspension","904","Susver BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
         suspensiones.add(new Suspension("34018","70768685","8113426","GUTIERREZ TRILLERAS ARGENIS","9 - Ibague 9","1 - IBAGUE","MNZ 4 CS.23 ETP.1 SIMON BOLIVAR","27/02/2017" ,"11 - Suspension","904"," Rec BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
@@ -64,44 +66,34 @@ public class ConstructorSuspensiones {
         suspensiones.add(new Suspension("227007","70769793","6677140376","AMINTA MARTINEZ","9 - Ibague 9","1 - IBAGUE","MNZ 4 CS.23 ETP.1 SIMON BOLIVAR","27/02/2017" ,"11 - Suspension","904"," Rec BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
         suspensiones.add(new Suspension("215354","70768662","6677138873","ACOSTA ROJAS REINA ISABEL","9 - Ibague 9","1 - IBAGUE","MNZ 5 CS.30 1ET.C.S.BOLIVAR","27/02/2017" ,"11 - Suspension","904","Susver BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
         suspensiones.add(new Suspension("215367","6677138865","6677006099","CASTRO BUITRAGO CARMENZA","9 - Ibague 9","1 - IBAGUE","APT 13 CS.9 2ETAPA C.S.BOLIVAR","27/02/2017" ,"11 - Suspension","904"," Rec BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
-        suspensiones.add(new Suspension("428350","70753805","20101006357","ARIAS BEDOYA OMAIRA","9 - Ibague 9","1 - IBAGUE","MNZ 17 CS 10 2DA ET SIMON BOLIVAR","27/02/2017" ,"11 - Suspension","904","Susver BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
+        suspensiones.add(new Suspension("428350","70753805","20101006357","ARIAS BEDOYA OMAIRA","9 - Ibague 9","1 - IBAGUE","MNZ 17 CS 10 2DA ET SIMON BOLIVAR","27/02/2017" ,"11 - Suspension","904","Susver BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));*/
         return suspensiones;
     }
 
-    private void ConsumirWS(String usuario, String fecha) {
 
-    }
 
-    public boolean registrarSuspensionesSQLite(BaseDatos db){
-        ArrayList<Suspension> suspensiones = new ArrayList<Suspension>();
-        suspensiones = obtenerSuspensionesWebService();
-        //Toast.makeText(context, "Usuario: " + suspensiones.get(0).getSUSP_FECHA_CARGA(), Toast.LENGTH_SHORT).show();
-        for (Suspension suspension: suspensiones) {
-            insertarSuspension(suspension, db);
-        }
-        return true;
-    }
 
     /**
      * En este metodo ya tenemos el Conexto gracias al constructor de esta clase
      * por lo tanto podemos mostrar informacion en un Toast si queremos
      * @return cantidad de suspensiones cargadas por usuario y fecha
      */
-    public int ObtenerTotalSuspensionesCargadas(){
+    public int ObtenerCantSuspensionesCargadasSQLite(String usuario){
         int cantidad = 0;
-        String user = "Dvargas";
-        String fechaCarga = "27/02/2017";
+        String user = usuario;
+        String fechaCarga = "13/04/2017";
         BaseDatos db = new BaseDatos(context);
-        cantidad = db.totalSuspensionesCargadasDia(user, fechaCarga);
+        cantidad = db.obtenerCantSuspensionesBD(user, fechaCarga);
         return cantidad;
     }
 
     /**
      *
      * @param suspension objeto de tipo Suspension llega con la informacion cargada proveniente del web service
-     * @param db
+     * @param
      */
-    public void insertarSuspension(Suspension suspension, BaseDatos db){
+    public void insertarSuspensionSQLite(Suspension suspension){
+        BaseDatos db = new BaseDatos(context);
         ContentValues contentValues = new ContentValues();
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_MATRICULA, suspension.getSUSP_MATRICULA());
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_NUM_PROCESO, suspension.getSUSP_NUM_PROCESO());
@@ -156,11 +148,18 @@ public class ConstructorSuspensiones {
 
     }
 
-    public int obtenerSuspensionesRestantesEstado(String estado){
+    public int obtenerSuspensionesRestantesEstado(String estado, String usuario){
         int total = 0;
         BaseDatos db = new BaseDatos(context);
-        total = db.obtenerCantSuspensionesEstadoSQLite(estado);
+
+        total = db.obtenerCantSuspensionesEstadoSQLite(estado, usuario);
+
         return  total;
     }
+
+
+
+
+
 
 }

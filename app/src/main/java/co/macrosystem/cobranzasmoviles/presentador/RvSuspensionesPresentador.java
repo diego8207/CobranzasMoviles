@@ -17,20 +17,22 @@ public class RvSuspensionesPresentador implements iRvSuspensionesPresentador {
 
     private iSuspensionesActivityView iSuspensionesActivityView;
     private Context context;
+    private String usuario;
 
     private ArrayList<Suspension> suspensiones;
     private ConstructorSuspensiones constructorSuspensiones;
 
-    public RvSuspensionesPresentador(SuspensionesActivity iSuspensionesActivityView, Context context, String estado) {
+    public RvSuspensionesPresentador(SuspensionesActivity iSuspensionesActivityView, Context context, String estado, String usuario) {
         this.iSuspensionesActivityView = iSuspensionesActivityView;
         this.context = context;
-        obternerSuspensiones(estado);
+        this.usuario = usuario;
+        obternerSuspensiones(estado, usuario);
     }
 
     @Override
-    public void obternerSuspensiones(String estado) {
+    public void obternerSuspensiones(String estado, String usuario) {
         constructorSuspensiones = new ConstructorSuspensiones(context);
-        suspensiones = constructorSuspensiones.obtenerDatos(estado);
+        suspensiones = constructorSuspensiones.obtenerDatos(estado, usuario);
         mostrarSuspensionesRV();
     }
 

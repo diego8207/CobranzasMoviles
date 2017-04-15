@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -21,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,11 +37,15 @@ public class MainActivity extends AppCompatActivity {
     private TextInputLayout txtInputUser;
     private TextInputLayout txtInputPassw;
     private Toolbar toolbar;
+    private Button btnEntrar;
 
     AlertDialog alert = null;
     Location location;
     LocationManager locationManager;
     LocationListener locationListener;
+
+    private SharedPreferences datos_compartidos;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +63,20 @@ public class MainActivity extends AppCompatActivity {
         txtPassw = (TextInputEditText) findViewById(R.id.editTextPassword);
         txtInputUser = (TextInputLayout) findViewById(R.id.text_input_layout_user);
         txtInputPassw = (TextInputLayout) findViewById(R.id.text_input_layout_pass);
+        btnEntrar = (Button) findViewById(R.id.btnEntrar);
 
         //Validamos si hay GPS activo
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
             AlertNoGps();
         }
+
+        btnEntrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                validar();
+            }
+        });
 
     }
 
@@ -93,43 +107,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-   /*     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            } else {
-
-            }
-        } else {
-            locationManager.removeUpdates(locationListener);
-        } */
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-     /*   //Validamos si hay GPS activo
-        if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-            AlertNoGps();
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                return;
-            } else {
-
-
-            }
-        } else {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
-        }
-
-*/
 
     }
 
-    public void validar(View view) {
+    public void validar() {
 
         /**
          * Valido si los campos estan sin digitar y en caso de que no mostrar mensaje de error obligatorio
@@ -154,6 +140,16 @@ public class MainActivity extends AppCompatActivity {
          * posteriormente visualizar la actividad segun su rol.
          */
         if (!TextUtils.isEmpty(txtUser.getText()) && !TextUtils.isEmpty(txtPassw.getText())){
+
+            /**
+             * Hacemos uso de SharePreferences para el nombre de usuario el cual nos va a servir para poder sincronizar
+             * las suspensiones de este usuario.
+             */
+
+            datos_compartidos = getSharedPreferences("usuarioCompartido", 0);
+            editor = datos_compartidos.edit();
+            editor.putString("usuario", txtUser.getText().toString());
+            editor.commit();
             Intent intent = new Intent(this, MenuPrincipal.class);
             startActivity(intent);
         }

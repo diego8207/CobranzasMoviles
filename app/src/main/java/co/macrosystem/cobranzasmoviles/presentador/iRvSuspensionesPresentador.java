@@ -10,7 +10,7 @@ import co.macrosystem.cobranzasmoviles.pojo.Suspension;
 
 public interface iRvSuspensionesPresentador {
 
-    public void obternerSuspensiones(String estado);
+    public void obternerSuspensiones(String estado, String usuario);
 
     public void mostrarSuspensionesRV();
 

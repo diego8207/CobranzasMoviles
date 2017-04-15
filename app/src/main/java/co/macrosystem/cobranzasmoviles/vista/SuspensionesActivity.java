@@ -1,5 +1,6 @@
 package co.macrosystem.cobranzasmoviles.vista;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,9 @@ public class SuspensionesActivity extends AppCompatActivity implements iSuspensi
     private ConstructorSuspensiones constructorSuspensiones;
     public String estado="";
 
+    private SharedPreferences datos_compartidos;
+    private String usuarioShare;
+
 
 
     @Override
@@ -44,7 +48,8 @@ public class SuspensionesActivity extends AppCompatActivity implements iSuspensi
             estado = extras2.getString("estado");
         }
 
-
+        datos_compartidos = getSharedPreferences("usuarioCompartido", 0);
+        usuarioShare = datos_compartidos.getString("usuario", "");
 
 
 
@@ -56,7 +61,8 @@ public class SuspensionesActivity extends AppCompatActivity implements iSuspensi
          * el el package presentador enviando como parametros this que es la interface iSuspensionesActivityView
          * y el contexto.
           */
-        presentador = new RvSuspensionesPresentador(this, getBaseContext(), estado);
+
+        presentador = new RvSuspensionesPresentador(this, getBaseContext(), estado, usuarioShare);
     }
 
     @Override
