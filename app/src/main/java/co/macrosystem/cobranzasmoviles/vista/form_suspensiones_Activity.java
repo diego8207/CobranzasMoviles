@@ -116,7 +116,6 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
 
     private Button btnRegistrar;
 
-    private FloatingActionButton camaraFAB;
 
     String[] SPNR_ESTADO_SELLO = {"Roto", "No instalado", "Sin diligenciar", "No reportado", "Conforme"};
 
@@ -294,6 +293,7 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
         IniciarServicioGPS();
         procesarSuspension(context);//--------------------- SOLO CUANDO ESTA HABILITADO EL BOTON DE PROCESAR -----------------------------------
 
+        //PROCESAMOS FLOATACTIONBUTTON PARA LAS FOTOS
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -677,6 +677,7 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
     public void visualizarSoloLectura(Suspension suspension){
         txtSticker.setText(suspension.getSUSP_NUM_STICKER());
 
+
         String estadoSticker = suspension.getSUSP_ESTADO_STICKER();
         switch (estadoSticker){
             case "Sin diligenciar"  : rbtn_estado_sin_diligen.setEnabled(true); rbtn_estado_sin_diligen.setChecked(true); break;
@@ -755,13 +756,5 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
         super.onDestroy();
     }
 
-    public void agregarFAB(){
-        camaraFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "Diste click para tomar fotos", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
 }
