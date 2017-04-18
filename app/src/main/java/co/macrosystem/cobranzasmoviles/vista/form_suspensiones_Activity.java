@@ -1,16 +1,23 @@
 package co.macrosystem.cobranzasmoviles.vista;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.util.Base64;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.TextView;
 import android.support.annotation.NonNull;
@@ -25,9 +32,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import co.macrosystem.cobranzasmoviles.R;
 import co.macrosystem.cobranzasmoviles.db.ConstructorSuspensiones;
@@ -36,6 +45,7 @@ import co.macrosystem.cobranzasmoviles.pojo.Suspension;
 public class form_suspensiones_Activity extends AppCompatActivity implements LocationListener {
 
     private static final int MI_PERMISO_ACCESS_COARSE_LOCATION = 1;
+    private final int REQUEST_CODE_ASK_PERMISSIONS = 123;
     private Toolbar toolbar;
 
     private Suspension suspension;
@@ -115,6 +125,10 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
 
 
     private Button btnRegistrar;
+    private ImageView imgFoto;
+    final int CAMERA_REQUEST = 1100;
+    Bitmap bmp;
+
 
 
     String[] SPNR_ESTADO_SELLO = {"Roto", "No instalado", "Sin diligenciar", "No reportado", "Conforme"};
@@ -123,8 +137,11 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_suspensiones);
+        imgFoto = (ImageView) findViewById(R.id.imgFoto);
         context = this.getBaseContext();
         intent = new Intent(this, MenuPrincipal.class);
+
+        FloatingActionButton floatingActionButtonCamera = (FloatingActionButton) findViewById(R.id.fab);
 
         suspension = getIntent().getParcelableExtra("objSuspension");
 
@@ -149,8 +166,6 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
         txtGlosa = (TextView) findViewById(R.id.txtGlosa);
         txtProveedor = (TextView) findViewById(R.id.txtProveedor);
         txtFechaCarga = (TextView) findViewById(R.id.txtfechaCarga);
-
-
 
         //capturamos los elementos del formulario que van a estar disponibles para ingresar informacion
 
@@ -236,7 +251,7 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
          */
         String suspen = suspension.getSUSP_ESTADO();
 
-        if (!suspen.equals("restantes")){
+        if (!suspen.equals("restantes")) {
             txtObservaciones.setEnabled(false);
             txtSticker.setEnabled(false);
             rbtn_estado_roto.setEnabled(false);
@@ -260,7 +275,7 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
             rbtn_rechazo_no.setEnabled(false);
             btnRegistrar.setEnabled(false);
 
-            if (suspen.equals("subidas")){
+            if (suspen.equals("subidas")) {
                 btnRegistrar.setText("SUBIDA");
                 btnRegistrar.setBackgroundColor(getResources().getColor(R.color.teal));
                 toolbarCard.setBackgroundColor(getResources().getColor(R.color.teal));
@@ -270,7 +285,7 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
                 //asi le sirve a subidas como a procesadas
                 visualizarSoloLectura(suspension);
 
-            }else if (suspen.equals("procesadas")){
+            } else if (suspen.equals("procesadas")) {
                 btnRegistrar.setText("PROCESADA: " + suspension.getSUSP_FECHA_EJECUCION());
                 btnRegistrar.setBackgroundColor(getResources().getColor(R.color.orange));
                 toolbarCard.setBackgroundColor(getResources().getColor(R.color.orange));
@@ -279,7 +294,7 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
                 visualizarSoloLectura(suspension);
 
             }
-        }else{
+        } else {
             txtObservaciones.setText("");
         }
 
@@ -293,16 +308,90 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
         IniciarServicioGPS();
         procesarSuspension(context);//--------------------- SOLO CUANDO ESTA HABILITADO EL BOTON DE PROCESAR -----------------------------------
 
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         //PROCESAMOS FLOATACTIONBUTTON PARA LAS FOTOS
-        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+        floatingActionButtonCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(form_suspensiones_Activity.this,"AQUI AMOS", Toast.LENGTH_SHORT).show();
+                    VerificarPermisosCamara();
             }
         });
 
     }
+
+    private void AbrirCamara() {
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, CAMERA_REQUEST);
+    }
+
+    //Sobreescribimos el metodo de la camara para poder
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK){
+            Bundle extra = data.getExtras();
+
+            bmp = (Bitmap) extra.get("data");
+            imgFoto.setImageBitmap(bmp);
+
+            //Utilizamos la libreria PhotoUtil para codificar como cadena de Strings la imagen
+            String encoded  = encode(bmp);
+
+            Log.i("ImageBase64:  ", encoded);
+            Log.i("tamaño: ", String.valueOf(encoded.length()));
+
+        }
+    }
+
+
+    public String encode(Bitmap bitmap){
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b = baos.toByteArray();
+        String temp=Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
+
+    public Bitmap decode(String encodedString){
+        try {
+            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
+
+
+    private void VerificarPermisosCamara() {
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                //Toast.makeText(this, "Esta es una version de android inferior al api 23" + Build.VERSION.SDK_INT, Toast.LENGTH_LONG).show();
+            } else {
+
+                int hasWriteContactsPermission = checkSelfPermission(Manifest.permission.CAMERA);
+                int hasWriteStoragePermission = checkSelfPermission(Manifest.permission_group.STORAGE);
+
+                if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED && hasWriteStoragePermission != PackageManager.PERMISSION_GRANTED){
+                    requestPermissions(new String[] {Manifest.permission.CAMERA}, REQUEST_CODE_ASK_PERMISSIONS);
+                    requestPermissions(new String[] {Manifest.permission_group.STORAGE},REQUEST_CODE_ASK_PERMISSIONS);
+                    Toast.makeText(this, "Requesting permissions", Toast.LENGTH_LONG).show();
+                }else if (hasWriteContactsPermission == PackageManager.PERMISSION_GRANTED){
+                    //Toast.makeText(this, "The permissions are already granted ", Toast.LENGTH_LONG).show();
+                    AbrirCamara();
+                }
+            }
+            return;
+        }
+
 
     private void procesarSuspension(final Context context) {
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
@@ -320,14 +409,8 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
                     }
                 }else{
                     Toast.makeText(context, "Formulario incompleto", Toast.LENGTH_SHORT).show();
+
                 }
-
-
-
-
-                //visualizarInformacion();
-
-
 
             }
         });
@@ -630,6 +713,8 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
     }
 
 
+
+
     public void muestraUbicacionActual() {
         //aqui hay que solicitar al usuario el servicio
         if (ActivityCompat.checkSelfPermission(form_suspensiones_Activity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -655,24 +740,13 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
         }
     }
 
-    public void ParaServicio() {
-        //aqui hay que solicitar al usuario el servicio
-        if (ActivityCompat.checkSelfPermission(form_suspensiones_Activity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(form_suspensiones_Activity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(form_suspensiones_Activity.this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
-            } else {
-                ActivityCompat.requestPermissions(form_suspensiones_Activity.this,
-                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                        MI_PERMISO_ACCESS_COARSE_LOCATION);
-            }
-        } else {
-            handle.removeUpdates(this);
-        }
+    public void IniciarServicioCamara(){
 
-        txtLatitudGPS.setText(null);
-        txtLongitudGPS.setText(null);
     }
+
+
+
 
     public void visualizarSoloLectura(Suspension suspension){
         txtSticker.setText(suspension.getSUSP_NUM_STICKER());

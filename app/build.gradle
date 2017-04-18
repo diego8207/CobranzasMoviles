@@ -33,4 +33,5 @@ dependencies {
     compile 'cn.pedant.sweetalert:library:1.3'
     testCompile 'junit:junit:4.12'
     compile files('src/main/java/ksoap2.jar')
+    compile files('libs/PhotoUtil.jar')
 }

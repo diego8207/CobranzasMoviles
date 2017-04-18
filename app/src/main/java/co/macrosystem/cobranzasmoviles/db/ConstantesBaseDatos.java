@@ -65,6 +65,11 @@ public class ConstantesBaseDatos {
     public static final String TABLE_SUSPENSIONES_FECHA_EJECU       = "SUSP_FECHA_EJECU";
     public static final String TABLE_SUSPENSIONES_FECHA_CARGA       = "SUSP_FECHA_CARGA";
 
+    public static final String TABLE_FOTOS                          = "fotos";
+    public static final String TABLE_FOTOS_ID                       = "fotos_id";
+    public static final String TABLE_FOTOS_SUSP_MATRICULA           = "fotos_id_matricula";
+    public static final String TABLE_FOTOS_FOTOBLOB                       = "fotos_fotoblob";
+
     // Método que queremos ejecutar en el servicio web
     public static final String MetodoDownload = "SuspensionesUser";
 

@@ -76,7 +76,7 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         //Ejemplo de como Recuperar datos de un SharePrefereces
         datos_compartidos = getSharedPreferences("usuarioCompartido", 0);
         usuarioShare = datos_compartidos.getString("usuario", "");
-        Toast.makeText(this, "usuario: " + usuarioShare , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "usuario: " + usuarioShare , Toast.LENGTH_SHORT).show();
 
         numSuspensionesCargadas = (TextView) findViewById(R.id.txtSuspCargadas);
         numSuspensionesRestantes = (TextView) findViewById(R.id.lblCantRestantes);
