@@ -113,7 +113,10 @@ public class ConstructorSuspensiones {
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_USUARIO, suspension.getSUSP_USUARIO());
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_ESTADO, suspension.getSUSP_ESTADO());
         //metoto que permite insertar una suspension
+
         db.InsertarSuspensionSQLite(contentValues);
+
+
 
     }
 

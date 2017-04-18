@@ -635,8 +635,8 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
                 txtLatitudGPS.setText("Desconocido");
                 txtLongitudGPS.setText("Desconocido");
             }else{
-                txtLatitudGPS.setText   ("Latitud: "+String.valueOf(location.getLatitude()));
-                txtLongitudGPS.setText  ("Latitud: "+String.valueOf(location.getLongitude()));
+                txtLatitudGPS.setText   (String.valueOf(location.getLatitude()));
+                txtLongitudGPS.setText  (String.valueOf(location.getLongitude()));
                 suspension.setSUSP_LATITUD(txtLatitudGPS.getText().toString());
                 suspension.setSUSP_LONGITUD(txtLongitudGPS.getText().toString());
             }

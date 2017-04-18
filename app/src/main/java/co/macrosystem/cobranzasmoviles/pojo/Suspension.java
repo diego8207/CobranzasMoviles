@@ -2,16 +2,19 @@ package co.macrosystem.cobranzasmoviles.pojo;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import org.ksoap2.serialization.KvmSerializable;
+import org.ksoap2.serialization.PropertyInfo;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Hashtable;
 
 /**
  * Created by Diego Velez on 08/02/2017.
  */
 //se implementa Parceable para poder pasar este objeto como parametro entre una activity a otra
-public class Suspension implements Parcelable {
+public class Suspension implements Parcelable, KvmSerializable{
 
     private String SUSP_MATRICULA;
     private String SUSP_NUM_PROCESO;
@@ -380,7 +383,7 @@ public class Suspension implements Parcelable {
         dest.writeString(SUSP_LATITUD);
         dest.writeString(SUSP_LONGITUD);
         dest.writeString(SUSP_FECHA_CARGA);
-
+        dest.writeString(SUSP_FECHA_EJECUCION);
 
     }
 
@@ -419,6 +422,7 @@ public class Suspension implements Parcelable {
         SUSP_LATITUD = in.readString();
         SUSP_LONGITUD = in.readString();
         SUSP_FECHA_CARGA = in.readString();
+        SUSP_FECHA_EJECUCION = in.readString();
     }
 
     public Suspension(Parcel in) {
@@ -446,4 +450,130 @@ public class Suspension implements Parcelable {
     }
 
 
+    @Override
+    public Object getProperty(int i) {
+
+        switch (i){
+            case 0: return getSUSP_MATRICULA();
+            case 1: return getSUSP_NUM_PROCESO();
+            case 2: return getSUSP_NUM_MEDIDOR();
+            case 3: return getSUSP_SUSCRIPTOR();
+            case 4: return getSUSP_DIRECCION();
+            case 5: return getSUSP_FECHA_ACTI();
+            case 6: return getSUSP_TIPO_ACTI();
+            case 7: return getSUSP_COD_ACCION();
+            case 8: return getSUSP_DESCR_ACCION();
+            case 9: return getSUSP_COD_TECNICO();
+            case 10: return getSUSP_CICLO();
+            case 11: return getSUSP_MUNICIPIO();
+            case 12: return getSUSP_GLOSA();
+            case 13: return getSUSP_USUARIO();
+            case 14: return getSUSP_ESTADO();
+            case 15: return getSUSP_NUM_STICKER();
+            case 16: return getSUSP_ESTADO_STICKER();
+            case 17: return getSUSP_SELLOSERIAL();
+            case 18: return getSUSP_SELLOSERIAL_ESTADO();
+            case 19: return getSUSP_COINC_MAT_MEDI();
+            case 20: return getSUSP_CON_PAGO();
+            case 21: return getSUSP_TIENE_ENERGIA();
+            case 22: return getSUSP_LECTURA();
+            case 23: return getSUSP_NOM_CONTACTO();
+            case 24: return getSUSP_NUM_CONTACTO();
+            case 25: return getSUSP_OBSERVACIONES();
+            case 26: return getSUSP_RECHAZADO();
+            case 27: return getSUSP_FOTO();
+            case 28: return getSUSP_LATITUD();
+            case 29: return getSUSP_LONGITUD();
+            case 30: return getSUSP_PROVEEDOR();
+            case 31: return getSUSP_FECHA_CARGA();
+            case 32: return getSUSP_FECHA_EJECUCION();
+        }
+
+        return null;
+    }
+
+    @Override
+    public int getPropertyCount() {
+        return 33;
+    }
+
+    @Override
+    public void setProperty(int index, Object value) {
+        switch (index){
+            case 0: SUSP_MATRICULA = value.toString();
+            case 1: SUSP_NUM_PROCESO = value.toString();
+            case 2: SUSP_NUM_MEDIDOR = value.toString();
+            case 3: SUSP_SUSCRIPTOR = value.toString();
+            case 4: SUSP_DIRECCION = value.toString();
+            case 5: SUSP_FECHA_ACTI = value.toString();
+            case 6: SUSP_TIPO_ACTI = value.toString();
+            case 7: SUSP_COD_ACCION = value.toString();
+            case 8: SUSP_DESCR_ACCION = value.toString();
+            case 9: SUSP_COD_TECNICO = value.toString();
+            case 10: SUSP_CICLO = value.toString();
+            case 11: SUSP_MUNICIPIO = value.toString();
+            case 12: SUSP_GLOSA = value.toString();
+            case 13: SUSP_USUARIO = value.toString();
+            case 14: SUSP_ESTADO = value.toString();
+            case 15: SUSP_NUM_STICKER = value.toString();
+            case 16: SUSP_ESTADO_STICKER = value.toString();
+            case 17: SUSP_SELLOSERIAL = value.toString();
+            case 18: SUSP_SELLOSERIAL_ESTADO = value.toString();
+            case 19: SUSP_COINC_MAT_MEDI = value.toString();
+            case 20: SUSP_CON_PAGO = value.toString();
+            case 21: SUSP_TIENE_ENERGIA = value.toString();
+            case 22: SUSP_LECTURA = value.toString();
+            case 23: SUSP_NOM_CONTACTO = value.toString();
+            case 24: SUSP_NUM_CONTACTO = value.toString();
+            case 25: SUSP_OBSERVACIONES = value.toString();
+            case 26: SUSP_RECHAZADO = value.toString();
+            case 27: SUSP_FOTO = value.toString();
+            case 28: SUSP_LATITUD = value.toString();
+            case 29: SUSP_LONGITUD = value.toString();
+            case 30: SUSP_PROVEEDOR = value.toString();
+            case 31: SUSP_FECHA_CARGA = value.toString();
+            case 32: SUSP_FECHA_EJECUCION = value.toString();
+            default: break;
+        }
+    }
+
+    @Override
+    public void getPropertyInfo(int index, Hashtable arg1, PropertyInfo Info) {
+        switch (index){
+            case 0: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_MATRICULA"; break;
+            case 1: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_NUM_PROCESO"; break;
+            case 2: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_NUM_MEDIDOR"; break;
+            case 3: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_SUSCRIPTOR"; break;
+            case 4: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_DIRECCION"; break;
+            case 5: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_FECHA_ACTI"; break;
+            case 6: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_TIPO_ACTI"; break;
+            case 7: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_COD_ACCION"; break;
+            case 8: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_DESCR_ACCION"; break;
+            case 9: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_COD_TECNICO"; break;
+            case 10: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_CICLO"; break;
+            case 11: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_MUNICIPIO"; break;
+            case 12: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_GLOSA"; break;
+            case 13: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_USUARIO"; break;
+            case 14: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_ESTADO"; break;
+            case 15: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_NUM_STICKER"; break;
+            case 16: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_ESTADO_STICKER"; break;
+            case 17: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_SELLOSERIAL"; break;
+            case 18: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_SELLOSERIAL_ESTADO"; break;
+            case 19: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_COINC_MAT_MEDI"; break;
+            case 20: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_CON_PAGO"; break;
+            case 21: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_TIENE_ENERGIA"; break;
+            case 22: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_LECTURA"; break;
+            case 23: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_NOM_CONTACTO"; break;
+            case 24: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_NUM_CONTACTO"; break;
+            case 25: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_OBSERVACIONES"; break;
+            case 26: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_RECHAZADO"; break;
+            case 27: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_FOTO"; break;
+            case 28: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_LATITUD"; break;
+            case 29: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_LONGITUD"; break;
+            case 30: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_PROVEEDOR"; break;
+            case 31: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_FECHA_CARGA"; break;
+            case 32: Info.type = PropertyInfo.STRING_CLASS; Info.name = "SUSP_FECHA_EJECUCION"; break;
+        }
+
+    }
 }

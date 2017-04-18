@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
@@ -32,7 +33,8 @@ import co.macrosystem.cobranzasmoviles.R;
 import co.macrosystem.cobranzasmoviles.db.BaseDatos;
 import co.macrosystem.cobranzasmoviles.db.ConstructorSuspensiones;
 import co.macrosystem.cobranzasmoviles.pojo.Suspension;
-import static co.macrosystem.cobranzasmoviles.db.ConstantesBaseDatos.Metodo;
+import static co.macrosystem.cobranzasmoviles.db.ConstantesBaseDatos.MetodoDownload;
+import static co.macrosystem.cobranzasmoviles.db.ConstantesBaseDatos.MetodoUpload;
 import static co.macrosystem.cobranzasmoviles.db.ConstantesBaseDatos.accionSoap;
 import static co.macrosystem.cobranzasmoviles.db.ConstantesBaseDatos.namespace;
 import static co.macrosystem.cobranzasmoviles.db.ConstantesBaseDatos.url;
@@ -40,7 +42,7 @@ import static co.macrosystem.cobranzasmoviles.db.ConstantesBaseDatos.url;
 public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalView {
 
     private Context context;
-    private ArrayList<Suspension> suspensiones = null;
+    private ArrayList<Suspension> suspensiones;
     private ConstructorSuspensiones constructorSuspensiones;
 
     private boolean boolres=false;
@@ -63,6 +65,7 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
     private boolean internet = false;
     private int consecutivoHilo = 0; //VARIABLE QUE SE UTILIZARA PARA CONTROLAR LA CANTIDAD DE PROCESOS EN EL AsyncTask Y PODER ACTUALIZAR EL MENSAJE DEL ProgressBar
     private int numSuspensiones = 0;
+    private int actualizado = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,6 +249,11 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         return suspension;
     }
 
+    private int leerSoapUpdate(SoapObject soapObj){
+        String res = soapObj.getProperty(0).toString();
+        return Integer.parseInt(res);
+    }
+
 
 
     /**
@@ -293,8 +301,8 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
         protected Boolean doInBackground(Void... voids) {
             if (internet){
                 try {
-                    SoapObject request = new SoapObject(namespace, Metodo);
-                    request.addProperty("usuario", usuarioShare);//por ahora usamos usuario Dummy
+                    SoapObject request = new SoapObject(namespace, MetodoDownload);
+                    request.addProperty("usuario", usuarioShare);
                     SoapSerializationEnvelope sobre = new SoapSerializationEnvelope(SoapEnvelope. VER11);
                     //sobre.dotNet = true;
                     sobre.setOutputSoapObject(request);
@@ -314,10 +322,16 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
                         for (int i = 0; i <count; ++i) { //Cada registro encontrado
                             SoapObject test=(SoapObject)responseVector.get(i);
                             publishProgress(i*100/count);
-                            //AQUI ES DONDE DEBEMOS INSERTAR EN SQLITE - YA ESTAN CARGADAS TODAS LAS SUSPENSIONES
+                            //AQUI ES DONDE SE INSERTA EN SQLITE
                             Suspension suspension = leerSoap(test);
-                            constructorSuspensiones.insertarSuspensionSQLite(suspension);
                             suspensionesWS.add(suspension);
+
+                            //VALIDAR SI LA SUSPENSION YA EXISTE ANTES DE INSERTAR
+                            // --------------------- PENDIENTE --------------------------
+                            //FIN DE LA VALIDACION
+
+                            constructorSuspensiones.insertarSuspensionSQLite(suspension);
+
                         }
 
                         numSuspensiones = suspensionesWS.size();
@@ -331,7 +345,50 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
 
                     Log.e("ERROR", "No se pudo establecer conexion con el Servidor. " + e.getMessage());
                 }
-            }
+
+                consecutivoHilo = 2;
+
+
+                try {
+                    ArrayList<Suspension> suspensionesProcesadas;
+                    //CONSULTAR LAS SUSPENSIONES procesadas
+                    suspensionesProcesadas = constructorSuspensiones.obtenerDatos("procesadas", usuarioShare);
+
+                    for (Suspension s : suspensionesProcesadas){
+                        Log.e("Suspension procesada", s.getSUSP_MATRICULA());
+                    }
+
+                    for (Suspension suspension: suspensionesProcesadas){
+                        SoapObject request = new SoapObject(namespace, MetodoUpload);
+                        PropertyInfo pi = new PropertyInfo();
+                        pi.setName("suspension");
+                        pi.setValue(suspension);
+                        pi.setType(suspension.getClass());
+                        request.addProperty(pi);
+                        SoapSerializationEnvelope sobre = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+                        //sobre.dotNet = true;
+                        sobre.setOutputSoapObject(request);
+
+                        sobre.addMapping(namespace, "suspension", new Suspension().getClass());
+
+
+                        HttpTransportSE transporte = new HttpTransportSE(url);
+                        transporte.call(accionSoap, sobre);    // Llamada
+
+                        Object response = (Object) sobre.getResponse();
+                        //actualizado = Integer.parseInt(response.getProperty(0).toString());
+
+                        if (actualizado == 1){
+                            Log.i("UPLOAD SUSPENSION", "EXITOSA");
+                        }
+                    }
+
+                }catch (Exception e){
+                    Log.e("ERROR", "No se pudo establecer conexion con el Servidor. " + e.getMessage());
+                }
+
+
+            } //FINAL DE do doInBackground()
 
             return true;
         }
@@ -375,6 +432,7 @@ public class MenuPrincipal extends AppCompatActivity implements iMenuPrincipalVi
                 }
 
             }
+            Log.i("SUSPENSION UPLOAD ... ", String.valueOf(actualizado));
 
         }
 
