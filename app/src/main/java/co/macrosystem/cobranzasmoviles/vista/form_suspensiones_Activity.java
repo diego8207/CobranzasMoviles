@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 import android.widget.TextView;
@@ -36,6 +37,7 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
 
     private static final int MI_PERMISO_ACCESS_COARSE_LOCATION = 1;
     private Toolbar toolbar;
+
     private Suspension suspension;
     private ConstructorSuspensiones constructorSuspensiones;
     private Context context;
@@ -113,6 +115,8 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
 
 
     private Button btnRegistrar;
+
+    private FloatingActionButton camaraFAB;
 
     String[] SPNR_ESTADO_SELLO = {"Roto", "No instalado", "Sin diligenciar", "No reportado", "Conforme"};
 
@@ -289,6 +293,14 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
 
         IniciarServicioGPS();
         procesarSuspension(context);//--------------------- SOLO CUANDO ESTA HABILITADO EL BOTON DE PROCESAR -----------------------------------
+
+        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(form_suspensiones_Activity.this,"AQUI AMOS", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -741,6 +753,15 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    public void agregarFAB(){
+        camaraFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "Diste click para tomar fotos", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }
