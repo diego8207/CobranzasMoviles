@@ -441,7 +441,7 @@ public class Suspension implements Parcelable, KvmSerializable{
     }
 
     public Suspension(Parcel in) {
-        //SE INSTANCIA EL ARRAYLIST PARA QUE SE PUEDA PASAR ENTRE ACTIVIDADES
+
         fotos = new ArrayList<>();
         readFromParcel(in);
     }

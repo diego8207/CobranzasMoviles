@@ -3,11 +3,14 @@ package co.macrosystem.cobranzasmoviles.db;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
+import co.macrosystem.cobranzasmoviles.DbBitmapUtility;
 import co.macrosystem.cobranzasmoviles.pojo.Suspension;
 import co.macrosystem.cobranzasmoviles.vista.MenuPrincipal;
 
@@ -124,6 +127,29 @@ public class ConstructorSuspensiones {
         contentValues.put(ConstantesBaseDatos.TABLE_SUSPENSIONES_ESTADO, "procesadas");
 
         db.RegistrarSuspensionProcesada(contentValues);
+
+    }
+
+
+
+    public void procesarFotosSuspensionSQLite(Suspension suspension){
+        BaseDatos db = new BaseDatos(context);
+        ContentValues contentValues = new ContentValues();
+
+        for (String foto : suspension.getFotos()){
+
+            Bitmap image = DbBitmapUtility.decodeStringToBitmap(foto);
+            byte[] imageByte = DbBitmapUtility.encodeBitmapToBytes(image);
+
+            contentValues.put(ConstantesBaseDatos.TABLE_FOTOS_FOTOBLOB, imageByte);
+            contentValues.put(ConstantesBaseDatos.TABLE_FOTOS_SUSP_MATRICULA, suspension.getSUSP_MATRICULA());
+            contentValues.put(ConstantesBaseDatos.TABLE_FOTOS_FECHA_CARGA, suspension.getSUSP_FECHA_CARGA());
+
+            db.RegistrarSuspensionFotosMatricula(contentValues);
+
+        }
+
+
 
     }
 

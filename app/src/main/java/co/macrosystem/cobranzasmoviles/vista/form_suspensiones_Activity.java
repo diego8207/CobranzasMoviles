@@ -38,6 +38,7 @@ import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
+import co.macrosystem.cobranzasmoviles.DbBitmapUtility;
 import co.macrosystem.cobranzasmoviles.R;
 import co.macrosystem.cobranzasmoviles.db.ConstructorSuspensiones;
 import co.macrosystem.cobranzasmoviles.pojo.Suspension;
@@ -371,13 +372,14 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
             asignarImagen(bmp);
 
             //PASAMOS LA IMAGEN A STRING
-            String encoded  = encode(bmp);
+            String encoded  = DbBitmapUtility.encodeBitmapToString(bmp);
+
 
             //LA AGREGAMOS AL ARRAYLIST STRING GLOBAL
             fotos.add(encoded);
 
-
-            for(String temp : fotos){
+            //VALIDAMOS SI SE ESTAN ALMACENANDO LAS FOTOS EN EL ARRAYLIST<STRING> FOTOS
+          for(String temp : fotos){
                 Log.e("ImageBase64:  ", temp);
             }
 
@@ -412,27 +414,6 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
     }
 
 
-    public String encode(Bitmap bitmap){
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-        byte [] b = baos.toByteArray();
-        String temp=Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
-    }
-
-    public Bitmap decode(String encodedString){
-        try {
-            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch(Exception e) {
-            e.getMessage();
-            return null;
-        }
-    }
-
-
-
     private void VerificarPermisosCamara() {
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -462,8 +443,9 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
                 ConstructorSuspensiones constructorSuspensiones =  new ConstructorSuspensiones(view.getContext());
                 if (validar(suspension)){
                     try {
-                        //suspension.setFotos(fotos);  //aqui debe estar pero temporalmente lo voy a poner en el boton registrar
+                        suspension.setFotos(fotos);  //aqui debe estar pero temporalmente lo voy a poner en el boton registrar
                         constructorSuspensiones.procesarSuspension(suspension);
+                        constructorSuspensiones.procesarFotosSuspensionSQLite(suspension);
                         Toast.makeText(context, "Suspension procesada exitosamente ! ", Toast.LENGTH_SHORT).show();
                         startActivity(intent);//Vamos al menu prncipal
 
@@ -472,8 +454,6 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
                     }
                 }else{
                     Toast.makeText(context, "Formulario incompleto", Toast.LENGTH_SHORT).show();
-
-
                 }
 
             }
