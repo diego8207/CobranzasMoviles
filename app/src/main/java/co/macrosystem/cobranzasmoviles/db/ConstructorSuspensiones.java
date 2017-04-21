@@ -49,30 +49,6 @@ public class ConstructorSuspensiones {
         return suspensiones;
     }
 
-    public ArrayList<Suspension> obtenerSuspensionesWebService(){
-
-        ArrayList<Suspension> suspensiones = new ArrayList<Suspension>();
-        /**
-         * Aqui estamos insertando en SQLite datos Dummy pero pronto se implementara info de un web service
-
-
-        //vamos a poner informacion de fortma Dummy pero este ArrayList se debe llenar a ártir de un consumo de web service
-        suspensiones.add(new Suspension("86403","70753452","20101009828","NOEL TORRES RINCON","9 - Ibague 9","1 - IBAGUE","MNZ 3 CASA 10 1ET.SIMON BOLIVAR","27/02/2017" ,"11 - Suspension","904","Susver BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
-        suspensiones.add(new Suspension("34018","70768685","8113426","GUTIERREZ TRILLERAS ARGENIS","9 - Ibague 9","1 - IBAGUE","MNZ 4 CS.23 ETP.1 SIMON BOLIVAR","27/02/2017" ,"11 - Suspension","904"," Rec BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
-        suspensiones.add(new Suspension("23986","70769782","9346859","BOTERO SERNA ROSA AYDEE","9 - Ibague 9","1 - IBAGUE","MNZ 5 CS.30 1ET.C.S.BOLIVAR","27/02/2017" ,"11 - Suspension","904","Susver BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
-        suspensiones.add(new Suspension("90123","70769307","6677006099","LUZ MARINA SOTO","9 - Ibague 9","1 - IBAGUE","APT 13 CS.9 2ETAPA C.S.BOLIVAR","27/02/2017" ,"11 - Suspension","904"," Rec BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
-        suspensiones.add(new Suspension("43210","70771747","60405036","VASQUEZ PRIETO GILMA MARIA","9 - Ibague 9","1 - IBAGUE","MNZ 17 CS 10 2DA ET SIMON BOLIVAR","27/02/2017" ,"11 - Suspension","904","Susver BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
-        suspensiones.add(new Suspension("230705","70754192","20111010710","COFLES DE REYES MARIA LUISA","9 - Ibague 9","1 - IBAGUE","MNZ 3 CASA 10 1ET.SIMON BOLIVAR","27/02/2017" ,"11 - Suspension","904","Susver BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
-        suspensiones.add(new Suspension("227007","70769793","6677140376","AMINTA MARTINEZ","9 - Ibague 9","1 - IBAGUE","MNZ 4 CS.23 ETP.1 SIMON BOLIVAR","27/02/2017" ,"11 - Suspension","904"," Rec BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
-        suspensiones.add(new Suspension("215354","70768662","6677138873","ACOSTA ROJAS REINA ISABEL","9 - Ibague 9","1 - IBAGUE","MNZ 5 CS.30 1ET.C.S.BOLIVAR","27/02/2017" ,"11 - Suspension","904","Susver BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
-        suspensiones.add(new Suspension("215367","6677138865","6677006099","CASTRO BUITRAGO CARMENZA","9 - Ibague 9","1 - IBAGUE","APT 13 CS.9 2ETAPA C.S.BOLIVAR","27/02/2017" ,"11 - Suspension","904"," Rec BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));
-        suspensiones.add(new Suspension("428350","70753805","20101006357","ARIAS BEDOYA OMAIRA","9 - Ibague 9","1 - IBAGUE","MNZ 17 CS 10 2DA ET SIMON BOLIVAR","27/02/2017" ,"11 - Suspension","904","Susver BT Bornera","875", "se realiza suspension","80","Dvargas","restantes", "27/02/2017"));*/
-        return suspensiones;
-    }
-
-
-
-
     /**
      * En este metodo ya tenemos el Conexto gracias al constructor de esta clase
      * por lo tanto podemos mostrar informacion en un Toast si queremos

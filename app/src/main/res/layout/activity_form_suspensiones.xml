@@ -699,12 +699,111 @@
                         android:padding="10dp"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgFoto1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            />
+
+                        <ImageView
+                            android:id="@+id/imgFoto2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            />
+
+                        <ImageView
+                            android:id="@+id/imgFoto3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            />
+
+                        <ImageView
+                            android:id="@+id/imgFoto4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
                     <ImageView
-                        android:id="@+id/imgFoto"
-                        android:layout_gravity="center"
+                        android:id="@+id/imgFoto5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
                         />
+
+                    <ImageView
+                        android:id="@+id/imgFoto6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/imgFoto7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/imgFoto8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        />
+
+                </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgFoto9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            />
+
+                        <ImageView
+                            android:id="@+id/imgFoto10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            />
+
+                        <ImageView
+                            android:id="@+id/imgFoto11"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            />
+
+                        <ImageView
+                            android:id="@+id/imgFoto12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            />
+
+                    </LinearLayout>
+
 
 
 

@@ -68,7 +68,8 @@ public class ConstantesBaseDatos {
     public static final String TABLE_FOTOS                          = "fotos";
     public static final String TABLE_FOTOS_ID                       = "fotos_id";
     public static final String TABLE_FOTOS_SUSP_MATRICULA           = "fotos_id_matricula";
-    public static final String TABLE_FOTOS_FOTOBLOB                       = "fotos_fotoblob";
+    public static final String TABLE_FOTOS_FOTOBLOB                 = "fotos_fotoblob";
+    public static final String TABLE_FOTOS_FECHA_CARGA              = "fotos_fecha_carga";
 
     // Método que queremos ejecutar en el servicio web
     public static final String MetodoDownload = "SuspensionesUser";
@@ -81,8 +82,8 @@ public class ConstantesBaseDatos {
     // namespace + metodo
     public static final String accionSoap = "http://webservices/SuspensionesUser";
     // Fichero de definicion del servcio web
-    public static final String url = "http://192.168.1.42:8090/WS_FORMULARIOS/WSSuspensiones?wsdl";
+    public static final String url = "http://192.168.1.15:8090/WS_FORMULARIOS/WSSuspensiones?wsdl";
 
-    public static final String urlServer = "192.168.1.42";
+    public static final String urlServer = "192.168.1.15";
 
 }

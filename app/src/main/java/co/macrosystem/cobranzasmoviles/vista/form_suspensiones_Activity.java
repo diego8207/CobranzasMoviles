@@ -36,7 +36,7 @@ import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.util.ArrayList;
 
 import co.macrosystem.cobranzasmoviles.R;
 import co.macrosystem.cobranzasmoviles.db.ConstructorSuspensiones;
@@ -125,9 +125,23 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
 
 
     private Button btnRegistrar;
-    private ImageView imgFoto;
+
+    private ImageView imgFoto1;
+    private ImageView imgFoto2;
+    private ImageView imgFoto3;
+    private ImageView imgFoto4;
+    private ImageView imgFoto5;
+    private ImageView imgFoto6;
+    private ImageView imgFoto7;
+    private ImageView imgFoto8;
+    private ImageView imgFoto9;
+    private ImageView imgFoto10;
+    private ImageView imgFoto11;
+    private ImageView imgFoto12;
+    ArrayList<String> fotos;
     final int CAMERA_REQUEST = 1100;
     Bitmap bmp;
+    private int numFoto = 0;
 
 
 
@@ -137,7 +151,21 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_suspensiones);
-        imgFoto = (ImageView) findViewById(R.id.imgFoto);
+        imgFoto1 = (ImageView) findViewById(R.id.imgFoto1);
+        imgFoto2 = (ImageView) findViewById(R.id.imgFoto2);
+        imgFoto3 = (ImageView) findViewById(R.id.imgFoto3);
+        imgFoto4 = (ImageView) findViewById(R.id.imgFoto4);
+        imgFoto5 = (ImageView) findViewById(R.id.imgFoto5);
+        imgFoto6 = (ImageView) findViewById(R.id.imgFoto6);
+        imgFoto7 = (ImageView) findViewById(R.id.imgFoto7);
+        imgFoto8 = (ImageView) findViewById(R.id.imgFoto8);
+        imgFoto9 = (ImageView) findViewById(R.id.imgFoto9);
+        imgFoto10 = (ImageView) findViewById(R.id.imgFoto10);
+        imgFoto11 = (ImageView) findViewById(R.id.imgFoto11);
+        imgFoto12 = (ImageView) findViewById(R.id.imgFoto12);
+
+        fotos = new ArrayList<>();
+
         context = this.getBaseContext();
         intent = new Intent(this, MenuPrincipal.class);
 
@@ -338,15 +366,49 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
             Bundle extra = data.getExtras();
 
             bmp = (Bitmap) extra.get("data");
-            imgFoto.setImageBitmap(bmp);
 
-            //Utilizamos la libreria PhotoUtil para codificar como cadena de Strings la imagen
+            //asignamos la imagen capturada al ImageView
+            asignarImagen(bmp);
+
+            //PASAMOS LA IMAGEN A STRING
             String encoded  = encode(bmp);
 
-            Log.i("ImageBase64:  ", encoded);
-            Log.i("tamaño: ", String.valueOf(encoded.length()));
+            //LA AGREGAMOS AL ARRAYLIST STRING GLOBAL
+            fotos.add(encoded);
+
+
+            for(String temp : fotos){
+                Log.e("ImageBase64:  ", temp);
+            }
+
+
+
+
+
+           // Log.i("ImageBase64:  ", encoded);
+            //Log.i("tamaño: ", String.valueOf(encoded.length()));
 
         }
+    }
+
+    public void asignarImagen(Bitmap bmp){
+
+        switch (numFoto){
+            case 0: imgFoto1.setImageBitmap(bmp); break;
+            case 1: imgFoto2.setImageBitmap(bmp); break;
+            case 2: imgFoto3.setImageBitmap(bmp); break;
+            case 3: imgFoto4.setImageBitmap(bmp); break;
+            case 4: imgFoto5.setImageBitmap(bmp); break;
+            case 5: imgFoto6.setImageBitmap(bmp); break;
+            case 6: imgFoto7.setImageBitmap(bmp); break;
+            case 7: imgFoto8.setImageBitmap(bmp); break;
+            case 8: imgFoto9.setImageBitmap(bmp); break;
+            case 9: imgFoto10.setImageBitmap(bmp); break;
+            case 10: imgFoto11.setImageBitmap(bmp); break;
+            case 11: imgFoto12.setImageBitmap(bmp); break;
+        }
+
+        numFoto++;
     }
 
 
@@ -400,6 +462,7 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
                 ConstructorSuspensiones constructorSuspensiones =  new ConstructorSuspensiones(view.getContext());
                 if (validar(suspension)){
                     try {
+                        //suspension.setFotos(fotos);  //aqui debe estar pero temporalmente lo voy a poner en el boton registrar
                         constructorSuspensiones.procesarSuspension(suspension);
                         Toast.makeText(context, "Suspension procesada exitosamente ! ", Toast.LENGTH_SHORT).show();
                         startActivity(intent);//Vamos al menu prncipal
@@ -409,6 +472,7 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
                     }
                 }else{
                     Toast.makeText(context, "Formulario incompleto", Toast.LENGTH_SHORT).show();
+
 
                 }
 
@@ -739,12 +803,6 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
             }
         }
     }
-
-
-    public void IniciarServicioCamara(){
-
-    }
-
 
 
 

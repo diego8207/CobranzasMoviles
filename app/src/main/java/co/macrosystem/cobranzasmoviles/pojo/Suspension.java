@@ -7,6 +7,7 @@ import org.ksoap2.serialization.PropertyInfo;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 
@@ -49,8 +50,11 @@ public class Suspension implements Parcelable, KvmSerializable{
     private String SUSP_PROVEEDOR = "";
     private String SUSP_FECHA_CARGA = "";
     private String SUSP_FECHA_EJECUCION = "";
+    private ArrayList<String> fotos;
+
 
     public Suspension() {
+        fotos = new ArrayList<>();
     }
 
     public Suspension(String SUSP_MATRICULA, String SUSP_NUM_PROCESO, String SUSP_NUM_MEDIDOR, String SUSP_SUSCRIPTOR, String SUSP_CICLO, String SUSP_MUNICIPIO, String SUSP_DIRECCION, String SUSP_FECHA_ACTI, String SUSP_TIPO_ACTI, String SUSP_COD_ACCION, String SUSP_DESCR_ACCION, String SUSP_COD_TECNICO, String SUSP_GLOSA, String SUSP_PROVEEDOR, String SUSP_USUARIO, String SUSP_ESTADO, String SUSP_FECHA_CARGA) {
@@ -71,7 +75,16 @@ public class Suspension implements Parcelable, KvmSerializable{
         this.SUSP_ESTADO = SUSP_ESTADO;
         this.SUSP_PROVEEDOR = SUSP_PROVEEDOR;
         this.SUSP_FECHA_CARGA = SUSP_FECHA_CARGA;
+        fotos = new ArrayList<>();
 
+    }
+
+    public ArrayList<String> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(ArrayList<String> fotos) {
+        this.fotos = fotos;
     }
 
     public String getSUSP_MATRICULA() {
@@ -384,6 +397,7 @@ public class Suspension implements Parcelable, KvmSerializable{
         dest.writeString(SUSP_LONGITUD);
         dest.writeString(SUSP_FECHA_CARGA);
         dest.writeString(SUSP_FECHA_EJECUCION);
+        dest.writeStringList(fotos);
 
     }
 
@@ -423,9 +437,12 @@ public class Suspension implements Parcelable, KvmSerializable{
         SUSP_LONGITUD = in.readString();
         SUSP_FECHA_CARGA = in.readString();
         SUSP_FECHA_EJECUCION = in.readString();
+        in.readStringList(fotos);
     }
 
     public Suspension(Parcel in) {
+        //SE INSTANCIA EL ARRAYLIST PARA QUE SE PUEDA PASAR ENTRE ACTIVIDADES
+        fotos = new ArrayList<>();
         readFromParcel(in);
     }
 
@@ -450,6 +467,7 @@ public class Suspension implements Parcelable, KvmSerializable{
     }
 
 
+    //METODOS PARA SERIALIZAR OBJETOS COMPLEJOS Y QUE SE PUEDAN ENVIAR MEDIANTE KSOAP2
     @Override
     public Object getProperty(int i) {
 
@@ -492,11 +510,13 @@ public class Suspension implements Parcelable, KvmSerializable{
         return null;
     }
 
+    //METODOS PARA SERIALIZAR OBJETOS COMPLEJOS Y QUE SE PUEDAN ENVIAR MEDIANTE KSOAP2
     @Override
     public int getPropertyCount() {
         return 33;
     }
 
+    //METODOS PARA SERIALIZAR OBJETOS COMPLEJOS Y QUE SE PUEDAN ENVIAR MEDIANTE KSOAP2
     @Override
     public void setProperty(int index, Object value) {
         switch (index){
@@ -533,10 +553,12 @@ public class Suspension implements Parcelable, KvmSerializable{
             case 30: SUSP_PROVEEDOR = value.toString();
             case 31: SUSP_FECHA_CARGA = value.toString();
             case 32: SUSP_FECHA_EJECUCION = value.toString();
+
             default: break;
         }
     }
 
+    //METODOS PARA SERIALIZAR OBJETOS COMPLEJOS Y QUE SE PUEDAN ENVIAR MEDIANTE KSOAP2
     @Override
     public void getPropertyInfo(int index, Hashtable arg1, PropertyInfo Info) {
         switch (index){
