@@ -96,7 +96,6 @@ public class ConstructorSuspensiones {
         db.InsertarSuspensionSQLite(contentValues);
 
 
-
     }
 
     //Enviamos la suspension a la capa de datos para ser insertada en SQLite

@@ -838,8 +838,27 @@ public class form_suspensiones_Activity extends AppCompatActivity implements Loc
             case "No" : rbtn_rechazo_no.setChecked(true); rbtn_rechazo_no.setEnabled(true); break;
         }
 
+
         txtLatitudGPS.setText(suspension.getSUSP_LATITUD());
         txtLongitudGPS.setText(suspension.getSUSP_LONGITUD());
+
+
+        numFoto = 0;
+
+        for (String foto: suspension.getFotos()){
+
+            try {
+
+                Bitmap foto_bitmap = DbBitmapUtility.decodeStringToBitmap(foto);
+                asignarImagen(foto_bitmap);
+                numFoto++;
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 

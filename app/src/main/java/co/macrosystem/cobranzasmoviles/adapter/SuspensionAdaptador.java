@@ -3,6 +3,7 @@ package co.macrosystem.cobranzasmoviles.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ public class SuspensionAdaptador extends RecyclerView.Adapter<SuspensionAdaptado
         final Suspension suspension = suspensiones.get(position); //recuperamos de la lista el objeto uno a uno
         suspensionViewHolder.tvMatricula.setText(suspension.getSUSP_MATRICULA());
         suspensionViewHolder.tvDireccion.setText(suspension.getSUSP_DIRECCION());
+
 
         suspensionViewHolder.tvMatricula.setOnClickListener(new View.OnClickListener() {
             @Override
